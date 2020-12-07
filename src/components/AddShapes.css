@@ -1,0 +1,70 @@
+#shapeBar {
+  height: 100%;
+  width: 80px;
+  z-index: 5;
+}
+
+.toolIcon {
+  width: 50px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: 50px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.toolIcon:hover {
+  cursor: pointer;
+}
+#test {
+  background-image: url(../Img/addshapes/LogoMakr-6u56yP.png);
+}
+
+#leftside {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  box-sizing: border-box;
+}
+#toolcontent {
+  width: 240px;
+  margin-left: -240px;
+  height: 100%;
+  box-sizing: border-box;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+
+  transition: all 1s;
+}
+.shapeIcon {
+  width: 80px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 80px;
+  padding-right: 15px;
+  padding-left: 15px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#cancel {
+  width: 24px;
+  height: 24px;
+  fill: black;
+  margin: 10px;
+}
+#cancelBox {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 70px;
+}
+#addShapes {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}

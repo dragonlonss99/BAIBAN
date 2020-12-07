@@ -1,0 +1,11 @@
+.toolBarIcon {
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  margin: 0%;
+}
+
+#toolBarBox {
+  display: flex;
+  align-items: center;
+}

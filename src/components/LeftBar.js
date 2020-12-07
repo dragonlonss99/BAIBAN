@@ -1,0 +1,119 @@
+import React, { useState } from "react";
+import { fabric } from "fabric";
+import firebase from "firebase";
+import firebaseConfig from "../firebaseConfig";
+import AddShapes from "./AddShapes";
+import TextAdjust from "./TextAdjust";
+// import RectAdjust from "./components/RectAdjust";
+// import ToolBar from "./components/ToolBar";
+import PaintingTool from "./PaintingTool";
+import SaveAndLoad from "./SaveAndLoad";
+import textBox from "../Img/addshapes/LogoMakr-26YKdq.png";
+import shapes from "../Img/addshapes/LogoMakr-0Owo5C.png";
+import draw from "../Img/addshapes/LogoMakr-5qV0c5.png";
+import saveALoad from "../Img/addshapes/LogoMakr-0iXbe0.png";
+import note from "../Img/addshapes/LogoMakr-65RyOq.png";
+import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
+
+import home from "../Img/addshapes/LogoMakr-6u56yP.png";
+import "./AddShapes.css";
+import { ReactComponent as Cancel } from "../Img/addshapes/cancel.svg";
+
+export default function LeftBar(props) {
+  const canvas = props.canvas;
+  const name = props.name;
+  const [show, setShow] = useState("");
+  const [boxType, setBoxType] = useState(0);
+  let history = useHistory();
+  const closeContent = () => {
+    document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    canvas.isDrawingMode = false;
+  };
+
+  const showAddShapes = () => {
+    canvas.isDrawingMode = false;
+
+    if (
+      boxType === 1 &&
+      document.querySelector("#toolcontent").style.marginLeft === "0px"
+    ) {
+      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    } else {
+      document.querySelector("#toolcontent").style.marginLeft = "0px";
+    }
+
+    setShow(<AddShapes canvas={canvas} />);
+    setBoxType(1);
+  };
+  const showDraw = () => {
+    if (
+      boxType === 2 &&
+      document.querySelector("#toolcontent").style.marginLeft === "0px"
+    ) {
+      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    } else {
+      document.querySelector("#toolcontent").style.marginLeft = "0px";
+    }
+    setShow(<PaintingTool canvas={canvas} closeContent={closeContent} />);
+    freeDwawing(canvas);
+    setBoxType(2);
+  };
+  const showTextbox = () => {
+    canvas.isDrawingMode = false;
+
+    if (
+      boxType === 3 &&
+      document.querySelector("#toolcontent").style.marginLeft === "0px"
+    ) {
+      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    } else {
+      document.querySelector("#toolcontent").style.marginLeft = "0px";
+    }
+
+    setShow(<TextAdjust canvas={canvas} />);
+    setBoxType(3);
+  };
+  const showSave = () => {
+    canvas.isDrawingMode = false;
+
+    if (
+      boxType === 4 &&
+      document.querySelector("#toolcontent").style.marginLeft === "0px"
+    ) {
+      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    } else {
+      document.querySelector("#toolcontent").style.marginLeft = "0px";
+    }
+    setShow(<SaveAndLoad canvas={canvas} name={name} />);
+
+    setBoxType(4);
+  };
+  //freeDrawing
+  const freeDwawing = (canvas) => {
+    canvas.isDrawingMode = true;
+  };
+  return (
+    <div id="leftside">
+      <div id="shapeBar" style={{ backgroundColor: "#555555" }}>
+        <img
+          src={home}
+          className="toolIcon"
+          onClick={() => {
+            history.push("/");
+          }}
+        />
+        <img src={shapes} className="toolIcon" onClick={showAddShapes} />
+        <img src={draw} className="toolIcon" onClick={showDraw} />
+        <img src={textBox} className="toolIcon" onClick={showTextbox} />
+        <img src={note} className="toolIcon" />
+        <img src={saveALoad} className="toolIcon" onClick={showSave} />
+      </div>
+      <div id="toolcontent" style={{ paddingLeft: -240 }}>
+        <div id="cancelBox">
+          <Cancel onClick={closeContent} id="cancel" />
+        </div>
+        {show}
+      </div>
+    </div>
+  );
+}

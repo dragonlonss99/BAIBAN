@@ -1,0 +1,259 @@
+//  #profilePage {
+//    z-index: 10;
+// } 
+.hidden {
+  background-color: #5c5c5c;
+  opacity: 0.8;
+}
+#profileP {
+  width: 300px;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+#profilePic {
+  background-image: url(./Img/user.png);
+  width: 128px;
+  height: 128px;
+  margin: 10px;
+}
+#profileEmail {
+  font-size: 1.2em;
+}
+#profileBoards {
+  width: 90%;
+  margin: auto;
+}
+.profileTag {
+  font-size: 1.2em;
+  display: inline;
+  margin: 10px;
+  position: relative;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding: 0.3em 1em 0;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  margin: 0 -0.3em;
+}
+.profileTag::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #ccc;
+  background-image: linear-gradient(
+    hsla(0, 0%, 100%, 0.6),
+    hsla(0, 0%, 100%, 0)
+  );
+  border: 0.11em solid rgba(0, 0, 0, 0.4);
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+  box-shadow: 0 0.15em white inset;
+  transform: scale(1.1, 1.3) perspective(0.5em) rotateX(5deg);
+  transform-origin: bottom;
+}
+#tagBox {
+  padding-left: 0.75em;
+  z-index: 1;
+}
+.selected {
+  z-index: 2;
+}
+
+.selected::before {
+  background: white;
+  margin-bottom: -0.08em;
+}
+#boards {
+  /* border-width: 2px;
+  border-style: solid; */
+  height: max-content;
+  display: flex;
+  // justify-content: center;
+  padding: 15px;
+  min-height: calc(100vh - 355px);
+  border: 0.1em solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  margin-bottom: 2em;
+  #boardsContain{
+    display: flex;
+    flex-wrap: wrap;
+    width: max-content;
+    // justify-content: space-around;
+  }
+  #boardsRead{
+    display: none;
+    flex-wrap: wrap;
+  }
+}
+
+.boardCreate {
+  border: #000000 1px dashed;
+
+  width: 200px;
+  height: 200px;
+  // background-color: burlywood;
+  border-radius: 20px;
+  margin: 10px;
+  
+  .addIconBox{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    .addIcon{
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      left: 60px;
+      top: 50px;
+      background-size: cover;
+    }
+    div{
+      display: flex;
+      justify-content: center;
+      top: 140px;
+      width: 100%;
+      position: absolute;
+      font-size: 1.2em;
+    }
+  }
+  .InputNameBox{
+    height: 100%;
+    width: 100%;
+    display: none;
+    .inputTop{
+      box-sizing: border-box;
+      display: flex;
+      // justify-content: space-around;
+      flex-direction: column;
+      align-items: center;
+      height: 150px;
+      position: relative;
+      .cancelIcon{
+        height: 20px;
+        width: 20px;
+        right: 10px;
+        top: 15px;
+        position: absolute;
+      }
+      
+      input{
+        margin-top: 20px;
+        font-size: 1.2em;
+        width: 80%; 
+        height: 2em;
+        padding-left: 7px;
+      }
+      .inputName{
+        margin-top: 40px;
+        text-align: center;
+        font-size: 1.2em;
+        width: 90%; 
+      }
+  }
+    
+    .inputBottom{
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2em;
+      background-color: black;
+      color:whitesmoke;
+      font-weight: bold;
+      border-radius: 0px 0px 20px 20px;
+    }
+  }
+}
+.AddBoardBox {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  border: #000000 1px solid;
+  .hide{
+    display: none;
+  }
+  .AddBoardPic{
+    height: 150px;
+    background-image: url(./Img/boardPic.png);
+    background-size: cover;
+    border-radius: 20px 20px 0px 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-right: 10px;
+    padding-top: 15px;
+    box-sizing: border-box;
+    flex-direction: column;
+    .AddBoardLIconBox{
+        z-index: 4;
+        background-image: url(./Img/list.svg);
+        background-size: cover;
+        width: 15px;
+        height: 15px;
+        margin-right: 3px;
+      .AddBoardLIcon{
+        width: 15px;
+        height: 15px;
+        margin-right: 3px;
+        // z-index: 3;
+      }
+    }
+    .AddBoardList{
+      // height: 80px;
+      // display: none;
+      // width: 120px;
+      // border: #000000 1px solid;
+      position: relative;
+      box-sizing: border-box;
+      margin-top: 8px;
+      color: whitesmoke;
+      border-radius: 3px;
+    background-color: black;
+    ul{
+      list-style: none;
+      padding: 5px;
+      margin: 0;
+    }
+    }
+    .AddBoardList::before{
+      position: absolute;
+      content: "";
+      width: 0px;
+      height: 0px;
+      border-width: 10px;
+      border-style: solid;;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color:#000000;
+      border-left-color: transparent;
+      right: 0%;
+      top: -20px;
+      margin-right: 2px;
+
+      // background-color: violet;
+    }
+  }
+  .AddBoardName{
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    background-color: black;
+    color:whitesmoke;
+    font-weight: bold;
+    border-radius: 0px 0px 20px 20px;
+  }
+}
