@@ -5,24 +5,24 @@ import App from "./App";
 import HomePage from "./homepage";
 import ProfilePage from "./profile";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import FirebaseRead from "./firebase";
-import {
-  signInWithGoogle,
-  signInWithFB,
-  signOut,
-  // firebaseTest,
-  // firebaseGet,
-} from "./firebase";
-import SignInLocal from "./components/SignIn";
-import SignUpLocal from "./components/SignUp";
-import firebase from "firebase";
-import firebaseConfig from "./firebaseConfig";
+// import {
+//   signInWithGoogle,
+//   signInWithFB,
+//   signOut,
+//   // firebaseTest,
+//   // firebaseGet,
+// } from "./firebase";
+// import SignInLocal from "./components/SignIn";
+// import SignUpLocal from "./components/SignUp";
+// import firebase from "firebase";
+// import firebaseConfig from "./firebaseConfig";
 // import { Router, Route, Link } from 'react-router'
-const app = firebase.apps.length
-  ? firebase.app()
-  : firebase.initializeApp(firebaseConfig);
+// const app = firebase.apps.length
+//   ? firebase.app()
+//   : firebase.initializeApp(firebaseConfig);
 // firebase.auth().onAuthStateChanged(function (user) {
 //   if (user) {
 //     // User is signed in.
@@ -34,17 +34,17 @@ const app = firebase.apps.length
 //   }
 // });
 
-const firebaseSnap = () => {
-  const app = firebase.apps.length
-    ? firebase.app()
-    : firebase.initializeApp(firebaseConfig);
-  var db = firebase.firestore();
-  db.collection("canvases")
-    .doc("Test")
-    .onSnapshot((querySnapshot) => {
-      console.log(querySnapshot.data().data);
-    });
-};
+// const firebaseSnap = () => {
+//   const app = firebase.apps.length
+//     ? firebase.app()
+//     : firebase.initializeApp(firebaseConfig);
+//   var db = firebase.firestore();
+//   db.collection("canvases")
+//     .doc("Test")
+//     .onSnapshot((querySnapshot) => {
+//       console.log(querySnapshot.data().data);
+//     });
+// };
 ReactDOM.render(
   <React.StrictMode>
     {/* <FirebaseRead /> */}
@@ -58,11 +58,6 @@ ReactDOM.render(
     <SignUpLocal />
     <SignInLocal /> */}
     <Router>
-      {/* <div>
-        <Link to="/">Home</Link>
-        <Link to="/profile">Profile</Link>
-        <Link to="/board">board</Link>
-      </div> */}
       <Switch>
         <Route path="/profile">
           <ProfilePage />

@@ -47,6 +47,8 @@ export default function AddedBoard(props) {
   };
   const goToTheCanvas = () => {
     history.push("/board/" + props.id);
+    // console.log(props.id);
+    // props.onfocusBoard(props.id);
   };
 
   return (
@@ -56,7 +58,7 @@ export default function AddedBoard(props) {
         <div className="AddBoardList hide">
           <ul>
             <li>Rename</li>
-            <li>Duplicate</li>
+            <li>Share</li>
             <li>Delete</li>
           </ul>
         </div>

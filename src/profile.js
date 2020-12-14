@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { ReactComponent as Logo } from "./Img/toolbar/open.svg";
 import { ReactComponent as Add } from "./Img/add.svg";
 import { ReactComponent as Cancel } from "./Img/addshapes/cancel.svg";
+import { ReactComponent as DrawCircle } from "./Img/drawCircle3.svg";
 import AddedBoard from "./components/AddedBoard.js";
 import { signOut } from "./firebase";
 import firebase from "firebase";
+import logo from "./Img/icon13.svg";
+import userImg from "./Img/user.png";
 import firebaseConfig from "./firebaseConfig";
 import { useHistory } from "react-router-dom";
 import "./profile.scss";
@@ -14,9 +17,11 @@ export default function ProfilePage() {
   const [canvasRead, setCanvasRead] = useState([]);
   const [nameInput, setNameInput] = useState("new board");
   const [userEmailfromF, setUserEmailfromF] = useState("");
-
+  const [photo, setPhoto] = useState("");
+  const [userName, setUserName] = useState("");
+  const [boardChosen, setBoardChosen] = useState("");
+  const db = firebase.firestore();
   useEffect(() => {
-    var db = firebase.firestore();
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
@@ -28,6 +33,19 @@ export default function ProfilePage() {
             setCanvasOwn(data.data().canvasOwn);
             setCanvasRead(data.data().canvasRead);
             setUserEmailfromF(user.email);
+            // setUserName(user.userName);
+            if (user.providerData[0].providerId === "facebook.com") {
+              setPhoto(user.photoURL + "?type=large");
+              setUserName(user.displayName);
+            } else if (user.providerData[0].providerId === "google.com") {
+              setPhoto(user.photoURL);
+              setUserName(user.displayName);
+            } else {
+              setPhoto(userImg);
+              setUserName(data.data().userName);
+            }
+
+            // console.log(user);
             // console.log(canvasOwn);
             // document.querySelector("#boards").appendChild(
             // data.data().canvasOwn.map((obj) => {
@@ -89,9 +107,6 @@ export default function ProfilePage() {
     signOut();
     history.push("/");
   };
-  // const totheBoard = () => {
-  //   history.push("/board");
-  // };
 
   const changeReadStatus = (e) => {
     let a = document.getElementsByClassName("profileTag");
@@ -99,6 +114,11 @@ export default function ProfilePage() {
       a[i].classList = "profileTag";
     }
     e.target.classList = "profileTag selected";
+    let b = document.getElementsByClassName("drawCompo");
+    for (var i = 0; i < b.length; i++) {
+      b[i].classList = "drawCompo";
+    }
+    e.target.previousSibling.classList = "drawCompo drawn";
     if (e.target.innerHTML === "Your Board") {
       document.querySelector("#boardsRead").style.display = "none";
       document.querySelector("#boardsContain").style.display = "flex";
@@ -122,7 +142,8 @@ export default function ProfilePage() {
         data: "",
         name: nameInput,
         owner: userEmail,
-        user: userEmail,
+        user: [userEmail],
+        observer: [],
         createdTime: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((docRef) => {
@@ -149,30 +170,78 @@ export default function ProfilePage() {
     document.querySelector(".InputNameBox").style.display = "none";
   };
 
+  const deleteBoard = () => {
+    if (!boardChosen) {
+      return;
+    }
+    // db.collection("users")
+    // .doc(userEmailfromF)
+    // .get()
+    // .then((data) => {})
+    db.collection("canvases")
+      .doc(boardChosen)
+      .get()
+      .then((data) => {
+        console.log(data.data().user);
+      });
+  };
+  const onfocusBoard = (boardId) => {
+    console.log(boardId);
+    setBoardChosen(boardId);
+  };
+
   return (
     <div id="profilePage">
-      <div className="topNav">
-        <div className="mainLogo">
-          <Logo className="logo" />
-          <div>BIBEN</div>
-        </div>
-        <div className="logInWay">
-          <div onClick={signingOut}>signOut</div>
+      <div className="topNavBox">
+        <div className="topNav">
+          <div className="mainLogo">
+            <img src={logo} className="logo" />
+            <div>BAIBEN</div>
+          </div>
+          <div className="logInWay">
+            <div style={{ backgroundColor: "#0E79B2" }}>Profile</div>
+            <div onClick={signingOut} style={{ backgroundColor: "red" }}>
+              Sign Out
+            </div>
+          </div>
         </div>
       </div>
       <div id="profileP">
-        <div id="profilePic"></div>
-        <div id="profileEmail">email: {userEmailfromF}</div>
+        <img id="profilePic" src={photo} />
+        <div id="profileEmail">Hello, {userName}</div>
       </div>
-      <div id="profileBoards">
+      <div id="ProfileBtnBox">
         <div id="tagBox">
-          <div className="profileTag selected" onClick={changeReadStatus}>
-            Your Board
+          <div className="drawBox ">
+            <DrawCircle className="drawCompo drawn" />
+            <div className="profileTag selected" onClick={changeReadStatus}>
+              Your Board
+            </div>
+          </div>
+          <div className="drawBox">
+            <DrawCircle className="drawCompo" />
+            <div className="profileTag " onClick={changeReadStatus}>
+              You can check
+            </div>
+          </div>
+          {/* <div className="profileTag" onClick={changeReadStatus}>
+            You can check
+          </div> */}
+        </div>
+
+        {/* <div id="profileFuncBox">
+          <div className="profileTag" onClick={changeReadStatus}>
+            Rename
+          </div>
+          <div className="profileTag" onClick={deleteBoard}>
+            Delete
           </div>
           <div className="profileTag" onClick={changeReadStatus}>
-            You can check
+            Share
           </div>
-        </div>
+        </div> */}
+      </div>
+      <div id="profileBoards">
         {/* <div className="profileTag">Your Board</div>
         <div className="profileTag">You can check</div> */}
 
@@ -181,14 +250,11 @@ export default function ProfilePage() {
             <div className="boardCreate">
               <div className="addIconBox" onClick={showNameInput}>
                 <Add className="addIcon" />
-                <div>Create new canvas</div>
+                <div>Create a new board</div>
               </div>
               <div className="InputNameBox">
                 <div className="inputTop">
                   <Cancel className="cancelIcon" onClick={showInputDefault} />
-                  {/* <div>
-                    <div>X</div>
-                  </div> */}
                   <div className="inputName">Name your board?</div>
                   <input value={nameInput} onChange={handleNameInput} />
                 </div>
@@ -198,13 +264,25 @@ export default function ProfilePage() {
               </div>
             </div>
             {canvasOwn.map((obj) => (
-              <AddedBoard id={obj} key={obj} />
+              <AddedBoard id={obj} key={obj} onfocusBoard={onfocusBoard} />
             ))}
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
           </div>
           <div id="boardsRead">
             {canvasRead.map((obj) => (
               <AddedBoard id={obj} key={obj} />
             ))}
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
+            <div className="profileFa" />
           </div>
         </div>
       </div>

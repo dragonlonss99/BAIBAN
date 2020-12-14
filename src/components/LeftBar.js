@@ -14,11 +14,11 @@ import draw from "../Img/addshapes/LogoMakr-5qV0c5.png";
 import saveALoad from "../Img/addshapes/LogoMakr-0iXbe0.png";
 import note from "../Img/addshapes/LogoMakr-65RyOq.png";
 import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
-
+import { ReactComponent as ChatRoom } from "../Img/chat-bubbles.svg";
 import home from "../Img/addshapes/LogoMakr-6u56yP.png";
-import "./AddShapes.css";
+import "./AddShapes.scss";
 import { ReactComponent as Cancel } from "../Img/addshapes/cancel.svg";
-
+import logo from "../Img/icon13.svg";
 export default function LeftBar(props) {
   const canvas = props.canvas;
   const name = props.name;
@@ -31,6 +31,8 @@ export default function LeftBar(props) {
   };
 
   const showAddShapes = () => {
+    console.log(canvas.getActiveObject());
+
     canvas.isDrawingMode = false;
 
     if (
@@ -92,6 +94,18 @@ export default function LeftBar(props) {
   const freeDwawing = (canvas) => {
     canvas.isDrawingMode = true;
   };
+
+  //showChatRoom
+  const showChatRoom = () => {
+    document.querySelector("#mainChat").scrollTop = document.querySelector(
+      "#mainChat"
+    ).scrollHeight;
+    if (document.querySelector(".chatRoom").style.marginRight === "0px") {
+      document.querySelector(".chatRoom").style.marginRight = "-402px";
+    } else {
+      document.querySelector(".chatRoom").style.marginRight = "0px";
+    }
+  };
   return (
     <div id="leftside">
       <div id="shapeBar" style={{ backgroundColor: "#555555" }}>
@@ -105,8 +119,13 @@ export default function LeftBar(props) {
         <img src={shapes} className="toolIcon" onClick={showAddShapes} />
         <img src={draw} className="toolIcon" onClick={showDraw} />
         <img src={textBox} className="toolIcon" onClick={showTextbox} />
-        <img src={note} className="toolIcon" />
-        <img src={saveALoad} className="toolIcon" onClick={showSave} />
+        {/* <img src={note} className="toolIcon" /> */}
+        {/* <img src={saveALoad} className="toolIcon" onClick={showSave} /> */}
+        <ChatRoom
+          style={{ fill: "white" }}
+          className="toolIcon"
+          onClick={showChatRoom}
+        />
       </div>
       <div id="toolcontent" style={{ paddingLeft: -240 }}>
         <div id="cancelBox">

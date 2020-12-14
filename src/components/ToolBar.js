@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import "fabric-history";
+import firebase from "firebase";
 import { ReactComponent as Eraser } from "../Img/toolbar/eraser.svg";
 import { ReactComponent as Copy } from "../Img/toolbar/file.svg";
 import { ReactComponent as Paste } from "../Img/toolbar/paste.svg";
@@ -9,16 +10,13 @@ import { ReactComponent as Undo } from "../Img/toolbar/undo-button.svg";
 import { ReactComponent as Redo } from "../Img/toolbar/redo-button.svg";
 import { ReactComponent as SelectAll } from "../Img/toolbar/select-all.svg";
 import { ReactComponent as DeleteAll } from "../Img/toolbar/trash.svg";
-// import LayerUp from "../Img/toolbar/LogoMakr-1IGO03.png";
-// import LayerDown from "../Img/toolbar/LogoMakr-6RIrpF.png";
-// import Group from "../Img/toolbar/LogoMakr-6c3rAZ.png";
-// import Ungroup from "../Img/toolbar/LogoMakr-6lQnhn.png";
 import { ReactComponent as Group } from "../Img/toolbar/close.svg";
 import { ReactComponent as Ungroup } from "../Img/toolbar/open.svg";
 import { ReactComponent as LayerUp } from "../Img/toolbar/gotop.svg";
 import { ReactComponent as LayerDown } from "../Img/toolbar/goBottom.svg";
-import "./Toolbar.css";
+import "./Toolbar.scss";
 export default function ToolBar(props) {
+  const [shareInput, setShareInput] = useState("");
   const name = props.name;
   const canvas = props.canvas;
   const [canvasColor, setCanvasColor] = useState("#ffffff");
@@ -72,6 +70,7 @@ export default function ToolBar(props) {
   };
   //group
   const group = (canvi) => {
+    canvas.offHistory();
     if (!canvas.getActiveObject()) {
       return;
     }
@@ -80,6 +79,8 @@ export default function ToolBar(props) {
     }
     canvi.getActiveObject().toGroup();
     canvi.renderAll();
+    canvas.fire("object:modified");
+    canvas.onHistory();
   };
   //ungroup
   const ungroup = (canvi) => {
@@ -91,6 +92,7 @@ export default function ToolBar(props) {
     }
     canvi.getActiveObject().toActiveSelection();
     canvi.renderAll();
+    canvas.fire("object:modified");
   };
   //deleteChosen
   const deleteChosen = (canvi) => {
@@ -174,22 +176,27 @@ export default function ToolBar(props) {
       clipboard.left += 10;
       canvas.setActiveObject(clonedObj);
       canvas.requestRenderAll();
+      canvas.fire("object:modified");
     });
   };
   //undo
   function doUndo() {
     canvas.undo();
+    canvas.fire("object:modified");
   }
   //redo
   function doRedo() {
     canvas.redo();
+    canvas.fire("object:modified");
   }
   const bringForward = (canvas) => {
     canvas.getActiveObject().bringForward();
+    canvas.fire("object:modified");
   };
 
   const sendBackwards = (canvas) => {
     canvas.getActiveObject().sendBackwards();
+    canvas.fire("object:modified");
   };
 
   //canvascolor
@@ -197,48 +204,117 @@ export default function ToolBar(props) {
     canvas.backgroundColor = e.target.value;
     setCanvasColor(e.target.value);
     canvas.renderAll();
+    canvas.fire("object:modified");
+  };
+
+  //share
+  const shareCanvas = (observerEmail) => {
+    let canvasId = window.location.pathname.split("/")[2];
+    var db = firebase.firestore();
+    db.collection("canvases")
+      .doc(canvasId)
+      .update({
+        observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
+      });
+    db.collection("users")
+      .doc(observerEmail)
+      .update({
+        canvasRead: firebase.firestore.FieldValue.arrayUnion(canvasId),
+      });
+  };
+
+  const showShare = () => {
+    document.querySelector("#shareInputBox").style.display === "block"
+      ? (document.querySelector("#shareInputBox").style.display = "none")
+      : (document.querySelector("#shareInputBox").style.display = "block");
+  };
+
+  const handleShare = () => {
+    shareCanvas(shareInput);
+    setShareInput("");
   };
   return (
-    <div id="toolBarBox">
-      <div>{name}</div>
-      <Undo onClick={() => doUndo()} className="toolBarIcon" />
-      <Redo onClick={() => doRedo()} className="toolBarIcon" />
-      <Cut onClick={() => cut(canvas)} className="toolBarIcon" />
-      <Copy onClick={copy} className="toolBarIcon" />
-      <Paste onClick={() => paste(canvas)} className="toolBarIcon" />
-      <Eraser onClick={() => deleteChosen(canvas)} className="toolBarIcon" />
-      <LayerUp onClick={() => bringForward(canvas)} className="toolBarIcon" />
-      <LayerDown
-        onClick={() => sendBackwards(canvas)}
-        className="toolBarIcon"
-      />
-      <Group onClick={() => group(canvas)} className="toolBarIcon" />
-      <Ungroup onClick={() => ungroup(canvas)} className="toolBarIcon" />
-      <SelectAll onClick={() => selectAll(canvas)} className="toolBarIcon" />
-      {/* <div> */}
-      <label>背景顏色：</label>
-      <input
-        onChange={changeCanvasColor}
-        type="color"
-        id="lineColorInput"
-        value={canvasColor}
-      />
-      {/* </div> */}
-      {/* <DeleteAll onClick={() => deleteAll(canvas)}/> */}
+    <>
+      <div id="toolBarBox">
+        <div id="toolBarName">
+          <div>{name}</div>
+        </div>
+        <div>
+          <div className="toolBarIconBox blue">
+            <Undo onClick={() => doUndo()} className="toolBarIcon" />
+          </div>
+          <div className="toolBarIconBox blue">
+            <Redo onClick={() => doRedo()} className="toolBarIcon" />
+          </div>
+        </div>
+        <div>
+          <div className="toolBarIconBox orange">
+            <Cut onClick={() => cut(canvas)} className="toolBarIcon" />
+          </div>
+          <div className="toolBarIconBox orange">
+            <Copy onClick={copy} className="toolBarIcon" />
+          </div>
+          <div className="toolBarIconBox orange">
+            <Paste onClick={() => paste(canvas)} className="toolBarIcon" />
+          </div>
+        </div>
+        <div className="toolBarIconBox red">
+          <Eraser
+            onClick={() => deleteChosen(canvas)}
+            className="toolBarIcon"
+          />
+        </div>
+        <div>
+          <div className="toolBarIconBox green">
+            <LayerUp
+              onClick={() => bringForward(canvas)}
+              className="toolBarIcon"
+            />
+          </div>
+          <div className="toolBarIconBox green">
+            <LayerDown
+              onClick={() => sendBackwards(canvas)}
+              className="toolBarIcon"
+            />
+          </div>
+          <div className="toolBarIconBox green">
+            <Group onClick={() => group(canvas)} className="toolBarIcon" />
+          </div>
+          <div className="toolBarIconBox green">
+            <Ungroup onClick={() => ungroup(canvas)} className="toolBarIcon" />
+          </div>
+        </div>
+        <div className="toolBarIconBox ">
+          <SelectAll
+            onClick={() => selectAll(canvas)}
+            className="toolBarIcon selectAll"
+          />
+        </div>
 
-      {/* 
-      <button onClick={() => group(canvas)}>Group</button>
-      <button onClick={() => ungroup(canvas)}>Ungroup</button>
-      <button onClick={() => deleteChosen(canvas)}>Delete Chosen</button>
-      <button onClick={() => deleteAll(canvas)}>Delete All</button>
-      <button onClick={() => cut(canvas)}>Cut</button>
-      <button onClick={() => copy(canvas)}>Copy</button>
-      <button onClick={() => paste(canvas)}>Paste</button>
-      <button onClick={() => selectAll(canvas)}>SelectAll</button>
-      <button onClick={() => doUndo()}>Undo</button>
-      <button onClick={() => doRedo()}>Redo</button>
-      <button onClick={() => bringForward(canvas)}>上移一層</button>
-      <button onClick={() => sendBackwards(canvas)}>下移一層</button> */}
-    </div>
+        <div id="shareBox" onClick={showShare}>
+          share
+        </div>
+        <div id="shareInputBox" style={{ display: "none" }}>
+          <input
+            value={shareInput}
+            onChange={(e) => {
+              setShareInput(e.target.value);
+            }}
+          />
+          <button onClick={handleShare}>share</button>
+        </div>
+
+        {/* <DeleteAll onClick={() => deleteAll(canvas)}/> */}
+      </div>
+      <div id="boardColor">
+        <label>board's color：</label>
+        <input
+          onChange={changeCanvasColor}
+          type="color"
+          id="lineColorInput"
+          value={canvasColor}
+        />
+      </div>
+    </>
   );
 }

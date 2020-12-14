@@ -2,6 +2,12 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  overflow-x: hidden;
+  // border: 30px solid transparent;
+  // border-image: url(/Img/back2.svg) 10 stretch;
+  font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
+  box-sizing: border-box;
+  position: relative;
 }
 
 /* .App {
@@ -51,14 +57,14 @@
   position: relative;
 } */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+// @keyframes App-logo-spin {
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }
 
 #rightside {
   display: flex;
@@ -69,12 +75,31 @@
 }
 #top_bar {
   width: 100%;
-  height: 54px;
-  border-color: black;
-  border-width: 1px;
-  border-style: solid;
-  background-color: #f4f4f4;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // margin-right: 20px;
 }
 #canvas_area {
   overflow: hidden;
+  height: 100%;
+}
+
+.paintWayBox {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+  div {
+    background-color: #f39237;
+    // opacity: 0.7;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

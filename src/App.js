@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
-import "./App.css";
+import "./App.scss";
 import firebase from "firebase";
 import firebaseConfig from "./firebaseConfig";
 // import {} from "./components/fabric-brush";
@@ -11,6 +11,9 @@ import ToolBar from "./components/ToolBar";
 import PaintingTool from "./components/PaintingTool";
 import SaveAndLoad from "./components/SaveAndLoad";
 import LeftBar from "./components/LeftBar";
+import { v4 as uuidv4 } from "uuid";
+import ChatRoom from "./components/ChatRoom";
+import logo from "./Img/icon13.svg";
 
 // import { ReactComponent as Eraser } from "./Img/toolbar/eraser.svg";
 // import { ReactComponent as Copy } from "./Img/toolbar/file.svg";
@@ -27,51 +30,26 @@ import LeftBar from "./components/LeftBar";
 const App = () => {
   const [canvas, setCanvas] = useState("");
   const [name, setName] = useState("");
-  const [author, setAuthor] = useState("bbb@gmail.com");
+  const [author, setAuthor] = useState("");
+  const [active, setActive] = useState("");
+  // const [canvasToLoad, setCanvasToLoad] = useState({});
+  let canvasToLoad;
   // const [canvasColor, setCanvasColor] = useState("#ffffff");
 
   // let canvasToUpload;
 
-  // setInterval(() => {
-  //   if (canvas) {
-  //     saveToCloud();
-  //     const app = firebase.apps.length
-  //       ? firebase.app()
-  //       : firebase.initializeApp(firebaseConfig);
-  //     var db = firebase.firestore();
-  //     db.collection("canvases")
-  //       .doc("Test")
-  //       .onSnapshot((querySnapshot) => {
-  //         // console.log(querySnapshot.data().data);
-  //         canvas.loadFromJSON(querySnapshot.data().data);
-  //       });
-  //   }
-  // }, 100000000000);
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    const app = firebase.apps.length
-      ? firebase.app()
-      : firebase.initializeApp(firebaseConfig);
-    if (user) {
-      // User is signed in.
-      setAuthor(user.email);
-      // console.log(user.email);
-      // console.log(author);
-    }
-  });
+  // var db = firebase.firestore();
+  // db.collection("canvases")
+  //   .doc(window.location.pathname.split("/")[2])
+  //   .onSnapshot((querySnapshot) => {
+  //     canvas.loadFromJSON(querySnapshot.data().data);
+  //   });
 
   useEffect(() => {
+    let activeObj = "";
+    let editor = "";
+    let color = "";
     // console.log(window.location.pathname.split("/")[2]);
-    var db = firebase.firestore();
-    db.collection("canvases")
-      .doc(window.location.pathname.split("/")[2])
-      .get()
-      .then((data) => {
-        // if (data) {
-        setName(data.data().name);
-        // console.log(data.data());
-        // }
-      });
     let canvasToSet = new fabric.Canvas("canvas", {
       // height: 500,
       // width: 600,
@@ -79,13 +57,84 @@ const App = () => {
       height: window.innerHeight - 60,
       backgroundColor: "#ffffff",
     });
+    var db = firebase.firestore();
+    db.collection("canvases")
+      .doc(window.location.pathname.split("/")[2])
+      .get()
+      .then((data) => {
+        // if (data) {
+        setName(data.data().name);
+        // setCanvasToLoad(data.data().data);
+        // canvasToLoad = data.data().data;
+        // console.log(canvasToLoad);
+        // }
+      });
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+        setAuthor(user.email);
+        editor = user.email;
+        console.log(user.email);
+        fabric.Object.prototype.toObject = (function (toObject) {
+          return function (propertiesToInclude) {
+            return fabric.util.object.extend(
+              toObject.call(this, propertiesToInclude),
+              {
+                editor: user.email, //my custom property
+                // _controlsVisibility: this._getControlsVisibility(), //i want to get the controllsVisibility
+              }
+            );
+          };
+        })(fabric.Object.prototype.toObject);
+      }
+    });
+    console.log(editor);
+
     fabric.Object.prototype.set({
       cornerColor: "white",
       conerSize: 20,
       cornerStrokeColor: "gray",
+      borderColor: "gray",
       transparentCorners: false,
       cornerStyle: "circle",
+      padding: 10,
     });
+
+    function output(formatType) {
+      const dataURL = canvas.toDataURL({
+        format: "image/png",
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        multiplier: 1,
+        quality: 0.1,
+      });
+      const a = document.createElement("a");
+      a.href = dataURL;
+      a.download = `output.${formatType}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    // };
+    // if (editor === "aaa@gmail.com") {
+    //   color = "red";
+    // } else if (editor === "bbb@gmail.com") {
+    //   color = "blue";
+    // } else {
+    //   color = "gray";
+    // }
+
+    // fabric.Object.prototype.set({
+    //   cornerColor: "white",
+    //   conerSize: 20,
+    //   cornerStrokeColor: color,
+    //   borderColor: color,
+    //   transparentCorners: false,
+    //   cornerStyle: "circle",
+    //   padding: 10,
+    // });
     canvasToSet.preserveObjectStacking = true;
     //override prototype.toObject and add your custom properties here
     // fabric.Object.prototype.toObject = (function (toObject) {
@@ -96,24 +145,131 @@ const App = () => {
     //     });
     //   };
     // })(fabric.Object.prototype.toObject);
+    // fabric.Object.prototype.toObject = (function (toObject) {
+    //   return function (propertiesToInclude) {
+    //     return fabric.util.object.extend(
+    //       toObject.call(this, propertiesToInclude),
+    //       {
+    //         editor: author, //my custom property
+    //         // _controlsVisibility: this._getControlsVisibility(), //i want to get the controllsVisibility
+    //       }
+    //     );
+    //   };
+    // })(fabric.Object.prototype.toObject);
     // canvasToSet.historyInit();
     canvasToSet.on("object:modified", (e) => {
-      console.log("modified");
+      // console.log("modified");
+      updateToCloud();
+      getActive();
+      // setColor();
+      // console.log(editor);
+      // console.log(author);
     });
-    canvasToSet.on("object:added", (e) => {
-      console.log("added");
-    });
+    // canvasToSet.on("object:added", (e) => {
+    //   console.log("added");
+    //   // updateToCloud();
+    // });
     canvasToSet.on("object:removed", (e) => {
       console.log("removed");
+      updateToCloud();
+      // getActive();
     });
     canvasToSet.on("selection:updated", (e) => {
-      console.log("updated");
+      // console.log(e.target);
+      // updateToCloud();
+      getActive();
     });
+
+    canvasToSet.on("selection:created", (e) => {
+      // console.log(e.target);
+      // updateToCloud();
+      getActive();
+    });
+    canvasToSet.on("mouse:up", () => {
+      if (canvasToSet.isDrawingMode) {
+        canvasToSet.fire("object:modified");
+      }
+      // console.log("up");
+      // updateToCloud();
+    });
+    canvasToSet.on("selection:cleared", (e) => {
+      db.collection("canvases")
+        .doc(window.location.pathname.split("/")[2])
+        .onSnapshot((querySnapshot) => {
+          getActive();
+          canvasToLoad = querySnapshot.data().data;
+          if (
+            canvasToSet.getActiveObject() === undefined ||
+            canvasToSet.getActiveObject() === null
+          ) {
+            canvasToSet.loadFromJSON(querySnapshot.data().data);
+          }
+        });
+    });
+
+    const updateToCloud = () => {
+      let canvasToUpload = JSON.stringify(canvasToSet.toJSON());
+      var db = firebase.firestore();
+      db.collection("canvases")
+        .doc(window.location.pathname.split("/")[2])
+        .update({
+          data: canvasToUpload,
+        });
+    };
+    const getActive = () => {
+      if (canvasToSet.getActiveObject()) {
+        // console.log(canvasToSet.getActiveObject());
+        setActive(canvasToSet.getActiveObject());
+        activeObj = canvasToSet.getActiveObject();
+        // console.log(activeObj);
+        // console.log(author);
+      }
+    };
+    db.collection("canvases")
+      .doc(window.location.pathname.split("/")[2])
+      .onSnapshot((querySnapshot) => {
+        getActive();
+        canvasToLoad = querySnapshot.data().data;
+        // canvasToSet.loadFromJSON(querySnapshot.data().data);
+        // console.log(querySnapshot.data().data);
+        if (
+          canvasToSet.getActiveObject() === undefined ||
+          canvasToSet.getActiveObject() === null
+        ) {
+          canvasToSet.loadFromJSON(querySnapshot.data().data);
+          canvasToSet.clearHistory();
+
+          // console.log("up");
+        }
+        // console.log(querySnapshot.data().data);
+        // console.log(active);
+        // if (activeObj !== "") {
+        //   // canvasToSet.setActiveObject(active);
+        //   canvasToSet.setActiveObject(activeObj);
+        // }
+        //   // console.log(canvasToSet.getActiveObject());
+        //   console.log(activeObj);
+      });
+    // .then(() => {
+    //   canvasToSet.loadFromJSON(canvasToLoad);
+    // });
+
     // canvasToSet.isDrawingMode = true;
     // addKeyControl();
-    setCanvas(canvasToSet);
-  }, []);
+    // canvasToSet.clearHistory();
 
+    setCanvas(canvasToSet);
+    console.log(canvasToSet.historyUndo);
+    canvasToSet.clearHistory();
+
+    // canvas.loadFromJSON(canvasToLoad);
+  }, []);
+  // if (active) {
+  //   canvas.setActiveObject(active);
+  // }
+  // useEffect(() => console.log(canvasToLoad), []);
+  // canvas.loadFromJSON(canvasToLoad);
+  // console.log(canvasToLoad);
   // fabric.Object.prototype.toObject = (function (toObject) {
   //   return function () {
   //     return fabric.util.object.extend(toObject.call(this), {
@@ -376,6 +532,7 @@ const App = () => {
             // onMouseUp={mouseup}
             // onMouseLeave={mouseleave}
           />
+          <ChatRoom author={author} />
         </div>
       </div>
     </div>

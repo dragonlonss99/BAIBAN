@@ -41,7 +41,7 @@ export default function SignInLocal() {
         // querySnapshot.data().canvasOwn.forEach((can) => {
         //   console.log("cavas: " + can);
         // });
-        console.log(querySnapshot.data());
+        // console.log(querySnapshot.data());
         canvasOwn = querySnapshot.data().canvasOwn;
       })
       .then(() => {

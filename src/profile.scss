@@ -1,6 +1,13 @@
-//  #profilePage {
-//    z-index: 10;
-// } 
+@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap");
+#profilePage {
+  //  z-index: 10;
+  border: 30px solid transparent;
+  border-image: url(/Img/back2.svg) 10 stretch;
+  font-family: "Nerko One", "Noto Sans TC", cursive, sans-serif;
+  // height: 100vh;
+  box-sizing: border-box;
+}
 .hidden {
   background-color: #5c5c5c;
   opacity: 0.8;
@@ -12,180 +19,195 @@
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  margin-top: 70px;
 }
 #profilePic {
-  background-image: url(./Img/user.png);
-  width: 128px;
-  height: 128px;
+  // background-image: url(./Img/user.png);
+  width: 140px;
+  height: 140px;
   margin: 10px;
+  border-radius: 70px;
 }
 #profileEmail {
-  font-size: 1.2em;
+  font-size: 2.2em;
 }
 #profileBoards {
-  width: 90%;
+  width: 80%;
   margin: auto;
 }
 .profileTag {
   font-size: 1.2em;
   display: inline;
   margin: 10px;
-  position: relative;
+  // position: relative;
   padding-left: 4px;
   padding-right: 4px;
-  padding: 0.3em 1em 0;
+  // padding: 0.3em 1em 0;
   text-decoration: none;
   color: black;
-  position: relative;
-  margin: 0 -0.3em;
-}
-.profileTag::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  background: #ccc;
-  background-image: linear-gradient(
-    hsla(0, 0%, 100%, 0.6),
-    hsla(0, 0%, 100%, 0)
-  );
-  border: 0.11em solid rgba(0, 0, 0, 0.4);
-  border-bottom: none;
-  border-radius: 0.5em 0.5em 0 0;
-  box-shadow: 0 0.15em white inset;
-  transform: scale(1.1, 1.3) perspective(0.5em) rotateX(5deg);
-  transform-origin: bottom;
-}
-#tagBox {
-  padding-left: 0.75em;
-  z-index: 1;
-}
-.selected {
-  z-index: 2;
+  // position: relative;
+  // margin: 0 -0.3em;
 }
 
-.selected::before {
-  background: white;
-  margin-bottom: -0.08em;
-}
+// .profileTag::before {
+//   content: "";
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: -1;
+//   background: #ccc;
+//   background-image: linear-gradient(
+//     hsla(0, 0%, 100%, 0.6),
+//     hsla(0, 0%, 100%, 0)
+//   );
+//   border: 0.11em solid rgba(0, 0, 0, 0.4);
+//   border-bottom: none;
+//   border-radius: 0.5em 0.5em 0 0;
+//   box-shadow: 0 0.15em white inset;
+//   transform: scale(1.1, 1.3) perspective(0.5em) rotateX(5deg);
+//   transform-origin: bottom;
+// }
+
+// .selected {
+//   z-index: 2;
+// }
+
+// .selected::before {
+//   background: white;
+//   margin-bottom: -0.08em;
+// }
 #boards {
   /* border-width: 2px;
   border-style: solid; */
   height: max-content;
-  display: flex;
+  // display: flex;
   // justify-content: center;
-  padding: 15px;
+  // padding: 15px;
+  margin-top: 15px;
   min-height: calc(100vh - 355px);
-  border: 0.1em solid rgba(0, 0, 0, 0.4);
+  // border: 0.1em solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
   margin-bottom: 2em;
-  #boardsContain{
+
+  #boardsContain {
     display: flex;
     flex-wrap: wrap;
-    width: max-content;
+    // grid-auto-columns: 252px;
+    // grid-auto-flow: column;
+    // grid-gap: 12px;
+    // width: 1056px;
+    padding-right: 5px;
+    padding-left: 5px;
+    height: max-content;
+    justify-content: center;
+    // width: max-content;
     // justify-content: space-around;
   }
-  #boardsRead{
+  #boardsRead {
     display: none;
     flex-wrap: wrap;
+    padding-right: 5px;
+    padding-left: 5px;
+    height: max-content;
+    justify-content: center;
   }
 }
 
 .boardCreate {
   border: #000000 1px dashed;
 
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   // background-color: burlywood;
   border-radius: 20px;
   margin: 10px;
-  
-  .addIconBox{
+
+  .addIconBox {
     position: relative;
     height: 100%;
     width: 100%;
-    .addIcon{
-      width: 80px;
-      height: 80px;
+    .addIcon {
+      width: 100px;
+      height: 100px;
       position: absolute;
-      left: 60px;
+      left: 75px;
       top: 50px;
       background-size: cover;
     }
-    div{
+    div {
       display: flex;
       justify-content: center;
-      top: 140px;
+      top: 170px;
       width: 100%;
       position: absolute;
-      font-size: 1.2em;
+      font-size: 1.7em;
     }
   }
-  .InputNameBox{
+  .InputNameBox {
     height: 100%;
     width: 100%;
     display: none;
-    .inputTop{
+    .inputTop {
       box-sizing: border-box;
       display: flex;
       // justify-content: space-around;
       flex-direction: column;
       align-items: center;
-      height: 150px;
+      height: 200px;
       position: relative;
-      .cancelIcon{
+      .cancelIcon {
         height: 20px;
         width: 20px;
         right: 10px;
         top: 15px;
         position: absolute;
       }
-      
-      input{
+
+      input {
         margin-top: 20px;
         font-size: 1.2em;
-        width: 80%; 
+        width: 80%;
         height: 2em;
         padding-left: 7px;
       }
-      .inputName{
+      .inputName {
         margin-top: 40px;
         text-align: center;
-        font-size: 1.2em;
-        width: 90%; 
+        font-size: 1.7em;
+        width: 90%;
       }
-  }
-    
-    .inputBottom{
+    }
+
+    .inputBottom {
       width: 100%;
       height: 50px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.2em;
+      font-size: 1.7em;
       background-color: black;
-      color:whitesmoke;
+      color: whitesmoke;
       font-weight: bold;
       border-radius: 0px 0px 20px 20px;
     }
   }
 }
 .AddBoardBox {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   border-radius: 20px;
-  margin: 10px;
+  margin: 12px;
   display: flex;
   flex-direction: column;
   border: #000000 1px solid;
-  .hide{
+  .hide {
     display: none;
   }
-  .AddBoardPic{
-    height: 150px;
+
+  .AddBoardPic {
+    height: 200px;
     background-image: url(./Img/boardPic.png);
     background-size: cover;
     border-radius: 20px 20px 0px 0px;
@@ -196,21 +218,21 @@
     padding-top: 15px;
     box-sizing: border-box;
     flex-direction: column;
-    .AddBoardLIconBox{
-        z-index: 4;
-        background-image: url(./Img/list.svg);
-        background-size: cover;
-        width: 15px;
-        height: 15px;
-        margin-right: 3px;
-      .AddBoardLIcon{
-        width: 15px;
-        height: 15px;
-        margin-right: 3px;
-        // z-index: 3;
-      }
+
+    .AddBoardLIconBox {
+      z-index: 4;
+      background-image: url(./Img/list.svg);
+      background-size: cover;
+      width: 30px;
+      height: 30px;
+      margin-right: 3px;
     }
-    .AddBoardList{
+    .AddBoardLIconBox:hover {
+      background-image: url(./Img/list_red.svg);
+      cursor: pointer;
+    }
+
+    .AddBoardList {
       // height: 80px;
       // display: none;
       // width: 120px;
@@ -220,23 +242,24 @@
       margin-top: 8px;
       color: whitesmoke;
       border-radius: 3px;
-    background-color: black;
-    ul{
-      list-style: none;
-      padding: 5px;
-      margin: 0;
+      background-color: black;
+      ul {
+        font-size: 1.5em;
+        list-style: none;
+        padding: 5px;
+        margin: 0;
+      }
     }
-    }
-    .AddBoardList::before{
+    .AddBoardList::before {
       position: absolute;
       content: "";
       width: 0px;
       height: 0px;
       border-width: 10px;
-      border-style: solid;;
+      border-style: solid;
       border-top-color: transparent;
       border-right-color: transparent;
-      border-bottom-color:#000000;
+      border-bottom-color: #000000;
       border-left-color: transparent;
       right: 0%;
       top: -20px;
@@ -245,15 +268,119 @@
       // background-color: violet;
     }
   }
-  .AddBoardName{
+  .AddBoardName {
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2em;
+    font-size: 1.7em;
     background-color: black;
-    color:whitesmoke;
+    color: whitesmoke;
     font-weight: bold;
     border-radius: 0px 0px 20px 20px;
   }
+}
+#ProfileBtnBox {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  #tagBox,
+  #profileFuncBox {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    justify-content: center;
+    // margin-right: 10px;
+    div {
+      display: flex;
+      width: 250px;
+      height: 100px;
+      flex-direction: column;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      margin-left: 50px;
+      margin-right: 50px;
+      // height: 50px;
+      // border-radius: 25px;
+      // background-color: black;
+      // color: aliceblue;
+      // text-align: center;
+      // align-items: center;
+      font-size: 1.4em;
+      // // padding: 5px;
+      // justify-content: center;
+      // // font-weight: bolder;
+      // margin: 5px;
+      // box-shadow: 3px 3px #888888;
+    }
+  }
+  #profileFuncBox {
+    width: 400px;
+  }
+}
+.profileFa {
+  width: 252px;
+  margin: 12px;
+}
+
+.drawLine {
+  fill: none;
+  stroke-width: 12;
+  stroke: red;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  @keyframes letterDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .drawCircle {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+  }
+  .drawCircle {
+    // animation: letterDraw 1s linear forwards;
+    width: 200px;
+    height: 200px;
+  }
+}
+.drawCompo {
+  width: 400px;
+  height: 170px;
+  position: absolute;
+  margin-top: 0px;
+  margin-left: 0px;
+  // object-fit: cover;
+}
+
+// .profileTag::after {
+//   content: ""; /*讓after顯示出來*/
+//   border-bottom: 2px solid #1c36d0;
+//   margin: auto; /*使線段從中間展開*/
+//   position: relative /*調整位置*/;
+//   width: 0%;
+//   display: block; /*變成一個區塊才hover的到*/
+//   transition: all 0.3s;
+//   top: 5px;
+// }
+// .profileTag:hover::after {
+//   /*hover要先寫*/
+//   width: 100%; /*讓線段長出*/
+// }
+@keyframes letterDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.drawBox:hover .drawCircle {
+  animation: letterDraw 0.5s linear forwards;
+}
+.drawn .drawCircle {
+  stroke-dashoffset: 0;
+}
+.drawBox:hover {
+  cursor: pointer;
 }

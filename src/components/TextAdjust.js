@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import { fabric } from "fabric";
+import width from "../Img/addshapes/adjust/width.svg";
+import boldStyle from "../Img/addshapes/adjust/handmade/bold-02.svg";
+import italicStyle from "../Img/addshapes/adjust/handmade/italic-03.svg";
+import underLineStyle from "../Img/addshapes/adjust/handmade/underLine-04.svg";
+import deleteLineStyle from "../Img/addshapes/adjust/handmade/deleteLine-05.svg";
+import superStyle from "../Img/addshapes/adjust/handmade/super-06.svg";
+import subStyle from "../Img/addshapes/adjust/handmade/sub-07.svg";
+import normalStyle from "../Img/addshapes/adjust/handmade/normal-08.svg";
+import alignLeftStyle from "../Img/addshapes/adjust/align-left.svg";
+import alignCenterStyle from "../Img/addshapes/adjust/align-center.svg";
+import alignRightStyle from "../Img/addshapes/adjust/align-right.svg";
 
 export default function TextAdjust(props) {
   const canvas = props.canvas;
   const [fontSizeInput, setFontSizeInput] = useState("16");
+  const [textColor, setTextColor] = useState("#000000");
+  const [textBackColor, setTextBackColor] = useState("#ffffff");
   const addTextbox = () => {
     const Textbox = new fabric.Textbox("please fill in", {
       top: 50,
@@ -18,50 +31,55 @@ export default function TextAdjust(props) {
     });
     canvas.add(Textbox);
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const changeFontSize = (e) => {
     if (!canvas.getActiveObject()) {
       return;
     }
-    const newFontSize = parseInt(e.target.value, 10) || 1;
     if (canvas.getActiveObject().type === "textbox") {
       canvas.getActiveObject().set("fontSize", e.target.value);
     }
     setFontSizeInput(e.target.value);
-    document.querySelector("#fontSizeValue").innerHTML = newFontSize;
     canvas.renderAll();
+
+    canvas.fire("object:modified");
   };
   const changeTextColor = (e) => {
     if (canvas.getActiveObject().type === "textbox") {
       canvas.getActiveObject().set("fill", e.target.value);
+      setTextColor(e.target.value);
       canvas.renderAll();
+      canvas.fire("object:modified");
     }
   };
   const changeTextBackColor = (e) => {
     if (canvas.getActiveObject().type === "textbox") {
       canvas.getActiveObject().set("textBackgroundColor", e.target.value);
+      setTextBackColor(e.target.value);
       canvas.renderAll();
+      canvas.fire("object:modified");
     }
   };
   const [rowHeightInput, setRowHeightInput] = useState("1");
   const changeRowHeight = (e) => {
-    // const newRowHeight = parseInt(e.target.value, 10) || 1;
+    const newRowHeight = parseInt(e.target.value, 10) / 10;
     if (canvas.getActiveObject().type === "textbox") {
-      canvas.getActiveObject().set("lineHeight", e.target.value);
+      canvas.getActiveObject().set("lineHeight", newRowHeight);
     }
     setRowHeightInput(e.target.value);
-    document.querySelector("#rowHeightValue").innerHTML = e.target.value;
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const [letterSpacingInput, setLetterSpacingInput] = useState("1");
   const changeLetterSpacing = (e) => {
-    const newletterSpacing = parseInt(e.target.value, 10) || 1;
+    const newletterSpacing = parseInt(e.target.value, 10) * 10;
     if (canvas.getActiveObject().type === "textbox") {
-      canvas.getActiveObject().set("charSpacing", e.target.value);
+      canvas.getActiveObject().set("charSpacing", newletterSpacing);
     }
     setLetterSpacingInput(e.target.value);
-    document.querySelector("#letterSpacingValue").innerHTML = newletterSpacing;
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const underLine = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -72,6 +90,7 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const deleteLine = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -82,6 +101,7 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const italic = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -92,6 +112,7 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const toLeft = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -100,6 +121,7 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const toMiddle = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -108,6 +130,7 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const toRight = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -116,18 +139,21 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const setSuper = () => {
     if (canvas.getActiveObject().type === "textbox") {
       canvas.getActiveObject().setSuperscript();
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const setSub = () => {
     if (canvas.getActiveObject().type === "textbox") {
       canvas.getActiveObject().setSubscript();
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
   const removeScript = () => {
     if (canvas.getActiveObject().type === "textbox") {
@@ -136,6 +162,7 @@ export default function TextAdjust(props) {
         deltaY: undefined,
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     }
   };
   const setBold = () => {
@@ -147,13 +174,17 @@ export default function TextAdjust(props) {
       }
     }
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
 
   return (
-    <div>
-      <button onClick={addTextbox}>addTextbox</button>
-      <div>
-        <label>文字大小：</label>
+    <div id="textAdjustBox">
+      <div onClick={addTextbox} className="addTextbox">
+        <span> addTextbox</span>
+      </div>
+      <div className="widthChange">
+        <label>font size: </label>
+        <img src={width} />
         <input
           onChange={changeFontSize}
           type="range"
@@ -162,62 +193,87 @@ export default function TextAdjust(props) {
           id="fontSizeInput"
           value={fontSizeInput}
         />
-        <span id="fontSizeValue">16</span>
       </div>
-      <div>
-        <label>字型：</label>
-        <select>
-          <option></option>
-        </select>
+      <div className="colorChange">
+        <div>font color:</div>
+        <input
+          onChange={changeTextColor}
+          type="color"
+          id="TextColorInput"
+          value={textColor}
+        />
       </div>
-
-      <div>
-        <label>文字顏色：</label>
-        <input onChange={changeTextColor} type="color" id="TextColorInput" />
-      </div>
-      <div>
-        <label>文字框背景顏色：</label>
+      <div className="colorChange">
+        <div>background color:</div>
         <input
           onChange={changeTextBackColor}
           type="color"
           id="TextBackColorInput"
+          value={textBackColor}
         />
       </div>
-      <div>
-        <label>行高：</label>
+      <div className="widthChange">
+        <label>row height: </label>
+        <img src={width} />
         <input
           onChange={changeRowHeight}
           type="range"
-          min="0.5"
-          max="5"
+          min="10"
+          max="50"
           id="rowHeightInput"
           value={rowHeightInput}
         />
-        <span id="rowHeightValue">1</span>
       </div>
-      <div>
-        <label>文字間距：</label>
+      <div className="widthChange">
+        <label>font spacing: </label>
+        <img src={width} />
         <input
           onChange={changeLetterSpacing}
           type="range"
           min="1"
-          max="10"
+          max="50"
           id="letterSpacingInput"
           value={letterSpacingInput}
         />
-        <span id="letterSpacingValue">1</span>
       </div>
-      <div>
-        <button onClick={setBold}>粗體</button>
-        <button onClick={underLine}>底線</button>
-        <button onClick={deleteLine}>刪除線</button>
-        <button onClick={italic}>斜體</button>
-        <button onClick={toLeft}>靠左對齊</button>
-        <button onClick={toMiddle}>置中對齊</button>
-        <button onClick={toRight}>靠右對齊</button>
-        <button onClick={setSuper}>上標</button>
-        <button onClick={setSub}>下標</button>
-        <button onClick={removeScript}>取消上下標</button>
+      <div className="btnBox">
+        <div className="no">style:</div>
+        <div>
+          <img src={boldStyle} onClick={setBold} id="bold" />
+        </div>
+        <div>
+          <img src={italicStyle} onClick={italic} id="italic" />
+        </div>
+        <div>
+          <img src={underLineStyle} onClick={underLine} />
+        </div>
+        <div>
+          <img src={deleteLineStyle} onClick={deleteLine} />
+        </div>
+      </div>
+      <div className="btnBox">
+        <div className="no">align:</div>
+        <div>
+          <img src={alignLeftStyle} onClick={toLeft} />
+        </div>
+        <div>
+          <img src={alignCenterStyle} onClick={toMiddle} />
+        </div>
+        <div>
+          <img src={alignRightStyle} onClick={toRight} />
+        </div>
+      </div>
+      <div className="btnBox">
+        <div className="no">mark:</div>
+        <div>
+          <img src={superStyle} onClick={setSuper} />
+        </div>
+        <div>
+          <img src={subStyle} onClick={setSub} />
+        </div>
+        <div>
+          <img src={normalStyle} onClick={removeScript} />
+        </div>
       </div>
     </div>
   );

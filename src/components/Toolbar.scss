@@ -1,0 +1,75 @@
+.toolBarIcon {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  // margin: 0px 5px;
+  /* fill: white; */
+}
+
+#toolBarBox {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  width: 80%;
+
+  #toolBarName {
+    font-size: 2em;
+    background-color: rgb(236, 219, 64);
+    border-radius: 25px;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px #888888;
+  }
+  // background-color: gray;
+  div {
+    display: flex;
+    align-items: center;
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+  .toolBarIconBox {
+    width: 35px;
+    height: 35px;
+    background-color: cadetblue;
+    margin: 5px;
+    border-radius: 17.5px;
+    box-shadow: 3px 3px #888888;
+  }
+  .red {
+    background-color: rgb(245, 91, 91);
+    // fill: white;
+  }
+  .orange {
+    background-color: #f39237;
+  }
+  .green {
+    background-color: rgb(134, 197, 134);
+  }
+  .blue {
+    background-color: rgb(134, 161, 197);
+  }
+  .selectAll {
+    width: 25px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #shareBox {
+    font-size: 2em;
+    background-color: #bf1363;
+    border-radius: 25px;
+    width: 150px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px #888888;
+    color: #ffffff;
+  }
+}
+
+#boardColor {
+  margin-right: 50px;
+}

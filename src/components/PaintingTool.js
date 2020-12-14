@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { fabric } from "fabric";
-
+import width from "../Img/addshapes/adjust/width.svg";
+import pencil from "../Img/addshapes/adjust/pencil.svg";
+import pen from "../Img/addshapes/adjust/pen.svg";
+import highlighter from "../Img/addshapes/adjust/highlighter.svg";
 export default function ToolBar(props) {
   const [lineWidthInput, setLineWidthInput] = useState("1");
   const [lineColor, setLineColor] = useState("#000000");
@@ -11,7 +14,6 @@ export default function ToolBar(props) {
     // console.log(e.target.value);
     const newWidth = parseInt(e.target.value, 10) || 1;
     canvas.freeDrawingBrush.width = newWidth;
-    document.querySelector("#lineWidthValue").innerHTML = newWidth;
     setLineWidthInput(e.target.value);
   }
 
@@ -23,14 +25,27 @@ export default function ToolBar(props) {
   // spray
   const Spray = () => {
     canvas.freeDrawingBrush = new fabric.SprayBrush(canvas, {
-      // width: 70,
       opacity: 0.6,
       // color: "#ff0000",
     });
+    canvas.freeDrawingBrush.color = lineColor;
   };
   //Pencil
   const Pencil = () => {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = lineColor;
+  };
+  //Pen
+  const Pen = () => {
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = lineColor;
+    canvas.freeDrawingBrush.width = 6;
+  };
+  //Highlighter
+  const Highlighter = () => {
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = lineColor;
+    canvas.freeDrawingBrush.width = 30;
   };
   //stopDrawing
   const stopDwawing = (canvas) => {
@@ -43,8 +58,20 @@ export default function ToolBar(props) {
   };
   return (
     <div>
-      <div>
-        <label>畫筆粗度：</label>
+      <div className="paintWayBox">
+        <div onClick={Pencil}>
+          <img src={pencil} style={{ width: 50 }} />
+        </div>
+        <div onClick={Pen}>
+          <img src={pen} style={{ width: 50 }} />
+        </div>
+        <div onClick={Highlighter}>
+          <img src={highlighter} style={{ width: 50 }} />
+        </div>
+      </div>
+      <div className="widthChange">
+        <label>pen width: </label>
+        <img src={width} />
         <input
           onChange={changeLineWidth}
           type="range"
@@ -53,10 +80,9 @@ export default function ToolBar(props) {
           id="lineWidthInput"
           value={lineWidthInput}
         />
-        <span id="lineWidthValue">1</span>
       </div>
-      <div>
-        <label>畫筆顏色：</label>
+      <div className="colorChange">
+        <div>pen color:</div>
         <input
           onChange={changeLineColor}
           type="color"
@@ -64,9 +90,6 @@ export default function ToolBar(props) {
           value={lineColor}
         />
       </div>
-      <button onClick={Spray}>Spray</button>
-      <button onClick={Pencil}>Pencil</button>
-      <button onClick={() => stopDwawing(canvas)}>Done drawing</button>
     </div>
   );
 }
