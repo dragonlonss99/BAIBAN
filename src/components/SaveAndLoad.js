@@ -60,15 +60,38 @@ export default function SaveAndLoad(props) {
       left: 0,
       width: window.innerWidth,
       height: window.innerHeight,
-      multiplier: 1,
+      multiplier: 0.5,
       quality: 0.1,
     });
+    // console.log(dataURL);
+    const img = document.createElement("img");
+    img.src = dataURL;
+    // document.body.appendChild(img);
+    // console.log(img.src);
+    window.open(dataURL);
+    // const Image = new fabric.Image(img, {
+    //   top: 150,
+    //   left: 150,
+    //   scaleX: 2,
+    //   scaleY: 2,
+    // });
+    // canvas.add(Image);
+    // canvas.renderAll();
+    // var storageRef = firebase
+    //   .storage()
+    //   .ref(
+    //     "image_for_canvas/" +
+    //       window.location.pathname.split("/")[2] +
+    //       `.${formatType}`
+    //   );
+    // storageRef.put(img);
+    // console.log(atob(dataURL));
     const a = document.createElement("a");
     a.href = dataURL;
     a.download = `output.${formatType}`;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    // document.body.removeChild(a);
   }
   return (
     <div>

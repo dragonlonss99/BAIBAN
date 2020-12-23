@@ -72,7 +72,7 @@ export default function SignInLocal() {
         onChange={handlePassword}
         placeholder="password"
       />
-      <div id="submit" onClick={signIn}>
+      <div id="submit" onClick={signIn} className="bigger">
         Log In
       </div>
     </div>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import reportWebVitals from "./reportWebVitals";
-import { ReactComponent as Cancel } from "./Img/addshapes/cancel.svg";
+import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import logo from "./Img/icon13.svg";
 import corner from "./Img/back/corner.png";
 import row from "./Img/back/row.png";
@@ -8,10 +8,18 @@ import colum from "./Img/back/colum.png";
 import aa from "./Img/back/aa-07.png";
 import triangle from "./Img/back/triangle.svg";
 import compass from "./Img/back/compass.svg";
-import eraser from "./Img/back/eraser.svg";
+import eraser from "./Img/back/eraser2.svg";
 import sigma from "./Img/back/sigma.svg";
 import fbLogo from "./Img/f_logo.svg";
 import { ReactComponent as GoogleLogo } from "./Img/google-icon.svg";
+import bottom from "./Img/back/bottom-02.svg";
+import man from "./Img/back/undraw_professor.svg";
+import triangleR from "./Img/back/triangle-ruler.svg";
+import penDraw from "./Img/back/fountain-pen.svg";
+import chat from "./Img/back/chat-02.svg";
+import audi from "./Img/back/audience.svg";
+import Try_It from "./components/Try_It.js";
+
 // import FirebaseRead from "./firebase";
 import {
   signInWithGoogle,
@@ -66,17 +74,39 @@ export default function HomePage() {
   // };
 
   const loginBoxNon = () => {
-    document.querySelector("#darkBack").style.display = "none";
-    document.querySelector("#dark").style.display = "none";
+    document.querySelector("#darkBack").className = "scaleOut";
+    setTimeout(() => {
+      document.querySelector("#darkBack").style.display = "none";
+      document.querySelector("#dark").style.display = "none";
+    }, 300);
   };
 
   const showLoginBox = () => {
+    document.querySelector("#darkBack").className = "scaleIn";
     document.querySelector("#darkBack").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
+    showLoginStatus();
   };
-
+  const onScroll = (e) => {
+    let obj = document.querySelector(".topNavBox");
+    if (e.target.scrollTop > 30) {
+      obj.style.marginTop = "0px";
+      obj.style.paddingTop = "30px";
+      // obj.style.width = "100%";
+      // obj.style.left = "0%";
+      obj.className = "topNavBox floatingNav";
+    } else {
+      obj.style.marginTop = "30px";
+      obj.style.paddingTop = "0px";
+      obj.className = "topNavBox";
+    }
+  };
+  const showSignBox = () => {
+    showLoginBox();
+    showSignUpStatus();
+  };
   return (
-    <div id="homePage">
+    <div id="homePage" onScroll={onScroll}>
       <div id="ahome">
         <div className="topNavBox">
           <div className="topNav">
@@ -85,34 +115,73 @@ export default function HomePage() {
               <div>BAIBEN</div>
             </div>
             <div className="logInWay">
-              <div>log In</div>
-              <div>Sign Up</div>
+              <div className="bigger" onClick={showLoginBox}>
+                log In
+              </div>
+              <div className="bigger" onClick={showSignBox}>
+                Sign Up
+              </div>
             </div>
           </div>
         </div>
-        <div id="BigAtt">BAIBEN</div>
-        {/* <div>The best online board you'll ever have!</div> */}
-        <div id="middleAtt">Sharing ideas from NOW!</div>
-        <div id="startBtnBox">
-          <div id="startBtn" onClick={showLoginBox}>
-            start now for free
+        <div id="mainContain">
+          <div id="homePageLeft">
+            <div id="BigAtt">BAIBEN</div>
+            {/* <div>The best online board you'll ever have!</div> */}
+            <div id="middleAtt">Sharing ideas from NOW!</div>
+
+            <div id="startBtnBox">
+              <div id="startBtn" onClick={showLoginBox} className="bigger">
+                start now for free
+              </div>
+            </div>
+          </div>
+          <div id="homePageRight">
+            <img src={man} />
           </div>
         </div>
+        {/* <img src={bottom} id="bottomBar" /> */}
         {/* <div id="HcanvasBox">
           something cool~
           <canvas id="Hcanvas"></canvas>
         </div> */}
-        <img src={triangle} className="homePageImage triangle" />
-        <img src={compass} className="homePageImage compass" />
+        {/* <img src={triangle} className="homePageImage triangle" /> */}
+        {/* <img src={compass} className="homePageImage compass" /> */}
         <img src={eraser} className="homePageImage eraser" />
-        <img src={sigma} className="homePageImage sigma" />
+        {/* <img src={sigma} className="homePageImage sigma" /> */}
       </div>
-      {/* <div id="introduction" style={{}}></div> */}
+      {/* <img src={bottom} id="bottomBar" /> */}
+      <div id="introduction">
+        <div id="howeWhy">What can we do with BAIBEN?</div>
+        <div id="circleBox">
+          <div className="homePageCircle">
+            <img src={triangleR} />
+            <div>Pattern</div>
+          </div>
+          <div className="homePageCircle">
+            <img src={penDraw} />
+            <div>Drawing</div>
+          </div>
+          <div className="homePageCircle">
+            <img src={audi} />
+            <div>Cowork</div>
+          </div>
+          <div className="homePageCircle">
+            <img src={chat} />
+            <div>Communicate</div>
+          </div>
+        </div>
+        <div id="howeWhy">Try it now! </div>
+        <Try_It />
+      </div>
+      <div className="footer">
+        <div>&copy; 2020 BAIBEN All rights reserved.</div>
+      </div>
       <div id="dark" />
-      <div id="darkBack">
+      <div id="darkBack" className="scaleIn">
         <div id="loginBoxOuter">
           <div id="logInBox">
-            <Cancel id="cancelOut" onClick={loginBoxNon} />
+            <Cancel id="cancelOut" onClick={loginBoxNon} className="bigger" />
             <div id="logoBox">
               <img src={logo} className="logo" />
             </div>
@@ -120,17 +189,21 @@ export default function HomePage() {
             <div id="logcontent">
               <SignInLocal />
               <div id="or">Or</div>
-              <div id="googleLogin" onClick={signInWithGoogle}>
+              <div
+                id="googleLogin"
+                onClick={signInWithGoogle}
+                className="bigger"
+              >
                 <GoogleLogo style={{ width: 20, height: 20 }} />
                 Log In with Google
               </div>
 
-              <div id="FBcenter" onClick={signInWithFB}>
+              <div id="FBcenter" onClick={signInWithFB} className="bigger">
                 <img src={fbLogo} style={{ width: 20, height: 20 }} />
                 Log In with FaceBook
               </div>
               <label>First Time visiting?</label>
-              <div id="signUpbut" onClick={showSignUpStatus}>
+              <div id="signUpbut" onClick={showSignUpStatus} className="bigger">
                 create an free account
               </div>
             </div>

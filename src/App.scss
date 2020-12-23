@@ -103,3 +103,35 @@
     justify-content: center;
   }
 }
+
+#shareInput {
+  width: 300px;
+  height: 50px;
+  border-radius: 25px 0px 0px 25px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  color: white;
+  background-color: black;
+  font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
+}
+
+#shareBtn {
+  width: 20%;
+  height: 50px;
+  font-size: 1.1em;
+  font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: black 1px solid;
+  box-sizing: border-box;
+  border-radius: 0px 25px 25px 0px;
+}
+#shareInputBox {
+  width: 80%;
+  margin: 150px auto;
+  display: flex;
+  font-size: 1.1em;
+  font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
+}

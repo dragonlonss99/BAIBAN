@@ -42,7 +42,8 @@ export default function SignUpLocal() {
         userName: userName,
         email: email,
         canvasOwn: [],
-        canvasRead: [],
+        canvasUse: [],
+        canvasObserve: [],
       })
       // .then(function (docRef) {
       //   console.log("Document written with ID: ", docRef.id);
@@ -79,7 +80,7 @@ export default function SignUpLocal() {
         className="signinInput"
         placeholder="set password"
       />
-      <div id="submitSignUp" onClick={signUp}>
+      <div id="submitSignUp" onClick={signUp} className="bigger">
         Register
       </div>
     </div>

@@ -11,6 +11,7 @@ import normalStyle from "../Img/addshapes/adjust/handmade/normal-08.svg";
 import alignLeftStyle from "../Img/addshapes/adjust/align-left.svg";
 import alignCenterStyle from "../Img/addshapes/adjust/align-center.svg";
 import alignRightStyle from "../Img/addshapes/adjust/align-right.svg";
+import { updateToCloud } from "../App.js";
 
 export default function TextAdjust(props) {
   const canvas = props.canvas;
@@ -31,7 +32,7 @@ export default function TextAdjust(props) {
     });
     canvas.add(Textbox);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   const changeFontSize = (e) => {
     if (!canvas.getActiveObject()) {

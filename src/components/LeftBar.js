@@ -17,7 +17,7 @@ import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
 import { ReactComponent as ChatRoom } from "../Img/chat-bubbles.svg";
 import home from "../Img/addshapes/LogoMakr-6u56yP.png";
 import "./AddShapes.scss";
-import { ReactComponent as Cancel } from "../Img/addshapes/cancel.svg";
+import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
 import logo from "../Img/icon13.svg";
 export default function LeftBar(props) {
   const canvas = props.canvas;
@@ -31,7 +31,7 @@ export default function LeftBar(props) {
   };
 
   const showAddShapes = () => {
-    console.log(canvas.getActiveObject());
+    // console.log(canvas.getActiveObject());
 
     canvas.isDrawingMode = false;
 
@@ -46,6 +46,14 @@ export default function LeftBar(props) {
 
     setShow(<AddShapes canvas={canvas} />);
     setBoxType(1);
+    // canvas.getObjects().forEach((obj) => {
+    //   if (obj.type === "circle") {
+    //     canvas.setActiveObject(obj);
+    //     console.log(obj.type);
+    //     canvas.renderAll();
+    //   }
+    // });
+    canvas.clearHistory();
   };
   const showDraw = () => {
     if (
@@ -74,6 +82,7 @@ export default function LeftBar(props) {
 
     setShow(<TextAdjust canvas={canvas} />);
     setBoxType(3);
+    console.log(canvas.historyUndo);
   };
   const showSave = () => {
     canvas.isDrawingMode = false;
@@ -129,7 +138,7 @@ export default function LeftBar(props) {
       </div>
       <div id="toolcontent" style={{ paddingLeft: -240 }}>
         <div id="cancelBox">
-          <Cancel onClick={closeContent} id="cancel" />
+          <Cancel onClick={closeContent} id="cancel" className="bigger" />
         </div>
         {show}
       </div>

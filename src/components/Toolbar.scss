@@ -1,6 +1,6 @@
 .toolBarIcon {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   // margin: 0px 5px;
   /* fill: white; */
@@ -13,7 +13,7 @@
   width: 80%;
 
   #toolBarName {
-    font-size: 2em;
+    font-size: 1.5em;
     background-color: rgb(236, 219, 64);
     border-radius: 25px;
     width: 200px;
@@ -22,6 +22,14 @@
     align-items: center;
     justify-content: center;
     box-shadow: 3px 3px #888888;
+    div {
+      text-overflow: ellipsis;
+      width: 80%;
+      overflow: hidden;
+      height: 30px;
+      white-space: nowrap;
+      text-align: center;
+    }
   }
   // background-color: gray;
   div {
@@ -31,12 +39,22 @@
     margin-right: 1%;
   }
   .toolBarIconBox {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     background-color: cadetblue;
     margin: 5px;
-    border-radius: 17.5px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
     box-shadow: 3px 3px #888888;
+    box-sizing: border-box;
+
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
   .red {
     background-color: rgb(245, 91, 91);
@@ -47,6 +65,7 @@
   }
   .green {
     background-color: rgb(134, 197, 134);
+    padding-left: 5px;
   }
   .blue {
     background-color: rgb(134, 161, 197);
@@ -67,6 +86,11 @@
     justify-content: center;
     box-shadow: 3px 3px #888888;
     color: #ffffff;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
 }
 

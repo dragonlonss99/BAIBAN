@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "./App.scss";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import firebaseConfig from "./firebaseConfig";
 // import {} from "./components/fabric-brush";
 // import AddShapes from "./components/AddShapes";
@@ -14,31 +14,48 @@ import LeftBar from "./components/LeftBar";
 import { v4 as uuidv4 } from "uuid";
 import ChatRoom from "./components/ChatRoom";
 import logo from "./Img/icon13.svg";
+import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
+import { doc } from "prettier";
+import "fabric-history";
+import { useHistory, useLocation } from "react-router-dom";
+import { browserHistory } from "react-router";
+import { createBrowserHistory } from "history";
+import { ReactComponent as Cowork } from "./Img/profile/undraw_Online_collaboration.svg";
+import { ReactComponent as Learn } from "./Img/profile/undraw_Online_learning.svg";
 
-// import { ReactComponent as Eraser } from "./Img/toolbar/eraser.svg";
-// import { ReactComponent as Copy } from "./Img/toolbar/file.svg";
-// import { ReactComponent as Paste } from "./Img/toolbar/paste.svg";
-// import { ReactComponent as Cut } from "./Img/toolbar/scissors.svg";
-// import { ReactComponent as Undo } from "./Img/toolbar/undo-button.svg";
-// import { ReactComponent as Redo } from "./Img/toolbar/redo-button.svg";
-// import { ReactComponent as SelectAll } from "./Img/toolbar/select-all.svg";
-// import { ReactComponent as DeleteAll } from "./Img/toolbar/trash.svg";
-// import LayerUp from "./Img/toolbar/LogoMakr-5M1FMp.png";
-// import LayerDown from "./Img/toolbar/LogoMakr-9OkAXQ.png";
-// import Group from "./Img/toolbar/LogoMakr-5r1jer.png";
-// import Ungroup from "./Img/toolbar/LogoMakr-49eVq5.png";
+export const updateToCloud = (canvas) => {
+  let canvasToUpload = JSON.stringify(canvas.toJSON());
+  const dataURL = canvas.toDataURL({
+    format: "png",
+    top: 0,
+    left: 0,
+    width: canvas.width,
+    height: canvas.height,
+    multiplier: 0.5,
+    quality: 0.1,
+  });
+  firebase
+    .firestore()
+    .collection("canvases")
+    .doc(window.location.pathname.split("/")[2])
+    .update({
+      data: canvasToUpload,
+      photoURL: dataURL,
+    });
+};
+
 const App = () => {
   const [canvas, setCanvas] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
-  const [active, setActive] = useState("");
-  // const [canvasToLoad, setCanvasToLoad] = useState({});
-  let canvasToLoad;
-  // const [canvasColor, setCanvasColor] = useState("#ffffff");
+  const [shareInput, setShareInput] = useState("");
+  const [shareInputUse, setShareInputUse] = useState("");
+  const [shareInputObserve, setShareInputObserve] = useState("");
+  const db = firebase.firestore();
 
   // let canvasToUpload;
 
-  // var db = firebase.firestore();
+  //
   // db.collection("canvases")
   //   .doc(window.location.pathname.split("/")[2])
   //   .onSnapshot((querySnapshot) => {
@@ -46,9 +63,7 @@ const App = () => {
   //   });
 
   useEffect(() => {
-    let activeObj = "";
-    let editor = "";
-    let color = "";
+    // let editor = "";
     // console.log(window.location.pathname.split("/")[2]);
     let canvasToSet = new fabric.Canvas("canvas", {
       // height: 500,
@@ -56,39 +71,124 @@ const App = () => {
       width: window.innerWidth,
       height: window.innerHeight - 60,
       backgroundColor: "#ffffff",
+      selection: false,
+      objectChaching: false,
     });
-    var db = firebase.firestore();
+
     db.collection("canvases")
       .doc(window.location.pathname.split("/")[2])
       .get()
       .then((data) => {
         // if (data) {
         setName(data.data().name);
-        // setCanvasToLoad(data.data().data);
-        // canvasToLoad = data.data().data;
-        // console.log(canvasToLoad);
-        // }
       });
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
         setAuthor(user.email);
-        editor = user.email;
+        // editor = user.email;
         console.log(user.email);
-        fabric.Object.prototype.toObject = (function (toObject) {
-          return function (propertiesToInclude) {
-            return fabric.util.object.extend(
-              toObject.call(this, propertiesToInclude),
-              {
-                editor: user.email, //my custom property
-                // _controlsVisibility: this._getControlsVisibility(), //i want to get the controllsVisibility
-              }
-            );
-          };
-        })(fabric.Object.prototype.toObject);
+        // fabric.Object.prototype.toObject = (function (toObject) {
+        //   return function (propertiesToInclude) {
+        //     return fabric.util.object.extend(
+        //       toObject.call(this, propertiesToInclude),
+        //       {
+        //         editor: user.email, //my custom property
+        //         // _controlsVisibility: this._getControlsVisibility(), //i want to get the controllsVisibility
+        //       }
+        //     );
+        //   };
+        // })(fabric.Object.prototype.toObject);
+        canvasToSet.on("object:modified", () => {
+          // console.log(e.target);
+          // console.log(beenStoped);
+          // if (canvasToSet.getActiveObject()) {
+          console.log("modified");
+          // updateToCloud();
+          if (beenStoped) {
+            updateModifiedData(user.email, () => {
+              updateSelectToCloud(user.email);
+            });
+          } else {
+            if (canvasToSet.getActiveObject()) {
+              updateSelectToCloud(user.email);
+              updateToCloud(canvasToSet);
+            } else {
+              updateToCloud(canvasToSet);
+            }
+          }
+          // if (
+          //   canvasToSet.getActiveObject() &&
+          //   canvasToSet.getActiveObject().type === "activeSelection"
+          // ) {
+          //   console.log("QQ");
+          //   updateToCloud();
+          // } else if (
+          //   canvasToSet.getActiveObject() &&
+          //   canvasToSet.getActiveObject().type === "group"
+          // ) {
+          //   console.log("group");
+          //   updateToCloud();
+          //   // } else if (e.target && e.target.type === "group") {
+          //   //   updateToCloud();
+          //   //   console.log("e_active");
+          // } else {
+          //   if (e.target) {
+          //     console.log(e);
+          //   }
+          //   console.log("add");
+          //   updateModifiedData(user.email, () => {
+          //     updateSelectToCloud(user.email);
+          //   });
+          // }
+          // updateSelectToCloud(user.email);
+          // }
+        });
+        canvasToSet.on("selection:created", () => {
+          // getActive();
+          updateSelectToCloud(user.email);
+          // console.log(e.target);
+        });
+        canvasToSet.on("selection:updated", () => {
+          updateSelectToCloud(user.email);
+          // canvasToSet.fire("object:modified");
+        });
+        canvasToSet.on("mouse:down", () => {
+          if (!canvasToSet.getActiveObject()) {
+            db.collection("selectedObj")
+              .doc(window.location.pathname.split("/")[2])
+              .collection("userSelect")
+              .doc(user.email)
+              .update({
+                selected: false,
+              });
+          }
+        });
+        window.onbeforeunload = () => {
+          db.collection("selectedObj")
+            .doc(window.location.pathname.split("/")[2])
+            .collection("userSelect")
+            .doc(user.email)
+            .update({
+              selected: false,
+            });
+          const dataURL = canvasToSet.toDataURL({
+            format: "png",
+            top: 0,
+            left: 0,
+            width: canvasToSet.width,
+            height: canvasToSet.height,
+            multiplier: 0.5,
+            quality: 0.1,
+          });
+          db.collection("canvases")
+            .doc(window.location.pathname.split("/")[2])
+            .update({
+              photoURL: dataURL,
+            });
+        };
       }
     });
-    console.log(editor);
 
     fabric.Object.prototype.set({
       cornerColor: "white",
@@ -100,23 +200,121 @@ const App = () => {
       padding: 10,
     });
 
+    fabric.Object.prototype.controls.mtr = new fabric.Control({
+      x: 0,
+      y: -0.5,
+      offsetY: -40,
+      withConnection: true,
+      actionName: "rotate",
+      cursorStyle: "pointer",
+      // mouseUpHandler: rotateObject,
+
+      cornerSize: 20,
+      actionHandler: fabric.controlsUtils.rotationWithSnapping,
+    });
+
     function output(formatType) {
       const dataURL = canvas.toDataURL({
-        format: "image/png",
+        format: "png",
         top: 0,
         left: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        multiplier: 1,
+        width: canvas.width,
+        height: canvas.height,
+        multiplier: 0.5,
         quality: 0.1,
       });
-      const a = document.createElement("a");
-      a.href = dataURL;
-      a.download = `output.${formatType}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      var img = new Image();
+      img.src = dataURL;
+      var storageRef = firebase
+        .storage()
+        .ref("image_for_canvas/" + window.location.pathname.split("/")[2]);
+      storageRef.put(img);
+      // const a = document.createElement("a");
+      // a.href = dataURL;
+      // a.download = `output.${formatType}`;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
     }
+
+    function updateModifiedData(user, callback) {
+      db.collection("selectedObj")
+        .doc(window.location.pathname.split("/")[2])
+        .collection("userSelect")
+        .doc(user)
+        .get()
+        .then((selectData) => {
+          db.collection("canvases")
+            .doc(window.location.pathname.split("/")[2])
+            .get()
+            .then((canvasData) => {
+              beenStoped = false;
+              if (selectData.exists) {
+                let selectedD = JSON.parse(selectData.data().ObjSelected);
+                let canvasD = JSON.parse(canvasData.data().data);
+                let activeD = canvasToSet.getActiveObject();
+                // console.log(canvasD.objects);
+                // console.log(activeD);
+                // console.log(selectedD);
+                // if (!activeD && canvasD.objects.length === 0) {
+                //   updateToCloud(canvasToSet);
+                // }
+
+                canvasD.objects.forEach((obj) => {
+                  if (
+                    obj.type === selectedD.type &&
+                    obj.left === selectedD.left &&
+                    obj.top === selectedD.top &&
+                    obj.width === selectedD.width &&
+                    obj.height === selectedD.height &&
+                    obj.fill === selectedD.fill &&
+                    obj.stroke === selectedD.stroke &&
+                    obj.strokeWidth === selectedD.strokeWidth &&
+                    obj.angle === selectedD.angle
+                    // JSON.stringify(obj) === JSON.stringify(selectedD)
+                    //find the selected one
+                  ) {
+                    // console.log(JSON.stringify(obj));
+                    canvasD.objects.splice(
+                      canvasD.objects.indexOf(obj),
+                      1,
+                      activeD
+                    );
+                    db.collection("canvases")
+                      .doc(window.location.pathname.split("/")[2])
+                      .update({
+                        data: JSON.stringify(canvasD),
+                      });
+                    // console.log(canvasD.length);
+                  }
+                });
+                // console.log(JSON.stringify(activeD));
+                // console.log(canvasD.objects);
+                if (activeD) {
+                  callback();
+                }
+              } else {
+                updateToCloud(canvasToSet);
+              }
+            });
+        });
+    }
+    // function addToCloud(){
+    //   db.collection("canvases")
+    //             .doc(window.location.pathname.split("/")[2])
+    //             .get()
+    //             .then((canvasData) => {
+    //               // console.log(selectData);
+    //               let canvasD = JSON.parse(canvasData.data().data);
+    //               let activeD = canvasToSet.getActiveObject();
+    //               anvasD.objects.push(activeD);
+    //               db.collection("canvases")
+    //                     .doc(window.location.pathname.split("/")[2])
+    //                     .update({
+    //                       data: JSON.stringify(canvasD),
+    //                     });
+    //             })
+    // }
     // };
     // if (editor === "aaa@gmail.com") {
     //   color = "red";
@@ -135,7 +333,7 @@ const App = () => {
     //   cornerStyle: "circle",
     //   padding: 10,
     // });
-    canvasToSet.preserveObjectStacking = true;
+    // canvasToSet.preserveObjectStacking = true;
     //override prototype.toObject and add your custom properties here
     // fabric.Object.prototype.toObject = (function (toObject) {
     //   return function () {
@@ -157,113 +355,328 @@ const App = () => {
     //   };
     // })(fabric.Object.prototype.toObject);
     // canvasToSet.historyInit();
-    canvasToSet.on("object:modified", (e) => {
-      // console.log("modified");
-      updateToCloud();
-      getActive();
-      // setColor();
-      // console.log(editor);
-      // console.log(author);
-    });
-    // canvasToSet.on("object:added", (e) => {
-    //   console.log("added");
-    //   // updateToCloud();
+    // canvasToSet.on("object:modified", (e) => {
+    //   updateToCloud();
     // });
+    canvasToSet.on("object:added", (e) => {
+      console.log("added");
+    });
     canvasToSet.on("object:removed", (e) => {
       console.log("removed");
-      updateToCloud();
-      // getActive();
-    });
-    canvasToSet.on("selection:updated", (e) => {
-      // console.log(e.target);
       // updateToCloud();
-      getActive();
     });
 
-    canvasToSet.on("selection:created", (e) => {
-      // console.log(e.target);
-      // updateToCloud();
-      getActive();
-    });
+    var updateAble = true;
+    var beenStoped = false;
     canvasToSet.on("mouse:up", () => {
       if (canvasToSet.isDrawingMode) {
-        canvasToSet.fire("object:modified");
+        updateToCloud(canvasToSet);
       }
+
+      updateAble = true;
+      // console.log(updateAble);
       // console.log("up");
       // updateToCloud();
     });
-    canvasToSet.on("selection:cleared", (e) => {
-      db.collection("canvases")
-        .doc(window.location.pathname.split("/")[2])
-        .onSnapshot((querySnapshot) => {
-          getActive();
-          canvasToLoad = querySnapshot.data().data;
-          if (
-            canvasToSet.getActiveObject() === undefined ||
-            canvasToSet.getActiveObject() === null
-          ) {
-            canvasToSet.loadFromJSON(querySnapshot.data().data);
-          }
-        });
+    canvasToSet.on("mouse:down", () => {
+      updateAble = false;
+      // console.log(updateAble);
     });
+    // let undoArr = [];
+    // let opencanvasSnap = false;
+    db.collection("canvases")
+      .doc(window.location.pathname.split("/")[2])
+      .get()
+      .then((data) => {
+        // opencanvasSnap = true;
+        // firebase.auth().onAuthStateChanged(function (user) {
+        //   setActive(user.email, () => {
+        // canvasToSet.loadFromJSON(data.data().data);
+        canvasToSet.clearHistory();
+        // console.log(opencanvasSnap);
+        // });
+        // });
+      });
 
-    const updateToCloud = () => {
-      let canvasToUpload = JSON.stringify(canvasToSet.toJSON());
-      var db = firebase.firestore();
-      db.collection("canvases")
-        .doc(window.location.pathname.split("/")[2])
-        .update({
-          data: canvasToUpload,
-        });
-    };
-    const getActive = () => {
-      if (canvasToSet.getActiveObject()) {
-        // console.log(canvasToSet.getActiveObject());
-        setActive(canvasToSet.getActiveObject());
-        activeObj = canvasToSet.getActiveObject();
-        // console.log(activeObj);
-        // console.log(author);
-      }
-    };
     db.collection("canvases")
       .doc(window.location.pathname.split("/")[2])
       .onSnapshot((querySnapshot) => {
-        getActive();
-        canvasToLoad = querySnapshot.data().data;
-        // canvasToSet.loadFromJSON(querySnapshot.data().data);
-        // console.log(querySnapshot.data().data);
-        if (
-          canvasToSet.getActiveObject() === undefined ||
-          canvasToSet.getActiveObject() === null
-        ) {
-          canvasToSet.loadFromJSON(querySnapshot.data().data);
-          canvasToSet.clearHistory();
-
-          // console.log("up");
+        // if (opencanvasSnap) {
+        // console.log(opencanvasSnap);
+        if (!updateAble && canvasToSet.getObjects()) {
+          beenStoped = true;
+          return;
+        } else {
+          // console.log("new");
+          firebase.auth().onAuthStateChanged(function (user) {
+            // updateSelectToCloud(user.email);
+            setActive(user.email, () => {
+              canvasToSet.offHistory();
+              canvasToSet.loadFromJSON(querySnapshot.data().data);
+              canvasToSet.onHistory();
+            });
+            // canvasToSet.onHistory();
+          });
+          // canvasToSet.clearHistory();
         }
-        // console.log(querySnapshot.data().data);
-        // console.log(active);
-        // if (activeObj !== "") {
-        //   // canvasToSet.setActiveObject(active);
-        //   canvasToSet.setActiveObject(activeObj);
         // }
-        //   // console.log(canvasToSet.getActiveObject());
-        //   console.log(activeObj);
       });
-    // .then(() => {
-    //   canvasToSet.loadFromJSON(canvasToLoad);
-    // });
+
+    const updateSelectToCloud = (user) => {
+      let ObjSelected = JSON.stringify(canvasToSet.getActiveObject());
+      // console.log(ObjSelected);
+      db.collection("selectedObj")
+        .doc(window.location.pathname.split("/")[2])
+        .collection("userSelect")
+        .doc(user)
+        .set({
+          ObjSelected: ObjSelected,
+          selected: true,
+        });
+    };
+
+    db.collection("selectedObj")
+      .doc(window.location.pathname.split("/")[2])
+      .collection("userSelect")
+      .onSnapshot((querySnapshot) => {
+        if (!updateAble && canvasToSet.getObjects()) {
+          beenStoped = true;
+          return;
+        } else {
+          firebase.auth().onAuthStateChanged(function (user) {
+            querySnapshot.docChanges().forEach((change) => {
+              // console.log("selectUp");
+              if (change.type === "added") {
+                querySnapshot.forEach((doc) => {
+                  // console.log(doc.exists());
+                  if (doc.id !== user.email) {
+                    // console.log(doc.data().ObjSelected);
+                    let json = JSON.parse(doc.data().ObjSelected);
+                    // console.log(canvasToSet.getObjects());
+                    canvasToSet.getObjects().forEach((obj) => {
+                      if (
+                        doc.data().selected === true &&
+                        obj.type === json.type &&
+                        obj.left === json.left &&
+                        obj.height === json.height
+                      ) {
+                        // console.log("1");
+                        obj.set({
+                          opacity: 0.4,
+                          // opacity: json.opacity * 0.4,
+                          selectable: false,
+                          evented: false,
+                        });
+                        canvasToSet.renderAll();
+                      }
+                    });
+                  }
+                });
+              }
+              if (change.type === "modified") {
+                querySnapshot.forEach((doc) => {
+                  if (doc.id !== user.email) {
+                    // console.log(doc.data().ObjSelected);
+                    let json = JSON.parse(doc.data().ObjSelected);
+                    // console.log(json);
+                    canvasToSet.getObjects().forEach((obj) => {
+                      // console.log(doc.data());
+                      // console.log("2");
+                      obj.set({
+                        opacity: 1,
+                        // opacity: json.opacity * 2.5,
+                        selectable: true,
+                        evented: true,
+                      });
+                      // if (obj.opacity > 1) {
+                      //   obj.set({
+                      //     opacity: 1,
+                      //   });
+                      // }
+                      canvasToSet.renderAll();
+                      if (
+                        obj.type === json.type &&
+                        obj.left === json.left &&
+                        obj.height === json.height
+                      ) {
+                        // console.log("got");
+                        if (doc.data().selected) {
+                          obj.set({
+                            opacity: 0.4,
+                            // opacity: json.opacity * 0.4,
+                            selectable: false,
+                            evented: false,
+                          });
+                        }
+                        canvasToSet.renderAll();
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+
+    const setActive = (user, callback) => {
+      db.collection("selectedObj")
+        .doc(window.location.pathname.split("/")[2])
+        .collection("userSelect")
+        .get()
+        .then((querySnapshot) => {
+          db.collection("canvases")
+            .doc(window.location.pathname.split("/")[2])
+            .get()
+            .then((data) => {
+              // canvasToSet.onHistory();
+              if (data.data().data === "") {
+                return;
+              }
+              let canvasCloud = JSON.parse(data.data().data).objects;
+              let canvasNow = canvasToSet.toJSON().objects;
+              // console.log(canvasCloud);
+              // console.log(canvasNow);
+              for (var i = 0; i < canvasCloud.length; i++) {
+                if (
+                  canvasNow.length === canvasCloud.length &&
+                  canvasCloud[i].type === canvasNow[i].type &&
+                  canvasCloud[i].left === canvasNow[i].left &&
+                  canvasCloud[i].top === canvasNow[i].top &&
+                  canvasCloud[i].width === canvasNow[i].width &&
+                  canvasCloud[i].height === canvasNow[i].height &&
+                  canvasCloud[i].fill === canvasNow[i].fill &&
+                  canvasCloud[i].stroke === canvasNow[i].stroke &&
+                  canvasCloud[i].strokeWidth === canvasNow[i].strokeWidth &&
+                  canvasCloud[i].angle === canvasNow[i].angle
+                ) {
+                  console.log("same");
+                } else {
+                  console.log("diff");
+                  callback();
+                }
+              }
+              // canvasCloud.forEach((obj)=>{
+              //   if(obj.type === selectedD.type &&
+              //     obj.left === selectedD.left &&
+              //     obj.top === selectedD.top &&
+              //     obj.width === selectedD.width &&
+              //     obj.height === selectedD.height &&
+              //     obj.fill === selectedD.fill &&
+              //     obj.stroke === selectedD.stroke &&
+              //     obj.strokeWidth === selectedD.strokeWidth &&
+              //     obj.angle === selectedD.angle){
+              //       return;
+              //     }else{
+              //       callback();
+              //     }
+              // })
+              // if (canvasCloud !== canvasNow) {
+              // callback();
+              //   // console.log("diff");
+              //   // } else {
+              //   //   // console.log("same");
+              // }
+
+              // console.time("123");
+              querySnapshot.forEach((doc) => {
+                if (doc.id !== user) {
+                  // console.log("y");
+                  let json = JSON.parse(doc.data().ObjSelected);
+                  // console.log(json);
+                  canvasToSet.getObjects().forEach((obj) => {
+                    // console.log(obj);
+                    if (
+                      doc.data().selected &&
+                      obj.type === json.type &&
+                      obj.left === json.left &&
+                      obj.height === json.height
+                    ) {
+                      // console.log("setO");
+                      obj.set({
+                        // opacity: json.opacity * 0.4,
+                        opacity: 0.4,
+                        selectable: false,
+                        evented: false,
+                      });
+                      canvasToSet.renderAll();
+                    }
+                  });
+                } else if (doc.id === user && doc.data()) {
+                  let json = JSON.parse(doc.data().ObjSelected);
+                  canvasToSet.getObjects().forEach((obj) => {
+                    if (
+                      doc.data().selected &&
+                      obj.type === json.type &&
+                      obj.left === json.left &&
+                      obj.height === json.height
+                    ) {
+                      obj.set({
+                        opacity: 1,
+                        selectable: true,
+                        evented: true,
+                      });
+                      canvasToSet.setActiveObject(obj);
+                      canvasToSet.renderAll();
+                    }
+                  });
+                }
+              });
+            }); // console.timeEnd("123");
+        });
+    };
 
     // canvasToSet.isDrawingMode = true;
     // addKeyControl();
     // canvasToSet.clearHistory();
-
+    // if (shouldBlockNavigation) {
+    //   window.onbeforeunload = () => true;
+    // } else {
+    //   window.onbeforeunload = undefined;
+    // }
     setCanvas(canvasToSet);
     console.log(canvasToSet.historyUndo);
-    canvasToSet.clearHistory();
-
-    // canvas.loadFromJSON(canvasToLoad);
+    // const history = createBrowserHistory();
+    // history.listen((location) => console.log(location));
+    // const history = useHistory();
+    // canvasToSet.clearHistory();
+    // let history = useHistory();
+    // return () => {
+    // history.listen((location) => {
+    //   console.log(`You changed the page to: ${location.pathname}`);
+    // });
+    // };
   }, []);
+  // const history = createBrowserHistory();
+
+  // useEffect(() => {
+  //   browserHis
+  //   return history.listenBefore(() => {
+  //     firebase.auth().onAuthStateChanged(function (user) {
+  //       db.collection("selectedObj")
+  //         .doc(window.location.pathname.split("/")[2])
+  //         .collection("userSelect")
+  //         .doc(user.email)
+  //         .update({
+  //           selected: false,
+  //         });
+  //       const dataURL = canvas.toDataURL({
+  //         format: "png",
+  //         top: 0,
+  //         left: 0,
+  //         width: canvas.width,
+  //         height: canvas.height,
+  //         multiplier: 0.5,
+  //         quality: 0.1,
+  //       });
+  //       db.collection("canvases")
+  //         .doc(window.location.pathname.split("/")[2])
+  //         .update({
+  //           photoURL: dataURL,
+  //         });
+  //     });
+  //   });
+  // }, [history]);
   // if (active) {
   //   canvas.setActiveObject(active);
   // }
@@ -470,20 +883,107 @@ const App = () => {
   //   canvas.freeDrawingBrush.width = parseInt(lineWidthInput.value, 10) || 1;
   //   // canvas.freeDrawingBrush.setShadow(myShadow);
   // }
+  // canvas.historyInit();
+  //share
+  // const shareCanvas = (observerEmail) => {
+  //   let canvasId = window.location.pathname.split("/")[2];
+
+  //   db.collection("canvases")
+  //     .doc(canvasId)
+  //     .update({
+  //       observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
+  //     });
+  //   db.collection("users")
+  //     .doc(observerEmail)
+  //     .update({
+  //       canvasRead: firebase.firestore.FieldValue.arrayUnion(canvasId),
+  //     });
+  // };
+
+  // const handleShare = () => {
+  //   shareCanvas(shareInput);
+  //   setShareInput("");
+  //   shareBoxNon();
+  // };
+  // const shareBoxNon = () => {
+  //   document.querySelector("#darkBack").style.display = "none";
+  //   document.querySelector("#dark").style.display = "none";
+  // };
+
+  // const showShareBox = () => {
+  //   document.querySelector("#darkBack").style.display = "flex";
+  //   document.querySelector("#dark").style.display = "block";
+  // };
+  // const sharePagePop = () => {
+  //   document.querySelector("#darkBack").className = "scaleIn";
+  //   document.querySelector("#darkBack").style.display = "flex";
+  //   document.querySelector("#dark").style.display = "block";
+  // };
+
+  const shareCanvasUse = (observerEmail) => {
+    let canvasId = window.location.pathname.split("/")[2];
+
+    db.collection("canvases")
+      .doc(canvasId)
+      .update({
+        user: firebase.firestore.FieldValue.arrayUnion(observerEmail),
+      });
+    db.collection("users")
+      .doc(observerEmail)
+      .update({
+        canvasUse: firebase.firestore.FieldValue.arrayUnion(canvasId),
+      });
+  };
+
+  const handleShareUse = () => {
+    shareCanvasUse(shareInputUse);
+    setShareInputUse("");
+    setShareInputObserve("");
+    shareBoxNon();
+  };
+  const shareCanvasObserve = (observerEmail) => {
+    let canvasId = window.location.pathname.split("/")[2];
+
+    db.collection("canvases")
+      .doc(canvasId)
+      .update({
+        observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
+      });
+    db.collection("users")
+      .doc(observerEmail)
+      .update({
+        canvasObserve: firebase.firestore.FieldValue.arrayUnion(canvasId),
+      });
+  };
+
+  const handleShareObserve = () => {
+    shareCanvasObserve(shareInputObserve);
+    setShareInputUse("");
+    setShareInputObserve("");
+    shareBoxNon();
+  };
+  const shareBoxNon = () => {
+    document.querySelector("#darkBack").className = "scaleOut";
+    setTimeout(() => {
+      document.querySelector("#darkBack").style.display = "none";
+      document.querySelector("#dark").style.display = "none";
+    }, 300);
+  };
 
   return (
-    <div id="container">
-      <LeftBar canvas={canvas} name={name} />
-      {/* <div id="leftside">
+    <div>
+      <div id="container">
+        <LeftBar canvas={canvas} name={name} />
+        {/* <div id="leftside">
         <div id="addShapesCon">
         <AddShapes canvas={canvas} id="addShapes" />
         </div>
         <div id="toolcontent"></div>
       </div> */}
-      <div id="rightside">
-        <div id="top_bar">
-          <ToolBar canvas={canvas} name={name} />
-          {/* <div>
+        <div id="rightside">
+          <div id="top_bar">
+            <ToolBar canvas={canvas} name={name} />
+            {/* <div>
             <label>背景顏色：</label>
             <input
               onChange={changeCanvasColor}
@@ -492,29 +992,29 @@ const App = () => {
               value={canvasColor}
             />
           </div> */}
-        </div>
-        {/* <button onClick={addCircle}>circle test</button>
+          </div>
+          {/* <button onClick={addCircle}>circle test</button>
         <button onClick={addEllipse}>ellipse test</button>
         <button onClick={copy}>copy test</button>
         <button onClick={paste}>paste test</button> */}
-        <div id="canvas_area">
-          {/* <h1>BIBen</h1>
+          <div id="canvas_area">
+            {/* <h1>BIBen</h1>
       <label>What's the name of your project</label>
       <input value={name} onChange={handleInputName} /> */}
 
-          {/* <RectAdjust canvas={canvas} /> */}
+            {/* <RectAdjust canvas={canvas} /> */}
 
-          {/* <PaintingTool canvas={canvas} /> */}
-          {/* <SaveAndLoad canvas={canvas} name={name} /> */}
+            {/* <PaintingTool canvas={canvas} /> */}
+            {/* <SaveAndLoad canvas={canvas} name={name} /> */}
 
-          {/* <button onClick={crayon}>Crayon</button>
+            {/* <button onClick={crayon}>Crayon</button>
       <button onClick={Ink}>Ink</button>
       <button onClick={Marker}>Marker</button> */}
 
-          {/* <button>Sigma</button>
+            {/* <button>Sigma</button>
       <button>Sin</button> */}
 
-          {/* <div>
+            {/* <div>
           <select id="brushSelect" onChange={selectBrush}>
             <option value="Pencil">Pencil</option>
             <option value="Circle">Circle</option>
@@ -523,16 +1023,71 @@ const App = () => {
           </select>
         </div> */}
 
-          {/* <TextAdjust canvas={canvas} /> */}
+            {/* <TextAdjust canvas={canvas} /> */}
 
-          <canvas
-            id="canvas"
-            // onMouseDown={mousedown}
-            // onMouseMove={mousemove}
-            // onMouseUp={mouseup}
-            // onMouseLeave={mouseleave}
-          />
-          <ChatRoom author={author} />
+            <canvas
+              id="canvas"
+              // onMouseDown={mousedown}
+              // onMouseMove={mousemove}
+              // onMouseUp={mouseup}
+              // onMouseLeave={mouseleave}
+            />
+            <ChatRoom author={author} />
+          </div>
+        </div>
+      </div>
+      <div id="dark" />
+      <div id="darkBack" style={{ display: "none" }} className="scaleIn">
+        <div id="shareBoxOuter">
+          <div id="profileShareBox">
+            <div id="profileCancelBox">
+              <Cancel
+                id="cancelOutShare"
+                onClick={shareBoxNon}
+                className="bigger"
+              />
+            </div>
+            <div id="shareInputBox">
+              <div className="shareWayBox">
+                <div className="h1">Share to co-worker</div>
+                <div>invite others to co-work </div>
+                <div> (the one you invited can edit the board)</div>
+                <Cowork className="shareImg" />
+                <div className="shareBtnBox">
+                  <input
+                    className="shareInput"
+                    value={shareInputUse}
+                    placeholder="Please enter an Email"
+                    onChange={(e) => {
+                      setShareInputUse(e.target.value);
+                    }}
+                  />
+                  <div onClick={handleShareUse} className="shareBtn">
+                    share
+                  </div>
+                </div>
+              </div>
+              <div className="shareWayBox">
+                <div className="h1">Share to student</div>
+                <div>invite others to read </div>
+                <div>(the one you invited can read only)</div>
+                <Learn className="shareImg" />
+                <div className="shareBtnBox">
+                  <input
+                    className="shareInput"
+                    value={shareInputObserve}
+                    placeholder="Please enter an Email"
+                    onChange={(e) => {
+                      setShareInputObserve(e.target.value);
+                    }}
+                  />
+                  <div onClick={handleShareObserve} className="shareBtn">
+                    share
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

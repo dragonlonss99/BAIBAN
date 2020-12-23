@@ -12,6 +12,7 @@ import square from "../Img/addshapes/LogoMakr-60BBJ5.png";
 import textbox from "../Img/addshapes/LogoMakr-26YKdq.png";
 import RectAdjust from "./RectAdjust";
 import { v4 as uuidv4 } from "uuid";
+import { updateToCloud } from "../App.js";
 //Rect
 
 export default function AddShapes(props) {
@@ -59,8 +60,10 @@ export default function AddShapes(props) {
     // var addedcount = count + 1;
     // setCount(addedcount);
     canvas.add(rect);
+    // canvas.setActiveObject(rect);
+    updateToCloud(canvas);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    // canvas.fire("object:modified");
     // console.log
   };
   //Circle
@@ -87,10 +90,13 @@ export default function AddShapes(props) {
     //   };
     // })(circle.toObject);
     canvas.add(circle);
+    updateToCloud(canvas);
+    // canvas.setActiveObject(circle);
+    // canvas.fire("object:modified");
     canvas.renderAll();
     // var addedcount = count + 1;
     // setCount(addedcount);
-    canvas.fire("object:modified");
+
     console.log(circle);
   };
   //Textbox IText
@@ -122,7 +128,7 @@ export default function AddShapes(props) {
     });
     canvas.add(Triangle);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //Line
   const addLine = (canvas) => {
@@ -134,7 +140,7 @@ export default function AddShapes(props) {
     });
     canvas.add(Line);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //Ellipse
   const addEllipse = (canvas) => {
@@ -150,7 +156,7 @@ export default function AddShapes(props) {
     });
     canvas.add(Ellipse);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //RightTriangle
   const addRightTriangle = (canvas) => {
@@ -170,7 +176,7 @@ export default function AddShapes(props) {
     );
     canvas.add(RightTriangle);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //IsoscelesTriangle
   const addIsoscelesTriangle = (canvas) => {
@@ -190,7 +196,7 @@ export default function AddShapes(props) {
     );
     canvas.add(IsoscelesTriangle);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //Parallelogram
   const addParallelogram = (canvas) => {
@@ -211,7 +217,7 @@ export default function AddShapes(props) {
     );
     canvas.add(Parallelogram);
     canvas.renderAll();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
   };
   //freeDrawing
   const freeDwawing = (canvas) => {

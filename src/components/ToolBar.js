@@ -15,8 +15,9 @@ import { ReactComponent as Ungroup } from "../Img/toolbar/open.svg";
 import { ReactComponent as LayerUp } from "../Img/toolbar/gotop.svg";
 import { ReactComponent as LayerDown } from "../Img/toolbar/goBottom.svg";
 import "./Toolbar.scss";
+import { updateToCloud } from "../App.js";
 export default function ToolBar(props) {
-  const [shareInput, setShareInput] = useState("");
+  const db = firebase.firestore();
   const name = props.name;
   const canvas = props.canvas;
   const [canvasColor, setCanvasColor] = useState("#ffffff");
@@ -69,7 +70,7 @@ export default function ToolBar(props) {
     }
   };
   //group
-  const group = (canvi) => {
+  const group = () => {
     canvas.offHistory();
     if (!canvas.getActiveObject()) {
       return;
@@ -77,13 +78,17 @@ export default function ToolBar(props) {
     if (canvas.getActiveObject().type !== "activeSelection") {
       return;
     }
-    canvi.getActiveObject().toGroup();
-    canvi.renderAll();
+    canvas.getActiveObject().toGroup();
+
     canvas.fire("object:modified");
-    canvas.onHistory();
+    canvas.renderAll();
+    // updateToCloud(canvas);
+
+    // canvas.onHistory();
   };
   //ungroup
   const ungroup = (canvi) => {
+    canvas.offHistory();
     if (!canvas.getActiveObject()) {
       return;
     }
@@ -92,7 +97,9 @@ export default function ToolBar(props) {
     }
     canvi.getActiveObject().toActiveSelection();
     canvi.renderAll();
+    // updateToCloud(canvas);
     canvas.fire("object:modified");
+    // canvas.onHistory();
   };
   //deleteChosen
   const deleteChosen = (canvi) => {
@@ -116,6 +123,8 @@ export default function ToolBar(props) {
     } //
     canvi.discardActiveObject();
     canvi.renderAll();
+    updateToCloud(canvas);
+    // canvas.fire("object:modified");
   };
   //deleteAll
   const deleteAll = (canvi) => {
@@ -143,6 +152,8 @@ export default function ToolBar(props) {
       clipboard = cloned;
       //remove after cloned to clipboard
       canvas.remove(canvas.getActiveObject());
+      updateToCloud(canvas);
+      // canvas.fire("object:modified");
     });
     // console.log(clipboard);
   };
@@ -154,6 +165,7 @@ export default function ToolBar(props) {
   };
   //paste
   const paste = (canvas) => {
+    // canvas.offHistory();
     clipboard.clone(function (clonedObj) {
       canvas.discardActiveObject();
       clonedObj.set({
@@ -176,26 +188,65 @@ export default function ToolBar(props) {
       clipboard.left += 10;
       canvas.setActiveObject(clonedObj);
       canvas.requestRenderAll();
-      canvas.fire("object:modified");
+      updateToCloud(canvas);
+      // canvas.fire("object:modified");
     });
   };
   //undo
   function doUndo() {
+    // canvas.undo();
     canvas.undo();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
+
+    // canvas.fire("object:modified");
+    // let undoArr = [];
+    // let redoArr = [];
+    // db.collection("undoRedo")
+    //   .doc(window.location.pathname.split("/")[2])
+    //   .get()
+    //   .then((data) => {
+    //     if (data.data().undo.length !== 0) {
+    //       undoArr = data.data().undo;
+    //       redoArr = data.data().redo;
+    //       let newCan = undoArr.pop();
+    //       redoArr.push(newCan);
+    //       if (redoArr.length > 5) {
+    //         redoArr.shift();
+    //       }
+    //       db.collection("undoRedo")
+    //         .doc(window.location.pathname.split("/")[2])
+    //         .update({
+    //           undo: undoArr,
+    //           redo: redoArr,
+    //         });
+    //       db.collection("canvases")
+    //         .doc(window.location.pathname.split("/")[2])
+    //         .update({
+    //           data: newCan,
+    //         });
+    //     }
+    //   });
   }
   //redo
   function doRedo() {
+    // canvas.redo();
     canvas.redo();
-    canvas.fire("object:modified");
+    updateToCloud(canvas);
+    // canvas.fire("object:modified");
   }
   const bringForward = (canvas) => {
+    // canvas.offHistory();
+
     canvas.getActiveObject().bringForward();
+    // updateToCloud(canvas);
     canvas.fire("object:modified");
   };
 
   const sendBackwards = (canvas) => {
+    // canvas.offHistory();
+
     canvas.getActiveObject().sendBackwards();
+    // updateToCloud(canvas);
     canvas.fire("object:modified");
   };
 
@@ -207,37 +258,46 @@ export default function ToolBar(props) {
     canvas.fire("object:modified");
   };
 
-  //share
-  const shareCanvas = (observerEmail) => {
-    let canvasId = window.location.pathname.split("/")[2];
-    var db = firebase.firestore();
-    db.collection("canvases")
-      .doc(canvasId)
-      .update({
-        observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
-      });
-    db.collection("users")
-      .doc(observerEmail)
-      .update({
-        canvasRead: firebase.firestore.FieldValue.arrayUnion(canvasId),
-      });
-  };
+  // //share
+  // const shareCanvas = (observerEmail) => {
+  //   let canvasId = window.location.pathname.split("/")[2];
+  //   var db = firebase.firestore();
+  //   db.collection("canvases")
+  //     .doc(canvasId)
+  //     .update({
+  //       observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
+  //     });
+  //   db.collection("users")
+  //     .doc(observerEmail)
+  //     .update({
+  //       canvasRead: firebase.firestore.FieldValue.arrayUnion(canvasId),
+  //     });
+  // };
 
-  const showShare = () => {
-    document.querySelector("#shareInputBox").style.display === "block"
-      ? (document.querySelector("#shareInputBox").style.display = "none")
-      : (document.querySelector("#shareInputBox").style.display = "block");
-  };
+  // const showShare = () => {
+  //   document.querySelector("#shareInputBox").style.display === "block"
+  //     ? (document.querySelector("#shareInputBox").style.display = "none")
+  //     : (document.querySelector("#shareInputBox").style.display = "block");
+  // };
 
-  const handleShare = () => {
-    shareCanvas(shareInput);
-    setShareInput("");
+  // const handleShare = () => {
+  //   shareCanvas(shareInput);
+  //   setShareInput("");
+  // };
+  const sharePagePop = () => {
+    document.querySelector("#darkBack").className = "scaleIn";
+    document.querySelector("#darkBack").style.display = "flex";
+    document.querySelector("#dark").style.display = "block";
   };
+  // const showShareBox = () => {
+  //   document.querySelector("#darkBack").style.display = "flex";
+  //   document.querySelector("#dark").style.display = "block";
+  // };
   return (
     <>
       <div id="toolBarBox">
         <div id="toolBarName">
-          <div>{name}</div>
+          <div style={{ display: "block" }}>{name}</div>
         </div>
         <div>
           <div className="toolBarIconBox blue">
@@ -277,12 +337,12 @@ export default function ToolBar(props) {
               className="toolBarIcon"
             />
           </div>
-          <div className="toolBarIconBox green">
-            <Group onClick={() => group(canvas)} className="toolBarIcon" />
+          {/* <div className="toolBarIconBox green">
+            <Group onClick={group} className="toolBarIcon" />
           </div>
           <div className="toolBarIconBox green">
             <Ungroup onClick={() => ungroup(canvas)} className="toolBarIcon" />
-          </div>
+          </div> */}
         </div>
         <div className="toolBarIconBox ">
           <SelectAll
@@ -291,18 +351,18 @@ export default function ToolBar(props) {
           />
         </div>
 
-        <div id="shareBox" onClick={showShare}>
+        <div id="shareBox" onClick={sharePagePop}>
           share
         </div>
-        <div id="shareInputBox" style={{ display: "none" }}>
-          <input
+        {/* <div id="shareInputBox" style={{ display: "none" }}> */}
+        {/* <input
             value={shareInput}
             onChange={(e) => {
               setShareInput(e.target.value);
             }}
           />
-          <button onClick={handleShare}>share</button>
-        </div>
+          <button onClick={handleShare}>share</button> */}
+        {/* </div> */}
 
         {/* <DeleteAll onClick={() => deleteAll(canvas)}/> */}
       </div>

@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import userImage from "../Img/user.png";
 import { ReactComponent as Send } from "../Img/send.svg";
-import { ReactComponent as Cancel } from "../Img/addshapes/cancel.svg";
+import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
