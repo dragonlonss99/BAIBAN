@@ -1,4 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+@mixin webSmall {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+@mixin pad {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+@mixin mobileBig {
+  @media (max-width: 425px) {
+    @content;
+  }
+}
+@mixin mobile {
+  @media (max-width: 375px) {
+    @content;
+  }
+}
+// * {
+//   box-sizing: border-box;
+// }
 
 #darkBack {
   /* background-color: #5c5c5c; */
@@ -77,6 +100,36 @@
   background-color: rgb(255, 255, 255);
   min-height: 400px;
   max-width: 484px;
+
+  input {
+    outline: none;
+  }
+
+  // small {
+  //   color: white;
+  // }
+  small::before {
+    position: absolute;
+    content: "";
+    width: 0px;
+    height: 0px;
+    border-width: 10px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: orange;
+    border-left-color: transparent;
+    left: 5%;
+    top: -20px;
+    margin-right: 2px;
+
+    // background-color: violet;
+  }
+  @media (max-width: 504px) {
+    width: 100%;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
 }
 #loginBoxOuter {
   display: flex;
@@ -86,6 +139,9 @@
   height: 100vh;
   overflow: hidden;
   width: 506px;
+  @media (max-width: 506px) {
+    width: 100%;
+  }
   /* margin: auto; */
 }
 #logInBoxBox {
@@ -102,6 +158,12 @@
   position: absolute;
   right: 0px;
   padding-right: 20px;
+  @media (max-width: 506px) {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    padding-right: 10px;
+  }
 }
 #logoBox {
   display: flex;
@@ -114,6 +176,10 @@
   height: 60px;
   fill: black;
   margin: 10px;
+  @include mobileBig {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 #title {
@@ -164,6 +230,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  div {
+    display: none;
+    width: 235px;
+    position: relative;
+    background-color: orange;
+    border-radius: 8px;
+  }
 }
 .signinInput {
   width: 235px;
@@ -239,9 +312,13 @@
   margin-top: 30px;
 
   box-sizing: border-box;
-  padding: 0px 2% 30px 2%;
+  padding: 0px 2% 10px 2%;
   // opacity: 0.6;
   z-index: 6;
+  @include mobileBig {
+    width: calc(100% - 20px);
+    left: 10px;
+  }
 }
 .topNav {
   display: flex;
@@ -264,7 +341,9 @@
     flex-direction: row;
     width: 300px;
     justify-content: space-around;
-    // margin-right: 10px;
+    @include mobileBig {
+      justify-content: flex-end;
+    }
     div {
       display: flex;
       width: 120px;
@@ -279,6 +358,25 @@
       justify-content: center;
       // font-weight: bolder;
       margin: 5px;
+      // @include mobileBig {
+      //   width: 60px;
+      //   height: 30px;
+      //   border-radius: 15px;
+      // }
+      &:hover {
+        box-shadow: 3px 3px #888888;
+        cursor: pointer;
+      }
+      @include mobileBig {
+        width: 80px;
+        height: 30px;
+        border-radius: 15px;
+      }
+    }
+    #homeSignUpBtn {
+      @include mobileBig {
+        display: none;
+      }
     }
     .topNavBtn {
       &:hover {
@@ -295,20 +393,6 @@
   text-align: center;
 }
 
-#BigAtt {
-  text-align: center;
-  font-size: 12rem;
-  // font-weight: bolder;
-  margin-top: 0%;
-  letter-spacing: 15px;
-  font-family: "Nerko One", cursive;
-}
-#middleAtt {
-  text-align: center;
-  font-size: 3.6rem;
-  font-weight: bold;
-  margin: 1% 0px 3% 0px;
-}
 #ahome {
   scroll-snap-stop: always;
   scroll-snap-align: start;
@@ -321,10 +405,18 @@
   // background-image: url(/Img/back2.svg);
   // background-size: contain;
   // background-repeat: no-repeat;
-  border: 30px solid transparent;
-  border-image: url(/Img/back2.svg) 10 stretch;
+  border-style: solid;
+  border-width: 30px;
+  // border-color: transparent;
+  border-image: url(/Img/back2.svg) 4 stretch;
   position: relative;
-
+  @include webSmall {
+    font-size: 14px;
+  }
+  @include mobileBig {
+    font-size: 12px;
+    border-width: 10px;
+  }
   .backImg {
     position: fixed;
     width: 10vw;
@@ -394,6 +486,15 @@
   // font-weight: bolder;
   margin: auto;
   margin-top: 10%;
+  @include webSmall {
+    width: 300px;
+    height: 80px;
+  }
+  @include mobileBig {
+    width: 200px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
 }
 #startBtn:hover {
   cursor: pointer;
@@ -448,6 +549,10 @@
   right: 12%;
   border-radius: 30px 30px 0px 0px;
   // transform: rotate(30deg);
+  @include mobileBig {
+    border-radius: 10px 10px 0px 0px;
+    width: 15%;
+  }
 }
 
 .sigma {
@@ -471,11 +576,20 @@
   border-image: url(/Img/back/wood-02.svg) 10 stretch;
   // scroll-snap-stop: always;
   // scroll-snap-align: start;
+  @include mobileBig {
+    border-width: 10px;
+  }
   #howeWhy {
     padding-top: 5%;
     text-align: center;
     font-size: 6rem;
     margin-bottom: 2%;
+    @include pad {
+      font-size: 3.2rem;
+    }
+    @include mobileBig {
+      font-size: 2.6rem;
+    }
   }
   #circleBox {
     display: flex;
@@ -483,27 +597,49 @@
     width: 100%;
     padding: 0px 5% 0px 5%;
     box-sizing: border-box;
+    flex-wrap: wrap;
+    div {
+      display: flex;
+      flex-direction: row;
+      // justify-content: space-between;
+      // width: 100%;
+      // width: 40%;
+    }
     // flex-wrap: wrap;
     // background-color: #d4864d;
     .homePageCircle {
       background-color: #9f5922;
-      width: 300px;
-      height: 300px;
+      width: 280px;
+      height: 280px;
       display: flex;
       border-radius: 150px;
       justify-content: center;
       align-items: center;
       color: #ffffff;
-      margin: 1.5%;
+      margin: 10px;
+      box-sizing: border-box;
       flex-direction: column;
+
+      @include mobileBig {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+      }
       div {
         font-size: 2.5rem;
+        @include mobileBig {
+          font-size: 1rem;
+        }
       }
       img {
         width: 100px;
         height: 100px;
         object-fit: fill;
         margin-bottom: 7%;
+        @include mobileBig {
+          width: 30px;
+          height: 30px;
+        }
       }
     }
   }
@@ -532,12 +668,33 @@
   // flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  @include pad {
+    padding-top: 50px;
+    flex-direction: column;
+    // font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  @include mobileBig {
+    padding-top: 50px;
+    flex-direction: column;
+    font-size: 12px;
+    box-sizing: border-box;
+  }
   #homePageRight {
     height: 100%;
     width: 45%;
     justify-content: center;
     align-items: center;
     display: flex;
+    @include pad {
+      width: 80%;
+      height: auto;
+    }
+    @include mobileBig {
+      width: 100%;
+      height: auto;
+    }
     img {
       width: 100%;
     }
@@ -548,6 +705,41 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    // width: 50%;
+    @include pad {
+      width: 100%;
+      height: auto;
+    }
+    #BigAtt {
+      text-align: center;
+      font-size: 12rem;
+      // font-weight: bolder;
+      margin-top: 0%;
+      letter-spacing: 0.6rem;
+      font-family: "Nerko One", cursive;
+      @include webSmall {
+        font-size: 8rem;
+      }
+      // @include pad {
+      //   font-size: 5rem;
+      // }
+      @include mobileBig {
+        font-size: 4.5rem;
+        letter-spacing: 0.3rem;
+      }
+    }
+    #middleAtt {
+      text-align: center;
+      font-size: 3.6rem;
+      font-weight: bold;
+      margin: 1% 0px 3% 0px;
+      @include webSmall {
+        font-size: 2.4rem;
+      }
+      @include mobileBig {
+        font-size: 1.4rem;
+      }
+    }
     // align-items: center;
   }
 }
@@ -577,6 +769,9 @@
     margin: 0px auto;
     text-align: center;
     font-size: 1.6rem;
+    @include mobileBig {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -586,6 +781,9 @@
   display: flex;
   box-sizing: border-box;
   justify-content: center;
+  @include pad {
+    padding-bottom: 20px;
+  }
   #tool {
     display: flex;
     flex-direction: column;
@@ -636,12 +834,23 @@
   .canvas-container {
     // box-sizing: border-box;
     // width: 800px;
-    border: 20px solid transparent;
+    border-style: solid;
+    border-width: 20px;
+    // border-color: transparent;
     border-image: url(/Img/back2.svg) 10 stretch;
   }
   #artist {
     height: 540px;
+    @media (max-width: 1024px) {
+      height: 400px;
+    }
     // width: 20%;
+    @include pad {
+      display: none;
+    }
+    @include mobileBig {
+      display: none;
+    }
   }
 }
 

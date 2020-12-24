@@ -2,24 +2,12 @@ import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "./App.scss";
 import firebase from "firebase/app";
-import firebaseConfig from "./firebaseConfig";
-// import {} from "./components/fabric-brush";
-// import AddShapes from "./components/AddShapes";
-import TextAdjust from "./components/TextAdjust";
-import RectAdjust from "./components/RectAdjust";
 import ToolBar from "./components/ToolBar";
-import PaintingTool from "./components/PaintingTool";
-import SaveAndLoad from "./components/SaveAndLoad";
 import LeftBar from "./components/LeftBar";
-import { v4 as uuidv4 } from "uuid";
 import ChatRoom from "./components/ChatRoom";
 import logo from "./Img/icon13.svg";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
-import { doc } from "prettier";
 import "fabric-history";
-import { useHistory, useLocation } from "react-router-dom";
-import { browserHistory } from "react-router";
-import { createBrowserHistory } from "history";
 import { ReactComponent as Cowork } from "./Img/profile/undraw_Online_collaboration.svg";
 import { ReactComponent as Learn } from "./Img/profile/undraw_Online_learning.svg";
 
@@ -53,18 +41,7 @@ const App = () => {
   const [shareInputObserve, setShareInputObserve] = useState("");
   const db = firebase.firestore();
 
-  // let canvasToUpload;
-
-  //
-  // db.collection("canvases")
-  //   .doc(window.location.pathname.split("/")[2])
-  //   .onSnapshot((querySnapshot) => {
-  //     canvas.loadFromJSON(querySnapshot.data().data);
-  //   });
-
   useEffect(() => {
-    // let editor = "";
-    // console.log(window.location.pathname.split("/")[2]);
     let canvasToSet = new fabric.Canvas("canvas", {
       // height: 500,
       // width: 600,
@@ -100,11 +77,7 @@ const App = () => {
         //   };
         // })(fabric.Object.prototype.toObject);
         canvasToSet.on("object:modified", () => {
-          // console.log(e.target);
-          // console.log(beenStoped);
-          // if (canvasToSet.getActiveObject()) {
           console.log("modified");
-          // updateToCloud();
           if (beenStoped) {
             updateModifiedData(user.email, () => {
               updateSelectToCloud(user.email);
@@ -117,32 +90,6 @@ const App = () => {
               updateToCloud(canvasToSet);
             }
           }
-          // if (
-          //   canvasToSet.getActiveObject() &&
-          //   canvasToSet.getActiveObject().type === "activeSelection"
-          // ) {
-          //   console.log("QQ");
-          //   updateToCloud();
-          // } else if (
-          //   canvasToSet.getActiveObject() &&
-          //   canvasToSet.getActiveObject().type === "group"
-          // ) {
-          //   console.log("group");
-          //   updateToCloud();
-          //   // } else if (e.target && e.target.type === "group") {
-          //   //   updateToCloud();
-          //   //   console.log("e_active");
-          // } else {
-          //   if (e.target) {
-          //     console.log(e);
-          //   }
-          //   console.log("add");
-          //   updateModifiedData(user.email, () => {
-          //     updateSelectToCloud(user.email);
-          //   });
-          // }
-          // updateSelectToCloud(user.email);
-          // }
         });
         canvasToSet.on("selection:created", () => {
           // getActive();

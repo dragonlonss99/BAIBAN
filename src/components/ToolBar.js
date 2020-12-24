@@ -29,7 +29,8 @@ export default function ToolBar(props) {
     vKey = 86,
     xKey = 88,
     cKey = 67,
-    aKey = 65;
+    aKey = 65,
+    zKey = 90;
   onkeydown = (e) => {
     // console.log(e.keyCode);
 
@@ -53,6 +54,10 @@ export default function ToolBar(props) {
     if (ctrlDown && e.keyCode === aKey) {
       e.preventDefault();
       selectAll(canvas);
+    }
+    if (ctrlDown && e.keyCode === zKey) {
+      e.preventDefault();
+      doUndo(canvas);
     }
     if (e.keyCode === delKey) {
       if (canvas.getActiveObject() && !canvas.getActiveObject().isEditing) {

@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import firebase from "firebase";
-import firebaseConfig from "../firebaseConfig";
 
 export default function SignInLocal() {
-  const app = firebase.apps.length
-    ? firebase.app()
-    : firebase.initializeApp(firebaseConfig);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("111111");
+  const [emailCheck, setEmailCheck] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
+    document.querySelector("#emailCheck").style.display = "none";
   };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
+    document.querySelector("#pwdCheck").style.display = "none";
   };
 
   const signIn = () => {
-    let user = firebase.auth().currentUser;
-    let canvasOwn = [];
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -30,30 +27,23 @@ export default function SignInLocal() {
       })
       .catch(function (error) {
         //登入錯誤訊息
-        var errorMessage = error.message;
-        console.log(errorMessage);
-      });
-    var db = firebase.firestore();
-    db.collection("users")
-      .doc(email)
-      .get()
-      .then((querySnapshot) => {
-        // querySnapshot.data().canvasOwn.forEach((can) => {
-        //   console.log("cavas: " + can);
-        // });
-        // console.log(querySnapshot.data());
-        canvasOwn = querySnapshot.data().canvasOwn;
-      })
-      .then(() => {
-        canvasOwn.forEach((can) => {
-          db.collection("canvases").doc(can).get();
-          // .then((q) => {
-          //   console.log(q.data().data);
-          // });
-        });
-        // console.log(canvasOwn);
+        // var errorMessage = error.message;
+        var errorCode = error.code;
+        // console.log(errorMessage);
+        // console.log(error);
+        if (errorCode === "auth/user-not-found") {
+          document.querySelector("#emailCheck").style.display = "block";
+          setEmailCheck("Email address hasn't been sign up!");
+        } else if (errorCode === "auth/invalid-email") {
+          document.querySelector("#emailCheck").style.display = "block";
+          setEmailCheck("Invalid email address, please check!");
+        } else if (errorCode === "auth/wrong-password") {
+          document.querySelector("#pwdCheck").style.display = "block";
+          setPasswordCheck("Password is wrong, please check!");
+        }
       });
   };
+
   return (
     <div className="nativeBox">
       <input
@@ -62,8 +52,13 @@ export default function SignInLocal() {
         onChange={handleEmail}
         placeholder="email"
         className="signinInput"
+        onClick={(e) => {
+          document.querySelector("#emailCheck").style.display = "none";
+        }}
       />
-
+      <div id="emailCheck">
+        <small>{emailCheck}</small>
+      </div>
       <input
         className="signinInput"
         id="pwdSignIn"
@@ -71,7 +66,13 @@ export default function SignInLocal() {
         value={password}
         onChange={handlePassword}
         placeholder="password"
+        onClick={(e) => {
+          document.querySelector("#pwdCheck").style.display = "none";
+        }}
       />
+      <div id="pwdCheck">
+        <small>{passwordCheck}</small>
+      </div>
       <div id="submit" onClick={signIn} className="bigger">
         Log In
       </div>

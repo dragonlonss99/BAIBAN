@@ -2,39 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import reportWebVitals from "./reportWebVitals";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import logo from "./Img/icon13.svg";
-import corner from "./Img/back/corner.png";
-import row from "./Img/back/row.png";
-import colum from "./Img/back/colum.png";
-import aa from "./Img/back/aa-07.png";
-import triangle from "./Img/back/triangle.svg";
-import compass from "./Img/back/compass.svg";
 import eraser from "./Img/back/eraser2.svg";
-import sigma from "./Img/back/sigma.svg";
 import fbLogo from "./Img/f_logo.svg";
 import { ReactComponent as GoogleLogo } from "./Img/google-icon.svg";
-import bottom from "./Img/back/bottom-02.svg";
 import man from "./Img/back/undraw_professor.svg";
 import triangleR from "./Img/back/triangle-ruler.svg";
 import penDraw from "./Img/back/fountain-pen.svg";
 import chat from "./Img/back/chat-02.svg";
 import audi from "./Img/back/audience.svg";
 import Try_It from "./components/Try_It.js";
-
-// import FirebaseRead from "./firebase";
-import {
-  signInWithGoogle,
-  signInWithFB,
-  signOut,
-  // firebaseTest,
-  // firebaseGet,
-} from "./firebase";
+import { signInWithGoogle, signInWithFB, signOut } from "./firebase";
 import SignInLocal from "./components/SignIn";
 import SignUpLocal from "./components/SignUp";
 import firebase from "firebase";
-import firebaseConfig from "./firebaseConfig";
 import { useHistory } from "react-router-dom";
 import "./homepage.scss";
-// import { Router, Route, Link } from 'react-router'
 
 export default function HomePage() {
   let history = useHistory();
@@ -61,18 +43,6 @@ export default function HomePage() {
     }
   });
 
-  // const firebaseSnap = () => {
-  //   const app = firebase.apps.length
-  //     ? firebase.app()
-  //     : firebase.initializeApp(firebaseConfig);
-  //   var db = firebase.firestore();
-  //   db.collection("canvases")
-  //     .doc("Test")
-  //     .onSnapshot((querySnapshot) => {
-  //       console.log(querySnapshot.data().data);
-  //     });
-  // };
-
   const loginBoxNon = () => {
     document.querySelector("#darkBack").className = "scaleOut";
     setTimeout(() => {
@@ -92,8 +62,6 @@ export default function HomePage() {
     if (e.target.scrollTop > 30) {
       obj.style.marginTop = "0px";
       obj.style.paddingTop = "30px";
-      // obj.style.width = "100%";
-      // obj.style.left = "0%";
       obj.className = "topNavBox floatingNav";
     } else {
       obj.style.marginTop = "30px";
@@ -118,7 +86,7 @@ export default function HomePage() {
               <div className="bigger" onClick={showLoginBox}>
                 log In
               </div>
-              <div className="bigger" onClick={showSignBox}>
+              <div id="homeSignUpBtn" className="bigger" onClick={showSignBox}>
                 Sign Up
               </div>
             </div>
@@ -127,7 +95,6 @@ export default function HomePage() {
         <div id="mainContain">
           <div id="homePageLeft">
             <div id="BigAtt">BAIBEN</div>
-            {/* <div>The best online board you'll ever have!</div> */}
             <div id="middleAtt">Sharing ideas from NOW!</div>
 
             <div id="startBtnBox">
@@ -154,21 +121,25 @@ export default function HomePage() {
       <div id="introduction">
         <div id="howeWhy">What can we do with BAIBEN?</div>
         <div id="circleBox">
-          <div className="homePageCircle">
-            <img src={triangleR} />
-            <div>Pattern</div>
+          <div>
+            <div className="homePageCircle">
+              <img src={triangleR} />
+              <div>Pattern</div>
+            </div>
+            <div className="homePageCircle">
+              <img src={penDraw} />
+              <div>Drawing</div>
+            </div>
           </div>
-          <div className="homePageCircle">
-            <img src={penDraw} />
-            <div>Drawing</div>
-          </div>
-          <div className="homePageCircle">
-            <img src={audi} />
-            <div>Cowork</div>
-          </div>
-          <div className="homePageCircle">
-            <img src={chat} />
-            <div>Communicate</div>
+          <div>
+            <div className="homePageCircle">
+              <img src={audi} />
+              <div>Cowork</div>
+            </div>
+            <div className="homePageCircle">
+              <img src={chat} />
+              <div>Communicate</div>
+            </div>
           </div>
         </div>
         <div id="howeWhy">Try it now! </div>

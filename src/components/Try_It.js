@@ -15,7 +15,7 @@ export default function Try_It() {
   useEffect(() => {
     let canvasToSet = new fabric.Canvas("can", {
       height: 350,
-      width: 800,
+      width: window.innerWidth * 0.5,
       backgroundColor: "#ffffff",
       selection: false,
       isDrawingMode: false,

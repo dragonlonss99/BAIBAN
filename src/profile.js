@@ -38,31 +38,33 @@ export default function ProfilePage() {
           // .get()
           // .then((data) => {
           .onSnapshot((data) => {
-            setCanvasOwn(data.data().canvasOwn.reverse());
-            setCanvasRead(data.data().canvasUse.reverse());
-            setCanvasObserve(data.data().canvasObserve.reverse());
-            setUserEmailfromF(user.email);
-            // setUserName(user.userName);
-            if (user.providerData[0].providerId === "facebook.com") {
-              setPhoto(user.photoURL + "?type=large");
-              setUserName(user.displayName);
-            } else if (user.providerData[0].providerId === "google.com") {
-              setPhoto(user.photoURL);
-              setUserName(user.displayName);
-            } else {
-              setPhoto(userImg);
-              setUserName(data.data().userName);
-            }
+            if (data.data()) {
+              setCanvasOwn(data.data().canvasOwn.reverse());
+              setCanvasRead(data.data().canvasUse.reverse());
+              setCanvasObserve(data.data().canvasObserve.reverse());
+              setUserEmailfromF(user.email);
+              // setUserName(user.userName);
+              if (user.providerData[0].providerId === "facebook.com") {
+                setPhoto(user.photoURL + "?type=large");
+                setUserName(user.displayName);
+              } else if (user.providerData[0].providerId === "google.com") {
+                setPhoto(user.photoURL);
+                setUserName(user.displayName);
+              } else {
+                setPhoto(userImg);
+                setUserName(data.data().userName);
+              }
 
-            // console.log(user);
-            // console.log(canvasOwn);
-            // document.querySelector("#boards").appendChild(
-            // data.data().canvasOwn.map((obj) => {
-            //   console.log(obj);
-            //   <AddedBoard id={obj} key={obj} />;
-            // })
-            // React.createElement(AddedBoard)
-            // );
+              // console.log(user);
+              // console.log(canvasOwn);
+              // document.querySelector("#boards").appendChild(
+              // data.data().canvasOwn.map((obj) => {
+              //   console.log(obj);
+              //   <AddedBoard id={obj} key={obj} />;
+              // })
+              // React.createElement(AddedBoard)
+              // );
+            }
           });
         // .then(() => {
         //   console.log(canvasOwn);
