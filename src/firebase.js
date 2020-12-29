@@ -45,7 +45,8 @@ const signInWith = (provider) => {
             db.collection("users").doc(email).set({
               email: email,
               canvasOwn: [],
-              canvasRead: [],
+              canvasUse: [],
+              canvasObserve: [],
             });
             // } else {
             //   db.collection("users")

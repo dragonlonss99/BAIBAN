@@ -56,16 +56,16 @@ export default function RectAdjust(props) {
     setStrokeWidthInput(e.target.value);
     canvas.renderAll();
   };
-  //changeOpacityInput
-  const changeOpacityInput = (e) => {
-    const newWidthOfS = parseInt(e.target.value, 10) / 100;
-    if (canvas.getActiveObject()) {
-      canvas.getActiveObject().set("opacity", newWidthOfS);
-    }
-    // strokeWidthValue.innerHTML = newWidthOfS;
-    setOpacityInput(e.target.value);
-    canvas.renderAll();
-  };
+  // //changeOpacityInput
+  // const changeOpacityInput = (e) => {
+  //   const newWidthOfS = parseInt(e.target.value, 10) / 100;
+  //   if (canvas.getActiveObject()) {
+  //     canvas.getActiveObject().set("opacity", newWidthOfS);
+  //   }
+  //   // strokeWidthValue.innerHTML = newWidthOfS;
+  //   setOpacityInput(e.target.value);
+  //   canvas.renderAll();
+  // };
   return (
     <div>
       <div className="colorChange">
@@ -103,7 +103,7 @@ export default function RectAdjust(props) {
           value={strokeWidthInput}
         />
       </div>
-      <div className="widthChange">
+      {/* <div className="widthChange">
         <label>object opacity: </label>
         <img src={width} />
         <input
@@ -114,7 +114,7 @@ export default function RectAdjust(props) {
           id="lineWidthInput"
           value={opacityInput}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

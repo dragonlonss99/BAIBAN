@@ -60,12 +60,13 @@ export default function LeftBar(props) {
       boxType === 2 &&
       document.querySelector("#toolcontent").style.marginLeft === "0px"
     ) {
+      canvas.isDrawingMode = false;
       document.querySelector("#toolcontent").style.marginLeft = "-240px";
     } else {
       document.querySelector("#toolcontent").style.marginLeft = "0px";
+      freeDwawing(canvas);
     }
     setShow(<PaintingTool canvas={canvas} closeContent={closeContent} />);
-    freeDwawing(canvas);
     setBoxType(2);
   };
   const showTextbox = () => {

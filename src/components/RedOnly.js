@@ -5,14 +5,33 @@ import firebase from "firebase/app";
 import ToolBar from "./components/ToolBar";
 import LeftBar from "./components/LeftBar";
 import ChatRoom from "./components/ChatRoom";
-// import logo from "./Img/icon13.svg";
+import logo from "./Img/icon13.svg";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import "fabric-history";
 import { ReactComponent as Cowork } from "./Img/profile/undraw_Online_collaboration.svg";
 import { ReactComponent as Learn } from "./Img/profile/undraw_Online_learning.svg";
 import rotate from "./Img/refresh.svg";
-import { updateToCloud } from "./utils/firebaseUtils.js";
-import { canvasesGet } from "./utils/firebaseUtils.js";
+
+export const updateToCloud = (canvas) => {
+  let canvasToUpload = JSON.stringify(canvas.toJSON());
+  const dataURL = canvas.toDataURL({
+    format: "png",
+    top: 0,
+    left: 0,
+    width: canvas.width,
+    height: canvas.height,
+    multiplier: 0.5,
+    quality: 0.1,
+  });
+  firebase
+    .firestore()
+    .collection("canvases")
+    .doc(window.location.pathname.split("/")[2])
+    .update({
+      data: canvasToUpload,
+      photoURL: dataURL,
+    });
+};
 
 const App = () => {
   const [canvas, setCanvas] = useState("");
@@ -36,14 +55,30 @@ const App = () => {
       objectChaching: false,
     });
 
-    canvasesGet((data) => {
-      setName(data.data().name);
-    });
+    db.collection("canvases")
+      .doc(window.location.pathname.split("/")[2])
+      .get()
+      .then((data) => {
+        // if (data) {
+        setName(data.data().name);
+      });
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
         setAuthor(user.email);
-
+        // editor = user.email;
+        console.log(user.email);
+        // fabric.Object.prototype.toObject = (function (toObject) {
+        //   return function (propertiesToInclude) {
+        //     return fabric.util.object.extend(
+        //       toObject.call(this, propertiesToInclude),
+        //       {
+        //         editor: user.email, //my custom property
+        //         // _controlsVisibility: this._getControlsVisibility(), //i want to get the controllsVisibility
+        //       }
+        //     );
+        //   };
+        // })(fabric.Object.prototype.toObject);
         canvasToSet.on("object:modified", () => {
           console.log("modified");
           if (beenStoped) {
@@ -59,13 +94,14 @@ const App = () => {
             }
           }
         });
-
         canvasToSet.on("selection:created", () => {
           // getActive();
           updateSelectToCloud(user.email);
+          // console.log(e.target);
         });
         canvasToSet.on("selection:updated", () => {
           updateSelectToCloud(user.email);
+          // canvasToSet.fire("object:modified");
         });
         canvasToSet.on("mouse:down", () => {
           if (!canvasToSet.getActiveObject()) {
@@ -251,10 +287,15 @@ const App = () => {
 
     const updateSelectToCloud = (user) => {
       let ObjSelected = JSON.stringify(canvasToSet.getActiveObject());
-      selectUpdate(user, {
-        ObjSelected: ObjSelected,
-        selected: true,
-      });
+      // console.log(ObjSelected);
+      db.collection("selectedObj")
+        .doc(window.location.pathname.split("/")[2])
+        .collection("userSelect")
+        .doc(user)
+        .set({
+          ObjSelected: ObjSelected,
+          selected: true,
+        });
     };
 
     db.collection("selectedObj")
@@ -379,7 +420,6 @@ const App = () => {
                   canvasToSet.renderAll();
                 } else {
                   console.log("diff");
-                  console.log(canvasNow);
                   callback();
                 }
               }
@@ -881,8 +921,8 @@ const App = () => {
                 <Cowork className="shareImg" />
                 <div className="shareBtnBox">
                   <input
-                    value={shareInputUse}
                     className="shareInput"
+                    value={shareInputUse}
                     placeholder="Please enter an Email"
                     onChange={(e) => {
                       setShareInputUse(e.target.value);

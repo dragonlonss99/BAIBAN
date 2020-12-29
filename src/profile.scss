@@ -10,11 +10,16 @@
   overflow-y: scroll;
   position: relative;
   display: flex;
-  padding-top: 100px;
-  padding-right: 4%;
-  padding-left: 5%;
+  padding-top: 110px;
+  padding-right: 1.5%;
+  padding-left: 3%;
   justify-content: space-between;
   overflow: hidden;
+  @media (max-width: 425px) {
+    border-width: 10px;
+    font-size: 12px;
+    // padding-top: 110px;
+  }
   // align-items: center;
 }
 .hidden {
@@ -23,12 +28,14 @@
 }
 #profileP {
   width: 320px;
+  height: 180px;
+  box-sizing: border-box;
   display: flex;
-  margin: auto;
+  // margin: auto;
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  // margin-top: 70px;
+  margin-top: 30px;
 }
 #profilePic {
   // background-image: url(./Img/user.png);
@@ -50,7 +57,7 @@
   margin: auto;
 }
 .profileTag {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   display: inline;
   margin: 0px;
   // position: relative;
@@ -105,6 +112,25 @@
   border-radius: 2px;
   margin-bottom: 2em;
 
+  #boardsRead,
+  #boardsObserved {
+    display: none;
+    flex-wrap: wrap;
+    font-size: 5em;
+    // grid-auto-columns: 252px;
+    // grid-auto-flow: column;
+    // grid-gap: 12px;
+    // width: 1056px;
+    // padding-right: 5px;
+    // padding-left: 5px;
+    height: max-content;
+    justify-content: center;
+    // width: max-content;
+    // justify-content: space-around;
+    @media (max-width: 425px) {
+      font-size: 2.5em;
+    }
+  }
   #boardsContain {
     display: flex;
     flex-wrap: wrap;
@@ -115,29 +141,12 @@
     // padding-right: 5px;
     // padding-left: 5px;
     height: max-content;
-    // justify-content: center;
+    justify-content: center;
     // width: max-content;
     // justify-content: space-around;
-  }
-  #boardsRead {
-    display: none;
-    flex-wrap: wrap;
-    // text-align: center;
-    // padding-right: 5px;
-    // padding-left: 5px;
-    font-size: 5rem;
-    height: max-content;
-    // justify-content: center;
-  }
-  #boardsObserved {
-    display: none;
-    flex-wrap: wrap;
-    // text-align: center;
-    // padding-right: 5px;
-    // padding-left: 5px;
-    font-size: 5rem;
-    height: max-content;
-    // justify-content: center;
+    @media (max-width: 425px) {
+      font-size: 1em;
+    }
   }
 }
 #flexEnd {
@@ -150,14 +159,18 @@
   height: 250px;
   // background-color: burlywood;
   border-radius: 20px;
-  margin: 10px;
+  margin: 12px;
   &:hover .addIcon,
   &:hover #beforeAdd {
     cursor: pointer;
     fill: red;
     color: red;
   }
-
+  @media (max-width: 425px) {
+    width: 150px;
+    height: 150px;
+    margin: 6px;
+  }
   .addIconBox {
     position: relative;
     height: 100%;
@@ -172,6 +185,12 @@
       left: 75px;
       top: 50px;
       background-size: cover;
+      @media (max-width: 425px) {
+        width: 60px;
+        height: 60px;
+        left: 45px;
+        top: 45px;
+      }
     }
     div {
       display: flex;
@@ -180,6 +199,10 @@
       width: 100%;
       position: absolute;
       font-size: 1.7em;
+      @media (max-width: 425px) {
+        top: 115px;
+        font-size: 1.3em;
+      }
     }
   }
   .InputNameBox {
@@ -194,6 +217,9 @@
       align-items: center;
       height: 200px;
       position: relative;
+      @media (max-width: 425px) {
+        height: 120px;
+      }
       .cancelIcon {
         height: 20px;
         width: 20px;
@@ -214,6 +240,9 @@
         text-align: center;
         font-size: 1.7em;
         width: 90%;
+        @media (max-width: 425px) {
+          font-size: 1.3em;
+        }
       }
     }
 
@@ -228,6 +257,10 @@
       color: whitesmoke;
       font-weight: bold;
       border-radius: 0px 0px 20px 20px;
+      @media (max-width: 425px) {
+        font-size: 1.3em;
+        height: 30px;
+      }
     }
   }
 }
@@ -296,6 +329,11 @@
   display: flex;
   flex-direction: column;
   border: #000000 1px solid;
+  @media (max-width: 425px) {
+    width: 150px;
+    height: 150px;
+    margin: 6px;
+  }
   // animation: tilt-in-fwd-tl 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   &:hover {
     cursor: pointer;
@@ -347,6 +385,11 @@
         list-style: none;
         padding: 5px;
         margin: 0;
+        li {
+          &:hover {
+            color: red;
+          }
+        }
       }
     }
     .AddBoardList::before {
@@ -386,6 +429,12 @@
     color: whitesmoke;
     font-weight: bold;
     border-radius: 0px 0px 20px 20px;
+    @media (max-width: 425px) {
+      font-size: 1.2rem;
+      width: 150px;
+      height: 150px;
+      height: 30px;
+    }
   }
 }
 #ProfileBtnBox {
@@ -393,8 +442,12 @@
   margin: 0px auto 0px auto;
   display: flex;
   justify-content: center;
-  margin-bottom: 50px;
+  margin-bottom: 10%;
   align-items: center;
+  @media (min-width: 1500px) {
+    margin-bottom: 80%;
+  }
+
   #tagBox,
   #profileFuncBox {
     display: flex;
@@ -405,7 +458,7 @@
     div {
       display: flex;
       width: 250px;
-      height: 150px;
+      height: 110px;
       flex-direction: column;
       position: relative;
       justify-content: center;
@@ -437,11 +490,15 @@
 .profileFa {
   width: 252px;
   margin: 12px;
+  @media (max-width: 425px) {
+    width: 152px;
+    margin: 6px;
+  }
 }
 
 .drawLine {
   fill: none;
-  stroke-width: 12;
+  stroke-width: 2;
   stroke: red;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -461,10 +518,10 @@
   }
 }
 .drawCompo {
-  width: 400px;
+  width: 300px;
   height: 180px;
   position: absolute;
-  margin-top: 20px;
+  margin-top: 15px;
   margin-left: 0px;
   // object-fit: cover;
 }
@@ -488,11 +545,12 @@
     stroke-dashoffset: 0;
   }
 }
-.drawBox:hover .drawCircle {
-  animation: letterDraw 0.4s linear forwards;
+.drawBox:hover .profileTag {
+  // animation: letterDraw 0.8s linear forwards;
+  color: red;
 }
 .drawn .drawCircle {
-  stroke-dashoffset: 0;
+  animation: letterDraw 0.8s linear forwards;
 }
 .drawBox:hover {
   cursor: pointer;
@@ -500,14 +558,19 @@
 
 #profileRight {
   overflow-y: scroll;
-  padding-left: 50px;
+  padding-left: 3%;
 }
-// #profileLeft {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// }
+#profileLeft {
+  height: 100%;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  @media (max-width: 425px) {
+    display: none;
+  }
+}
 #proverb {
   // margin: auto;
   font-size: 2rem;
@@ -594,7 +657,11 @@
   text-align: center;
   background-color: rgb(255, 255, 255);
   min-height: 400px;
-  max-width: 900px;
+  width: 900px;
+  // overflow: visible;
+  @media (max-width: 920px) {
+    width: 100%;
+  }
   #shareInputBox {
     margin: 50px 30px 30px 0px;
     display: flex;
@@ -607,11 +674,24 @@
       .h1 {
         font-size: 2.5rem;
         margin-bottom: 20px;
+        @media (max-width: 920px) {
+          font-size: 2rem;
+        }
+      }
+      .h2,
+      .h3 {
+        @media (max-width: 920px) {
+          font-size: 1rem;
+          // display: none;
+        }
       }
       .shareImg {
         margin-top: 20px;
         width: 100%;
         height: 200px;
+        @media (max-width: 920px) {
+          height: 150px;
+        }
       }
       .shareBtnBox {
         margin-top: 20px;
@@ -628,6 +708,11 @@
         color: white;
         background-color: black;
         font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
+        outline: none;
+        @media (max-width: 920px) {
+          width: 250px;
+          font-size: 0.8rem;
+        }
       }
       .shareBtn {
         width: 20%;
@@ -640,10 +725,220 @@
         border: black 1px solid;
         box-sizing: border-box;
         border-radius: 0px 25px 25px 0px;
+        @media (max-width: 920px) {
+          font-size: 0.8rem;
+        }
         &:hover {
           cursor: pointer;
         }
       }
     }
   }
+}
+
+.mobileOption {
+  display: none;
+  @media (max-width: 425px) {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    // height: 30px;
+    justify-content: center;
+    // font-size: 1rem;
+    .profileTag {
+      padding: 0px;
+      font-size: 16px;
+      &:hover {
+        color: red;
+        cursor: pointer;
+      }
+      @media (max-width: 375px) {
+        font-size: 14px;
+      }
+      @media (max-width: 320px) {
+        font-size: 12px;
+      }
+    }
+    .selected {
+      color: red;
+    }
+    span {
+      margin: 0px 1% 0px 1%;
+      // font-size: 4px;
+    }
+  }
+}
+
+#profilePage {
+  .topNavBox {
+    height: 100px;
+  }
+}
+
+#deleteConfirm {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 7;
+  font-family: "Nerko One", "Noto Sans TC", cursive, sans-serif;
+  #profileDeleteBox {
+    box-sizing: content-box;
+    margin: auto;
+    padding-left: 10px;
+    padding-top: 20px;
+    padding-right: 10px;
+    padding-bottom: 24px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 2px 10px;
+    position: relative;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    min-height: 200px;
+    width: 400px;
+    @media (max-width: 920px) {
+      width: 100%;
+    }
+  }
+  #cancelOutShare {
+    width: 30px;
+    height: 30px;
+  }
+  .deleteH1 {
+    font-size: 1.4rem;
+    margin-top: 60px;
+  }
+  .deleteChosen {
+    display: flex;
+    justify-content: center;
+    // margin-top: 20px;
+    div {
+      font-size: 2.3rem;
+      display: flex;
+      width: 120px;
+      height: 50px;
+      border-radius: 25px;
+      background-color: black;
+      color: aliceblue;
+      text-align: center;
+      align-items: center;
+      // font-size: 2em;
+      // padding: 5px;
+      justify-content: center;
+      // font-weight: bolder;
+      margin: 30px;
+      &:hover {
+        background-color: red;
+      }
+    }
+  }
+}
+
+#NewNameConfirm {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 7;
+  font-family: "Nerko One", "Noto Sans TC", cursive, sans-serif;
+  #profileNewnameBox {
+    box-sizing: content-box;
+    margin: auto;
+    padding-left: 10px;
+    padding-top: 20px;
+    padding-right: 10px;
+    padding-bottom: 24px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 2px 10px;
+    position: relative;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    min-height: 250px;
+    width: 400px;
+    @media (max-width: 920px) {
+      width: 100%;
+    }
+  }
+  #cancelOutShare {
+    width: 30px;
+    height: 30px;
+  }
+  .deleteH1 {
+    font-size: 1.6rem;
+    margin-top: 60px;
+  }
+  input {
+    margin-top: 20px;
+    width: 70%;
+    height: 30px;
+    font-size: 1.2rem;
+    padding-left: 10px;
+    box-sizing: border-box;
+  }
+  .deleteChosen {
+    display: flex;
+    justify-content: center;
+    // margin-top: 20px;
+    div {
+      font-size: 2rem;
+      display: flex;
+      width: 120px;
+      height: 50px;
+      border-radius: 25px;
+      background-color: black;
+      color: aliceblue;
+      text-align: center;
+      align-items: center;
+      // font-size: 2em;
+      // padding: 5px;
+      justify-content: center;
+      // font-weight: bolder;
+      margin: 30px;
+      &:hover {
+        background-color: red;
+      }
+    }
+  }
+}
+.newNameCheck {
+  box-sizing: border-box;
+  padding-left: 10px;
+  display: none;
+  text-align: left;
+  width: 70%;
+  position: relative;
+  background-color: orange;
+  border-radius: 8px;
+  margin: 5px auto 0px auto;
+  small {
+    font-size: 1.1rem;
+  }
+  small::before {
+    position: absolute;
+    content: "";
+    width: 0px;
+    height: 0px;
+    border-width: 10px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: orange;
+    border-left-color: transparent;
+    left: 5%;
+    top: -20px;
+    margin-right: 2px;
+
+    // background-color: violet;
+  }
+}
+#newNameCheckUp {
+  width: 85%;
 }

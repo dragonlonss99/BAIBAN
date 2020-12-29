@@ -120,6 +120,8 @@
     position: relative;
     color: white;
     text-align: center;
+    word-break: break-all;
+    text-align: left;
   }
 
   .message {
@@ -148,3 +150,7 @@
     margin: 2px 5px;
   }
 }
+
+// .chatRoomCancel{
+
+// }

@@ -57,18 +57,50 @@ export default function HomePage() {
     document.querySelector("#dark").style.display = "block";
     showLoginStatus();
   };
+
   const onScroll = (e) => {
     let obj = document.querySelector(".topNavBox");
-    if (e.target.scrollTop > 30) {
-      obj.style.marginTop = "0px";
-      obj.style.paddingTop = "30px";
-      obj.className = "topNavBox floatingNav";
+    if (window.innerWidth > 425) {
+      if (e.target.scrollTop > 30) {
+        obj.style.position = "fixed";
+        obj.style.marginTop = "0px";
+        obj.className = "topNavBox floatingNav";
+      } else {
+        obj.style.position = "absolute";
+        obj.style.marginTop = "30px";
+        obj.className = "topNavBox";
+      }
     } else {
-      obj.style.marginTop = "30px";
-      obj.style.paddingTop = "0px";
-      obj.className = "topNavBox";
+      if (e.target.scrollTop > 10) {
+        obj.style.position = "fixed";
+        obj.style.marginTop = "0px";
+        obj.className = "topNavBox floatingNav";
+      } else {
+        obj.style.position = "absolute";
+        obj.style.marginTop = "10px";
+        obj.className = "topNavBox";
+      }
     }
   };
+  // onscroll = () => {
+  //   console.log("2");
+  // };
+  // onwheel = (e) => {
+  //   // e.preventDefault();
+  //   e.stopPropagation();
+  //   let obj = document.querySelector(".topNavBox");
+  //   let home = document.querySelector("#homePage");
+  //   // console.log("1");
+  //   if (home.scrollTop > 30) {
+  //     obj.style.marginTop = "0px";
+  //     obj.style.paddingTop = "30px";
+  //     obj.className = "topNavBox floatingNav";
+  //   } else {
+  //     obj.style.marginTop = "30px";
+  //     obj.style.paddingTop = "0px";
+  //     obj.className = "topNavBox";
+  //   }
+  // };
   const showSignBox = () => {
     showLoginBox();
     showSignUpStatus();
@@ -76,18 +108,24 @@ export default function HomePage() {
   return (
     <div id="homePage" onScroll={onScroll}>
       <div id="ahome">
-        <div className="topNavBox">
-          <div className="topNav">
-            <div className="mainLogo">
-              <img src={logo} className="logo" />
-              <div>BAIBEN</div>
-            </div>
-            <div className="logInWay">
-              <div className="bigger" onClick={showLoginBox}>
-                log In
+        <div>
+          <div className="topNavBox">
+            <div className="topNav">
+              <div className="mainLogo">
+                <img src={logo} className="logo" />
+                <div>BAIBEN</div>
               </div>
-              <div id="homeSignUpBtn" className="bigger" onClick={showSignBox}>
-                Sign Up
+              <div className="logInWay">
+                <div className="bigger" onClick={showLoginBox}>
+                  log In
+                </div>
+                <div
+                  id="homeSignUpBtn"
+                  className="bigger"
+                  onClick={showSignBox}
+                >
+                  Sign Up
+                </div>
               </div>
             </div>
           </div>
@@ -138,7 +176,7 @@ export default function HomePage() {
             </div>
             <div className="homePageCircle">
               <img src={chat} />
-              <div>Communicate</div>
+              <div>Message</div>
             </div>
           </div>
         </div>

@@ -60,13 +60,13 @@ export default function ToolBar(props) {
     <div>
       <div className="paintWayBox">
         <div onClick={Pencil}>
-          <img src={pencil} style={{ width: 50 }} />
+          <img src={pencil} style={{ width: 30 }} />
         </div>
         <div onClick={Pen}>
-          <img src={pen} style={{ width: 50 }} />
+          <img src={pen} style={{ width: 30 }} />
         </div>
         <div onClick={Highlighter}>
-          <img src={highlighter} style={{ width: 50 }} />
+          <img src={highlighter} style={{ width: 30 }} />
         </div>
       </div>
       <div className="widthChange">

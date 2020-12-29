@@ -31,12 +31,14 @@ export default function Try_It() {
     });
     setCanvas(canvasToSet);
   }, []);
-
+  // console.log(window.location.pathname);
   var delKey = 8;
   onkeydown = (e) => {
-    if (e.keyCode === delKey) {
-      if (canvas.getActiveObject() && !canvas.getActiveObject().isEditing) {
-        deleteChosen(canvas);
+    if (window.location.pathname === "/") {
+      if (e.keyCode === delKey) {
+        if (canvas.getActiveObject() && !canvas.getActiveObject().isEditing) {
+          deleteChosen(canvas);
+        }
       }
     }
   };

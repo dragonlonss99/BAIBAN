@@ -137,7 +137,7 @@
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
   width: 506px;
   @media (max-width: 506px) {
     width: 100%;
@@ -301,8 +301,12 @@
 .topNavBox {
   // height: calc(2% + 100px);
   padding: 10px;
-  position: fixed;
-  top: 0%;
+  position: absolute;
+
+  overflow: hidden;
+  height: 80px;
+  // height: 100%;
+  top: 0px;
   // left: 125px;
   left: 30px;
   // width: calc(100% - 250px);
@@ -310,17 +314,20 @@
   // vertical-align: middle;
   background-color: #ffffff;
   margin-top: 30px;
-
+  // overflow: scroll;
   box-sizing: border-box;
   padding: 0px 2% 10px 2%;
   // opacity: 0.6;
-  z-index: 6;
+  z-index: 5;
   @include mobileBig {
+    margin-top: 10px;
     width: calc(100% - 20px);
     left: 10px;
+    height: 60px;
   }
 }
 .topNav {
+  // position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -328,7 +335,7 @@
   box-sizing: border-box;
   // transform: translateY(50%);
   // margin-top: 2%;
-  z-index: 5;
+  // z-index: 5;
 
   .mainLogo {
     flex-direction: row;
@@ -394,10 +401,10 @@
 }
 
 #ahome {
-  scroll-snap-stop: always;
-  scroll-snap-align: start;
+  // scroll-snap-stop: always;
+  // scroll-snap-align: start;
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
   width: 100vw;
   // border: silver 15px solid;
   font-family: "Nerko One", cursive;
@@ -409,7 +416,7 @@
   border-width: 30px;
   // border-color: transparent;
   border-image: url(/Img/back2.svg) 4 stretch;
-  position: relative;
+  // position: relative;
   @include webSmall {
     font-size: 14px;
   }
@@ -545,11 +552,15 @@
 }
 .eraser {
   width: 10%;
-  bottom: 0px;
+  bottom: 30px;
   right: 12%;
   border-radius: 30px 30px 0px 0px;
   // transform: rotate(30deg);
+  @include pad {
+    border-radius: 15px 15px 0px 0px;
+  }
   @include mobileBig {
+    bottom: 10px;
     border-radius: 10px 10px 0px 0px;
     width: 15%;
   }
@@ -588,7 +599,7 @@
       font-size: 3.2rem;
     }
     @include mobileBig {
-      font-size: 2.6rem;
+      font-size: 1.2rem;
     }
   }
   #circleBox {
@@ -608,14 +619,16 @@
     // flex-wrap: wrap;
     // background-color: #d4864d;
     .homePageCircle {
-      background-color: #9f5922;
+      // background-color: #9f5922;
+      border: black 8px solid;
       width: 280px;
       height: 280px;
       display: flex;
       border-radius: 150px;
       justify-content: center;
       align-items: center;
-      color: #ffffff;
+      // color: #ffffff;
+      color: black;
       margin: 10px;
       box-sizing: border-box;
       flex-direction: column;
@@ -646,7 +659,8 @@
 }
 
 .introIcon {
-  fill: #ffffff;
+  // fill: #ffffff;
+  fill: black;
 }
 #homePage {
   // scroll-snap-type: y mandatory;
@@ -668,8 +682,8 @@
   // flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  @include pad {
-    padding-top: 50px;
+  @include webSmall {
+    padding-top: 45px;
     flex-direction: column;
     // font-size: 12px;
     box-sizing: border-box;
@@ -687,7 +701,7 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    @include pad {
+    @include webSmall {
       width: 80%;
       height: auto;
     }
@@ -706,7 +720,7 @@
     flex-direction: column;
     justify-content: center;
     // width: 50%;
-    @include pad {
+    @include webSmall {
       width: 100%;
       height: auto;
     }
@@ -799,6 +813,10 @@
       box-sizing: border-box;
       transition: all 0.3s ease;
       // box-shadow: 0 0 10px #000;
+      @include mobile {
+        width: 50px;
+        height: 50px;
+      }
       #rect {
         width: 100%;
         height: 100%;
@@ -817,6 +835,11 @@
       text-align: center;
       font-size: 1.8rem;
       padding: 4px;
+      @include mobile {
+        width: 50px;
+        font-size: 1.5rem;
+        // height: 50px;
+      }
     }
     input {
       width: 90%;
@@ -840,9 +863,9 @@
     border-image: url(/Img/back2.svg) 10 stretch;
   }
   #artist {
-    height: 540px;
+    height: 500px;
     @media (max-width: 1024px) {
-      height: 400px;
+      height: 430px;
     }
     // width: 20%;
     @include pad {

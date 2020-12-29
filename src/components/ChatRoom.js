@@ -19,7 +19,7 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
-function ChatRoom() {
+function ChatRoom(props) {
   // useEffect(() => {
   //   document.querySelector("#mainChat").scrollTop = document.querySelector(
   //     "#mainChat"
@@ -38,7 +38,7 @@ function ChatRoom() {
   const [messages] = useCollectionData(query, { idField: "id" });
 
   const [formValue, setFormValue] = useState("");
-
+  const setChatEditing = props.setChatEditing;
   const sendMessage = async (e) => {
     e.preventDefault();
 
@@ -70,7 +70,11 @@ function ChatRoom() {
     <div className="chatRoom">
       <div className="chatRoomTop">
         <div>Chat Room</div>
-        <Cancel style={{ fill: "white", width: 30 }} onClick={showChatRoom} />
+        <Cancel
+          style={{ fill: "white", width: 30 }}
+          onClick={showChatRoom}
+          className="chatRoomCancel bigger"
+        />
       </div>
       <main id="mainChat">
         {messages &&
@@ -84,6 +88,15 @@ function ChatRoom() {
             value={formValue}
             onChange={(e) => setFormValue(e.target.value)}
             placeholder="message here"
+            onFocus={() => {
+              setChatEditing(true);
+            }}
+            onBlur={() => {
+              setChatEditing(false);
+            }}
+            // onClick={() => {
+            //   setChatEditing(true);
+            // }}
           />
 
           <button type="submit" disabled={!formValue}>

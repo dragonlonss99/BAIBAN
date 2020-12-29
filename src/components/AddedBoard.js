@@ -11,6 +11,8 @@ export default function AddedBoard(props) {
   const [owner, setOwner] = useState("");
   const db = firebase.firestore();
   const sharePagePop = props.sharePagePop;
+  const deletePagePop = props.deletePagePop;
+  const reNamePagePop = props.reNamePagePop;
   // useEffect(() => {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -25,7 +27,7 @@ export default function AddedBoard(props) {
           data.data().photoURL
             ? setBoardPic(`url( ${data.data().photoURL}  )`)
             : setBoardPic("");
-          console.log(data.data().name);
+          // console.log(data.data().name);
           // }
         });
     }
@@ -102,36 +104,48 @@ export default function AddedBoard(props) {
         db.collection("canvases").doc(props.id).delete();
       });
   };
-  const shareBoardUSer = () => {
-    db.collection("canvases")
-      .doc(props.id)
-      .update({
-        user: firebase.firestore.FieldValue.arrayUnion(props.id),
-      });
-    db.collection("users")
-      .doc(shareEmail)
-      .update({
-        canvasUse: firebase.firestore.FieldValue.arrayUnion(props.id),
-      });
-  };
+  // const shareBoardUSer = () => {
+  //   db.collection("canvases")
+  //     .doc(props.id)
+  //     .update({
+  //       user: firebase.firestore.FieldValue.arrayUnion(props.id),
+  //     });
+  //   db.collection("users")
+  //     .doc(shareEmail)
+  //     .update({
+  //       canvasUse: firebase.firestore.FieldValue.arrayUnion(props.id),
+  //     });
+  // };
 
-  const shareBoardObserver = () => {
-    db.collection("canvases")
-      .doc(props.id)
-      .update({
-        observer: firebase.firestore.FieldValue.arrayUnion(props.id),
-      });
-    db.collection("users")
-      .doc(shareEmail)
-      .update({
-        canvasObserve: firebase.firestore.FieldValue.arrayUnion(props.id),
-      });
-  };
+  // const shareBoardObserver = () => {
+  //   db.collection("canvases")
+  //     .doc(props.id)
+  //     .update({
+  //       observer: firebase.firestore.FieldValue.arrayUnion(props.id),
+  //     });
+  //   db.collection("users")
+  //     .doc(shareEmail)
+  //     .update({
+  //       canvasObserve: firebase.firestore.FieldValue.arrayUnion(props.id),
+  //     });
+  // };
 
   const shareBtnHandle = (e) => {
     e.preventDefault();
     e.stopPropagation();
     sharePagePop(props.id);
+  };
+
+  const deleteBtnHandle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deletePagePop(props.id);
+  };
+
+  const reNameBtnHandle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    reNamePagePop(props.id);
   };
   return (
     <div className="AddBoardBox " onClick={goToTheCanvas} id={props.id}>
@@ -139,9 +153,9 @@ export default function AddedBoard(props) {
         <div className="AddBoardLIconBox" onClick={showList}></div>
         <div className="AddBoardList hide">
           <ul>
-            <li>Rename</li>
+            <li onClick={reNameBtnHandle}>Rename</li>
             <li onClick={shareBtnHandle}>Share</li>
-            <li onClick={deleteBoard}>Delete</li>
+            <li onClick={deleteBtnHandle}>Delete</li>
           </ul>
         </div>
       </div>

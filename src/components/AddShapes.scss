@@ -51,6 +51,9 @@
   border-style: solid;
   margin-top: 5px;
   margin-bottom: 5px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 #cancel {
   width: 30px;
@@ -72,6 +75,11 @@
   justify-content: space-around;
   flex-wrap: wrap;
   // overflow-y: scroll;
+  input {
+    &:hover {
+      cursor: pointer;
+    }
+  }
   #imgBox {
     display: flex;
     justify-content: space-around;
@@ -133,12 +141,15 @@
       justify-content: center;
       align-items: center;
       img {
-        width: 30px;
+        width: 20px;
+        &:hover {
+          cursor: pointer;
+        }
         // height: 40px;
       }
       #bold,
       #italic {
-        width: 25px;
+        width: 18px;
       }
     }
     .no {

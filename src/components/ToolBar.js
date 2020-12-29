@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "fabric-history";
 import firebase from "firebase";
@@ -20,7 +20,22 @@ export default function ToolBar(props) {
   const db = firebase.firestore();
   const name = props.name;
   const canvas = props.canvas;
+  const chatEditing = props.chatEditing;
   const [canvasColor, setCanvasColor] = useState("#ffffff");
+  const [newName, setNewName] = useState("");
+  useEffect(() => {
+    db.collection("canvases")
+      .doc(window.location.pathname.split("/")[2])
+      .get()
+      .then((data) => {
+        setNewName(data.data().name);
+      });
+  }, []);
+
+  // function tosetName() {
+  //   setNewName(props.name);
+  // }
+  // tosetName();
   var ctrlDown = false,
     ctrlKey = 17,
     cmdKeyL = 91,
@@ -29,7 +44,6 @@ export default function ToolBar(props) {
     vKey = 86,
     xKey = 88,
     cKey = 67,
-    aKey = 65,
     zKey = 90;
   onkeydown = (e) => {
     // console.log(e.keyCode);
@@ -41,27 +55,27 @@ export default function ToolBar(props) {
     ) {
       ctrlDown = true;
     }
-
-    if (ctrlDown && e.keyCode === cKey) {
-      copy(canvas);
-    }
-    if (ctrlDown && e.keyCode === xKey) {
-      cut(canvas);
-    }
-    if (ctrlDown && e.keyCode === vKey) {
-      paste(canvas);
-    }
-    if (ctrlDown && e.keyCode === aKey) {
-      e.preventDefault();
-      selectAll(canvas);
-    }
     if (ctrlDown && e.keyCode === zKey) {
       e.preventDefault();
       doUndo(canvas);
     }
-    if (e.keyCode === delKey) {
-      if (canvas.getActiveObject() && !canvas.getActiveObject().isEditing) {
+
+    if (
+      canvas.getActiveObject() &&
+      !canvas.getActiveObject().isEditing &&
+      !chatEditing
+    ) {
+      if (e.keyCode === delKey) {
         deleteChosen(canvas);
+      }
+      if (ctrlDown && e.keyCode === cKey) {
+        copy(canvas);
+      }
+      if (ctrlDown && e.keyCode === xKey) {
+        cut(canvas);
+      }
+      if (ctrlDown && e.keyCode === vKey) {
+        paste(canvas);
       }
     }
   };
@@ -108,24 +122,14 @@ export default function ToolBar(props) {
   };
   //deleteChosen
   const deleteChosen = (canvi) => {
-    // canvi.remove(canvi.getActiveObject());
-    var doomedObj = canvi.getActiveObject();
-    if (doomedObj.type === "activeSelection") {
-      // active selection needs a reference to the canvi.
-      doomedObj.canvi = canvi;
-      doomedObj.forEachObject(function (obj) {
-        canvi.remove(obj);
-      });
-    } //endif multiple objects
-    else {
-      //If single object, then delete it
-      var activeObject = canvi.getActiveObject();
-      //How to delete multiple objects?
-      //if(activeObject !== null && activeObject.type === 'rectangle') {
-      if (activeObject !== null) {
-        canvi.remove(activeObject);
-      }
-    } //
+    //If single object, then delete it
+    var activeObject = canvi.getActiveObject();
+    //How to delete multiple objects?
+    //if(activeObject !== null && activeObject.type === 'rectangle') {
+    if (activeObject !== null) {
+      canvi.remove(activeObject);
+    }
+    // } //
     canvi.discardActiveObject();
     canvi.renderAll();
     updateToCloud(canvas);
@@ -158,12 +162,16 @@ export default function ToolBar(props) {
       //remove after cloned to clipboard
       canvas.remove(canvas.getActiveObject());
       updateToCloud(canvas);
+      canvas.renderAll();
       // canvas.fire("object:modified");
     });
     // console.log(clipboard);
   };
   //copy
   const copy = () => {
+    if (canvas.getActiveObject() === null) {
+      return;
+    }
     canvas.getActiveObject().clone(function (cloned) {
       clipboard = cloned;
     });
@@ -171,6 +179,9 @@ export default function ToolBar(props) {
   //paste
   const paste = (canvas) => {
     // canvas.offHistory();
+    if (!clipboard) {
+      return;
+    }
     clipboard.clone(function (clonedObj) {
       canvas.discardActiveObject();
       clonedObj.set({
@@ -202,35 +213,6 @@ export default function ToolBar(props) {
     // canvas.undo();
     canvas.undo();
     updateToCloud(canvas);
-
-    // canvas.fire("object:modified");
-    // let undoArr = [];
-    // let redoArr = [];
-    // db.collection("undoRedo")
-    //   .doc(window.location.pathname.split("/")[2])
-    //   .get()
-    //   .then((data) => {
-    //     if (data.data().undo.length !== 0) {
-    //       undoArr = data.data().undo;
-    //       redoArr = data.data().redo;
-    //       let newCan = undoArr.pop();
-    //       redoArr.push(newCan);
-    //       if (redoArr.length > 5) {
-    //         redoArr.shift();
-    //       }
-    //       db.collection("undoRedo")
-    //         .doc(window.location.pathname.split("/")[2])
-    //         .update({
-    //           undo: undoArr,
-    //           redo: redoArr,
-    //         });
-    //       db.collection("canvases")
-    //         .doc(window.location.pathname.split("/")[2])
-    //         .update({
-    //           data: newCan,
-    //         });
-    //     }
-    //   });
   }
   //redo
   function doRedo() {
@@ -241,18 +223,24 @@ export default function ToolBar(props) {
   }
   const bringForward = (canvas) => {
     // canvas.offHistory();
-
-    canvas.getActiveObject().bringForward();
-    // updateToCloud(canvas);
-    canvas.fire("object:modified");
+    if (!canvas.getActiveObject()) {
+      return;
+    } else {
+      canvas.getActiveObject().bringForward();
+      // updateToCloud(canvas);
+      canvas.fire("object:modified");
+    }
   };
 
   const sendBackwards = (canvas) => {
     // canvas.offHistory();
-
-    canvas.getActiveObject().sendBackwards();
-    // updateToCloud(canvas);
-    canvas.fire("object:modified");
+    if (!canvas.getActiveObject()) {
+      return;
+    } else {
+      canvas.getActiveObject().sendBackwards();
+      // updateToCloud(canvas);
+      canvas.fire("object:modified");
+    }
   };
 
   //canvascolor
@@ -263,36 +251,16 @@ export default function ToolBar(props) {
     canvas.fire("object:modified");
   };
 
-  // //share
-  // const shareCanvas = (observerEmail) => {
-  //   let canvasId = window.location.pathname.split("/")[2];
-  //   var db = firebase.firestore();
-  //   db.collection("canvases")
-  //     .doc(canvasId)
-  //     .update({
-  //       observer: firebase.firestore.FieldValue.arrayUnion(observerEmail),
-  //     });
-  //   db.collection("users")
-  //     .doc(observerEmail)
-  //     .update({
-  //       canvasRead: firebase.firestore.FieldValue.arrayUnion(canvasId),
-  //     });
-  // };
-
-  // const showShare = () => {
-  //   document.querySelector("#shareInputBox").style.display === "block"
-  //     ? (document.querySelector("#shareInputBox").style.display = "none")
-  //     : (document.querySelector("#shareInputBox").style.display = "block");
-  // };
-
-  // const handleShare = () => {
-  //   shareCanvas(shareInput);
-  //   setShareInput("");
-  // };
   const sharePagePop = () => {
     document.querySelector("#darkBack").className = "scaleIn";
     document.querySelector("#darkBack").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
+  };
+  const renameBoard = () => {
+    let canvasId = window.location.pathname.split("/")[2];
+    db.collection("canvases").doc(canvasId).update({
+      name: newName,
+    });
   };
   // const showShareBox = () => {
   //   document.querySelector("#darkBack").style.display = "flex";
@@ -302,7 +270,18 @@ export default function ToolBar(props) {
     <>
       <div id="toolBarBox">
         <div id="toolBarName">
-          <div style={{ display: "block" }}>{name}</div>
+          <div
+          // style={{ display: "block" }}
+          >
+            {name}
+          </div>
+          <input
+            value={newName}
+            onChange={(e) => {
+              setNewName(e.target.value);
+            }}
+            onBlur={renameBoard}
+          />
         </div>
         <div>
           <div className="toolBarIconBox blue">
@@ -349,12 +328,12 @@ export default function ToolBar(props) {
             <Ungroup onClick={() => ungroup(canvas)} className="toolBarIcon" />
           </div> */}
         </div>
-        <div className="toolBarIconBox ">
+        {/* <div className="toolBarIconBox ">
           <SelectAll
             onClick={() => selectAll(canvas)}
             className="toolBarIcon selectAll"
           />
-        </div>
+        </div> */}
 
         <div id="shareBox" onClick={sharePagePop}>
           share
