@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import pagePic from "../Img/boardPic.png";
 import { useHistory } from "react-router-dom";
 import firebase from "firebase";
+import * as firebaseApp from "../utils/firebaseUtils";
+
 export default function AddedBoard(props) {
   //   let id = props.id;
   const [name, setName] = useState("");
@@ -27,17 +30,16 @@ export default function AddedBoard(props) {
           data.data().photoURL
             ? setBoardPic(`url( ${data.data().photoURL}  )`)
             : setBoardPic("");
-          // console.log(data.data().name);
+
           // }
         });
     }
   });
   // }, []);
-  let history = useHistory();
+  const history = useHistory();
   const boardPicHandle = () => {};
   const showList = (e) => {
-    // console.log(e.target.nextSibling.classList);
-    let list = document.getElementsByClassName("AddBoardList");
+    const list = document.getElementsByClassName("AddBoardList");
     // for (var i = 0; i < list.length; i++) {
     //   list[i].classList = "AddBoardList hide";
     // }
@@ -55,9 +57,7 @@ export default function AddedBoard(props) {
     }
     e.stopPropagation();
   };
-  const changeName = () => {
-    console.log("GGG");
-  };
+  const changeName = () => {};
   const goToTheCanvas = () => {
     history.push("/board/" + props.id);
   };

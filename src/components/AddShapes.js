@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable prefer-const */
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import firebase from "firebase";
@@ -13,6 +15,8 @@ import textbox from "../Img/addshapes/LogoMakr-26YKdq.png";
 import RectAdjust from "./RectAdjust";
 import { v4 as uuidv4 } from "uuid";
 import { updateToCloud } from "../App.js";
+import * as firebaseApp from "../utils/firebaseUtils";
+
 //Rect
 
 export default function AddShapes(props) {

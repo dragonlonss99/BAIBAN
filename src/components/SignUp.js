@@ -33,8 +33,6 @@ export default function SignUpLocal() {
         .createUserWithEmailAndPassword(email, password)
         .then(function (user) {
           //註冊完後，可執行的動作
-          console.log("signUp successfully");
-          console.log(user);
           var db = firebase.firestore();
           db.collection("users")
             .doc(email)
@@ -52,8 +50,7 @@ export default function SignUpLocal() {
         .catch(function (error) {
           //註冊未成功的錯誤訊息
           var errorCode = error.code;
-          // console.log(errorMessage);
-          // console.log(error);
+
           if (errorCode === "auth/email-already-in-use") {
             document.querySelector("#emailUpCheck").style.display = "block";
             setEmailCheck("This email has been used!");

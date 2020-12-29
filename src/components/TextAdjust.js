@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import width from "../Img/addshapes/adjust/width.svg";
@@ -12,6 +13,7 @@ import alignLeftStyle from "../Img/addshapes/adjust/align-left.svg";
 import alignCenterStyle from "../Img/addshapes/adjust/align-center.svg";
 import alignRightStyle from "../Img/addshapes/adjust/align-right.svg";
 import { updateToCloud } from "../App.js";
+import * as firebaseApp from "../utils/firebaseUtils";
 
 export default function TextAdjust(props) {
   const canvas = props.canvas;

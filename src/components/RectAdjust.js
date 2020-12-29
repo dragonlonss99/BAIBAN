@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import fillColorImg from "../Img/addshapes/adjust/fillcolor.svg";
 import strokeColorImg from "../Img/addshapes/adjust/strokeColor.svg";

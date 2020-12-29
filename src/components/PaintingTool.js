@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import width from "../Img/addshapes/adjust/width.svg";
@@ -11,7 +12,6 @@ export default function ToolBar(props) {
   //   const lineColorInput = $("lineColorInput");
   const canvas = props.canvas;
   function changeLineWidth(e) {
-    // console.log(e.target.value);
     const newWidth = parseInt(e.target.value, 10) || 1;
     canvas.freeDrawingBrush.width = newWidth;
     setLineWidthInput(e.target.value);
@@ -52,9 +52,7 @@ export default function ToolBar(props) {
     canvas.isDrawingMode = false;
     props.closeContent();
     if (canvas.getActiveObject()) {
-      console.log(canvas.getActiveObject().type);
     }
-    // console.log(canvi.getActiveObject().fontStyle);
   };
   return (
     <div>

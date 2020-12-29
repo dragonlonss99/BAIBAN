@@ -13,7 +13,7 @@ export default function Try_It() {
   const [fillColor, setFillColor] = useState("#d4864d");
   const [colorPlate, setColorPlate] = useState("");
   useEffect(() => {
-    let canvasToSet = new fabric.Canvas("can", {
+    const canvasToSet = new fabric.Canvas("can", {
       height: 350,
       width: window.innerWidth * 0.5,
       backgroundColor: "#ffffff",
@@ -43,7 +43,7 @@ export default function Try_It() {
     }
   };
   const freeDwawing = () => {
-    let pencil = document.querySelector("#tryItPencil");
+    const pencil = document.querySelector("#tryItPencil");
     if (canvas.isDrawingMode) {
       canvas.isDrawingMode = false;
       pencil.className = "tryIcon bigger";
@@ -54,7 +54,7 @@ export default function Try_It() {
     }
   };
   const closeDraw = () => {
-    let pencil = document.querySelector("#tryItPencil");
+    const pencil = document.querySelector("#tryItPencil");
     if (canvas.isDrawingMode) {
       canvas.isDrawingMode = false;
       pencil.className = "tryIcon bigger";

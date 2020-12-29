@@ -23,14 +23,12 @@ export default function SignInLocal() {
       .signInWithEmailAndPassword(email, password)
       .then(function (user) {
         //登入成功
-        console.log("login successfully");
       })
       .catch(function (error) {
         //登入錯誤訊息
         // var errorMessage = error.message;
         var errorCode = error.code;
-        // console.log(errorMessage);
-        // console.log(error);
+
         if (errorCode === "auth/user-not-found") {
           document.querySelector("#emailCheck").style.display = "block";
           setEmailCheck("Email address hasn't been sign up!");

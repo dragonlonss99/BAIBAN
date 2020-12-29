@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "fabric-history";
@@ -16,6 +17,8 @@ import { ReactComponent as LayerUp } from "../Img/toolbar/gotop.svg";
 import { ReactComponent as LayerDown } from "../Img/toolbar/goBottom.svg";
 import "./Toolbar.scss";
 import { updateToCloud } from "../App.js";
+import * as firebaseApp from "../utils/firebaseUtils";
+
 export default function ToolBar(props) {
   const db = firebase.firestore();
   const name = props.name;
@@ -46,8 +49,6 @@ export default function ToolBar(props) {
     cKey = 67,
     zKey = 90;
   onkeydown = (e) => {
-    // console.log(e.keyCode);
-
     if (
       e.keyCode === ctrlKey ||
       e.keyCode === cmdKeyL ||
@@ -165,7 +166,6 @@ export default function ToolBar(props) {
       canvas.renderAll();
       // canvas.fire("object:modified");
     });
-    // console.log(clipboard);
   };
   //copy
   const copy = () => {
@@ -257,7 +257,7 @@ export default function ToolBar(props) {
     document.querySelector("#dark").style.display = "block";
   };
   const renameBoard = () => {
-    let canvasId = window.location.pathname.split("/")[2];
+    const canvasId = window.location.pathname.split("/")[2];
     db.collection("canvases").doc(canvasId).update({
       name: newName,
     });
@@ -351,7 +351,7 @@ export default function ToolBar(props) {
         {/* <DeleteAll onClick={() => deleteAll(canvas)}/> */}
       </div>
       <div id="boardColor">
-        <label>board's color：</label>
+        <label>board&#39;s color：</label>
         <input
           onChange={changeCanvasColor}
           type="color"

@@ -19,7 +19,7 @@ import { useHistory } from "react-router-dom";
 import "./homepage.scss";
 
 export default function HomePage() {
-  let history = useHistory();
+  const history = useHistory();
   const showLoginStatus = () => {
     document.querySelector("#logcontent").style.display = "block";
     document.querySelector("#signUpBox").style.display = "none";
@@ -34,12 +34,7 @@ export default function HomePage() {
   //   : firebase.initializeApp(firebaseConfig);
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // console.log(user.email);
-      // console.log(user.photoURL);
       history.push("/profile");
-    } else {
-      // No user is signed in.
-      // document.querySelector("#status").innerHTML = "未登入，請點以下登入方式";
     }
   });
 
@@ -59,7 +54,7 @@ export default function HomePage() {
   };
 
   const onScroll = (e) => {
-    let obj = document.querySelector(".topNavBox");
+    const obj = document.querySelector(".topNavBox");
     if (window.innerWidth > 425) {
       if (e.target.scrollTop > 30) {
         obj.style.position = "fixed";
@@ -82,25 +77,7 @@ export default function HomePage() {
       }
     }
   };
-  // onscroll = () => {
-  //   console.log("2");
-  // };
-  // onwheel = (e) => {
-  //   // e.preventDefault();
-  //   e.stopPropagation();
-  //   let obj = document.querySelector(".topNavBox");
-  //   let home = document.querySelector("#homePage");
-  //   // console.log("1");
-  //   if (home.scrollTop > 30) {
-  //     obj.style.marginTop = "0px";
-  //     obj.style.paddingTop = "30px";
-  //     obj.className = "topNavBox floatingNav";
-  //   } else {
-  //     obj.style.marginTop = "30px";
-  //     obj.style.paddingTop = "0px";
-  //     obj.className = "topNavBox";
-  //   }
-  // };
+
   const showSignBox = () => {
     showLoginBox();
     showSignUpStatus();

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import firebase from "firebase";
@@ -25,7 +26,6 @@ export default function SaveAndLoad(props) {
   //saveAsJSON
   const saveAsJSON = () => {
     canvasToUpload = JSON.stringify(canvas.toJSON());
-    console.log(canvasToUpload);
   };
   //saveToCloud
   const saveToCloud = () => {
@@ -42,9 +42,7 @@ export default function SaveAndLoad(props) {
         owner: "bbb@gmail.com",
         user: ["bbb@gmail.com"],
       })
-      .then(function (docRef) {
-        console.log("Document written");
-      })
+      .then(function (docRef) {})
       .catch(function (error) {
         console.error("Error adding document: ", error);
       });
@@ -63,11 +61,11 @@ export default function SaveAndLoad(props) {
       multiplier: 0.5,
       quality: 0.1,
     });
-    // console.log(dataURL);
+
     const img = document.createElement("img");
     img.src = dataURL;
     // document.body.appendChild(img);
-    // console.log(img.src);
+
     window.open(dataURL);
     // const Image = new fabric.Image(img, {
     //   top: 150,
@@ -85,7 +83,7 @@ export default function SaveAndLoad(props) {
     //       `.${formatType}`
     //   );
     // storageRef.put(img);
-    // console.log(atob(dataURL));
+
     const a = document.createElement("a");
     a.href = dataURL;
     a.download = `output.${formatType}`;

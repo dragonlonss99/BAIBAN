@@ -61,7 +61,7 @@ export default function ProfilePage() {
       }
     });
   }, []);
-  let history = useHistory();
+  const history = useHistory();
 
   const signingOut = () => {
     signOut();
@@ -69,17 +69,15 @@ export default function ProfilePage() {
   };
 
   const changeReadStatus = (e) => {
-    // console.log(canvasObserve);
-    let a = document.getElementsByClassName("profileTag");
+    const a = document.getElementsByClassName("profileTag");
     for (var i = 0; i < a.length; i++) {
       a[i].classList = "profileTag";
     }
     e.target.classList = "profileTag selected";
-    let b = document.getElementsByClassName("drawCompo");
+    const b = document.getElementsByClassName("drawCompo");
     for (var i = 0; i < b.length; i++) {
       b[i].classList = "drawCompo";
     }
-    // console.log(e.target.previousSibling.className);
     if (window.innerWidth > 425) {
       e.target.previousSibling.classList = "drawCompo drawn";
     }
@@ -99,7 +97,7 @@ export default function ProfilePage() {
   };
 
   document.onclick = function () {
-    let list = document.getElementsByClassName("AddBoardList");
+    const list = document.getElementsByClassName("AddBoardList");
     for (var i = 0; i < list.length; i++) {
       list[i].classList = "AddBoardList hide";
     }
@@ -109,7 +107,6 @@ export default function ProfilePage() {
       document.querySelector("#newNameCheckUp").style.display = "block";
     } else {
       var userEmail = firebase.auth().currentUser.email;
-      // console.log(userEmail);
       var db = firebase.firestore();
       db.collection("canvases")
         .add({
@@ -150,7 +147,6 @@ export default function ProfilePage() {
 
   const sharePagePop = (id) => {
     setBoardChosen(id);
-    console.log(id);
     document.querySelector("#darkBack").className = "scaleIn";
     document.querySelector("#darkBack").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
@@ -158,7 +154,6 @@ export default function ProfilePage() {
 
   const deletePagePop = (id) => {
     setBoardChosen(id);
-    // console.log(id);
     document.querySelector("#deleteConfirm").className = "scaleIn";
     document.querySelector("#deleteConfirm").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
@@ -166,7 +161,6 @@ export default function ProfilePage() {
 
   const reNamePagePop = (id) => {
     setBoardChosen(id);
-    // console.log(id);
     document.querySelector("#NewNameConfirm").className = "scaleIn";
     document.querySelector("#NewNameConfirm").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
@@ -192,7 +186,7 @@ export default function ProfilePage() {
   };
 
   const shareCanvasUse = (observerEmail) => {
-    let canvasId = boardChosen;
+    const canvasId = boardChosen;
 
     db.collection("canvases")
       .doc(canvasId)
@@ -228,7 +222,7 @@ export default function ProfilePage() {
     }
   };
   const shareCanvasObserve = (observerEmail) => {
-    let canvasId = boardChosen;
+    const canvasId = boardChosen;
 
     db.collection("canvases")
       .doc(canvasId)
@@ -274,13 +268,13 @@ export default function ProfilePage() {
   };
 
   const renameBoard = () => {
-    let canvasId = boardChosen;
+    const canvasId = boardChosen;
     db.collection("canvases").doc(canvasId).update({
       name: newName,
     });
   };
   const deleteBoard = () => {
-    let canvasId = boardChosen;
+    const canvasId = boardChosen;
     db.collection("canvases")
       .doc(canvasId)
       .get()

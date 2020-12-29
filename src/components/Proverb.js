@@ -103,5 +103,5 @@ export default function Proverb() {
   //   const produceProverb = () => {
   //     return proverbList[math];
   //   };
-  return <div id="proverb">{proverbList[math]}</div>;
+  // return <div id="proverb">{proverbList[math]}</div>;
 }

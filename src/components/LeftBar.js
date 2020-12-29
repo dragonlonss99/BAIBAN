@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import firebase from "firebase";
@@ -24,15 +25,13 @@ export default function LeftBar(props) {
   const name = props.name;
   const [show, setShow] = useState("");
   const [boxType, setBoxType] = useState(0);
-  let history = useHistory();
+  const history = useHistory();
   const closeContent = () => {
     document.querySelector("#toolcontent").style.marginLeft = "-240px";
     canvas.isDrawingMode = false;
   };
 
   const showAddShapes = () => {
-    // console.log(canvas.getActiveObject());
-
     canvas.isDrawingMode = false;
 
     if (
@@ -49,7 +48,7 @@ export default function LeftBar(props) {
     // canvas.getObjects().forEach((obj) => {
     //   if (obj.type === "circle") {
     //     canvas.setActiveObject(obj);
-    //     console.log(obj.type);
+
     //     canvas.renderAll();
     //   }
     // });
@@ -83,7 +82,6 @@ export default function LeftBar(props) {
 
     setShow(<TextAdjust canvas={canvas} />);
     setBoxType(3);
-    console.log(canvas.historyUndo);
   };
   const showSave = () => {
     canvas.isDrawingMode = false;
