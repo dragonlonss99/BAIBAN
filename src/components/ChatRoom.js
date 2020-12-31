@@ -95,9 +95,6 @@ function ChatRoom(props) {
             onBlur={() => {
               setChatEditing(false);
             }}
-            // onClick={() => {
-            //   setChatEditing(true);
-            // }}
           />
 
           <button type="submit" disabled={!formValue}>

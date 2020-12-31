@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
-import pencil from "../Img/back/pencil02.svg";
 import { ReactComponent as Pencil } from "../Img/back/pencil02.svg";
-import eraser from "../Img/back/eraser02.svg";
 import { ReactComponent as Eraser } from "../Img/back/eraser02.svg";
 import { ReactComponent as Artist } from "../Img/back/undraw_artist.svg";
-import { ReactComponent as ColorP } from "../Img/back/color-palette.svg";
 import { SketchPicker } from "react-color";
 
 export default function Try_It() {
   const [canvas, setCanvas] = useState("");
+  const [drawingMode, setDrawingMode] = useState(false);
   const [fillColor, setFillColor] = useState("#d4864d");
-  const [colorPlate, setColorPlate] = useState("");
   useEffect(() => {
     const canvasToSet = new fabric.Canvas("can", {
       height: 350,
@@ -31,8 +28,7 @@ export default function Try_It() {
     });
     setCanvas(canvasToSet);
   }, []);
-  // console.log(window.location.pathname);
-  var delKey = 8;
+  const delKey = 8;
   onkeydown = (e) => {
     if (window.location.pathname === "/") {
       if (e.keyCode === delKey) {
@@ -43,22 +39,16 @@ export default function Try_It() {
     }
   };
   const freeDwawing = () => {
-    const pencil = document.querySelector("#tryItPencil");
-    if (canvas.isDrawingMode) {
-      canvas.isDrawingMode = false;
-      pencil.className = "tryIcon bigger";
-    } else {
-      canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush.color = fillColor;
-      pencil.className = "tryIcon bigger drawClicked";
-    }
+    canvas.isDrawingMode ? closeDraw() : startDraw();
   };
   const closeDraw = () => {
-    const pencil = document.querySelector("#tryItPencil");
-    if (canvas.isDrawingMode) {
-      canvas.isDrawingMode = false;
-      pencil.className = "tryIcon bigger";
-    }
+    canvas.isDrawingMode = false;
+    setDrawingMode(false);
+  };
+  const startDraw = () => {
+    canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush.color = fillColor;
+    setDrawingMode(true);
   };
   const addRect = () => {
     const rect = new fabric.Rect({
@@ -70,7 +60,7 @@ export default function Try_It() {
     });
     canvas.add(rect);
     canvas.renderAll();
-    closeDraw();
+    canvas.isDrawingMode && closeDraw();
   };
   const addCircle = () => {
     const circle = new fabric.Circle({
@@ -81,16 +71,14 @@ export default function Try_It() {
     });
     canvas.add(circle);
     canvas.renderAll();
-    closeDraw();
+    canvas.isDrawingMode && closeDraw();
   };
   const deleteChosen = () => {
     var activeObject = canvas.getActiveObject();
-    if (activeObject !== null) {
-      canvas.remove(activeObject);
-    }
+    activeObject && canvas.remove(activeObject);
     canvas.discardActiveObject();
     canvas.renderAll();
-    closeDraw();
+    canvas.isDrawingMode && closeDraw();
   };
 
   const changeFillColor = (e) => {
@@ -107,43 +95,9 @@ export default function Try_It() {
     canvas.renderAll();
   };
 
-  // const handleFillColor = (color, e) => {
-  //   if (canvas.getActiveObject()) {
-  //     if (canvas.getActiveObject().type === "path") {
-  //       canvas.getActiveObject().set("stroke", color.hex);
-  //     } else {
-  //       canvas.getActiveObject().set("fill", color.hex);
-  //     }
-  //   } else if (canvas.isDrawingMode) {
-  //     canvas.freeDrawingBrush.color = color.hex;
-  //   }
-  //   setFillColor(color.hex);
-  //   canvas.renderAll();
-  //   // setColorPlate("");
-  // };
-
-  // const showPicker = () => {
-  //   if (colorPlate === "") {
-  //     setColorPlate(
-  //       <SketchPicker
-  //         onChangeComplete={handleFillColor}
-  //         color={fillColor}
-  //         disableAlpha="true"
-  //       />
-  //     );
-  //   } else {
-  //     setColorPlate("");
-  //   }
-  // };
   return (
     <div id="tryBox">
       <div id="tool">
-        {/* <div className="tryIcon bigger">
-          <ColorP fill={fillColor} onClick={showPicker} />
-          {colorPlate}
-
-        </div> */}
-
         <div id="color">
           color
           <input
@@ -154,27 +108,28 @@ export default function Try_It() {
             className="bigger"
           />
         </div>
-        <div onClick={freeDwawing} className="tryIcon bigger" id="tryItPencil">
+        <div
+          onClick={freeDwawing}
+          className={
+            drawingMode ? "tryIcon bigger drawClicked" : "tryIcon bigger"
+          }
+          id="tryItPencil"
+        >
           <Pencil fill={fillColor} />
-          {/* <img src={pencil} /> */}
         </div>
         <div onClick={addRect} className="tryIcon center bigger">
           <div id="rect" style={{ backgroundColor: fillColor }} />
-          {/* <img /> */}
         </div>
         <div onClick={addCircle} className="tryIcon center bigger">
           <div id="circle" style={{ backgroundColor: fillColor }} />
-          {/* <img /> */}
         </div>
         <div onClick={deleteChosen} className="tryIcon bigger">
-          {/* <img src={eraser} /> */}
           <Eraser fill={fillColor} />
         </div>
       </div>
       <canvas id="can" />
       <div id="artistBox">
         <Artist id="artist" />
-        {/* <img /> */}
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import parra from "../Img/addshapes/LogoMakr-0mlYb5.png";
 import line from "../Img/addshapes/LogoMakr-7xibzp.png";
 import righttriangle from "../Img/addshapes/LogoMakr-6YA1tz.png";
 import square from "../Img/addshapes/LogoMakr-60BBJ5.png";
-import textbox from "../Img/addshapes/LogoMakr-26YKdq.png";
 import RectAdjust from "./RectAdjust";
 import { v4 as uuidv4 } from "uuid";
 import { updateToCloud } from "../App.js";
@@ -305,19 +304,6 @@ export default function AddShapes(props) {
           setOpacityInput(v);
         }}
       />
-      {/* <button onClick={() => addRect(canvas)}>Rectangle</button>
-      <button onClick={() => addCircle(canvas)}>Circle</button>
-      <button onClick={() => addTextbox(canvas)}>Textbox</button>
-      <button onClick={() => addTriangle(canvas)}>Triangle</button>
-      <button onClick={() => addLine(canvas)}>Line</button>
-      <button onClick={() => addEllipse(canvas)}>Ellipse</button>
-      <button onClick={() => addRightTriangle(canvas)}>Right Triangle</button>
-      <button onClick={() => addIsoscelesTriangle(canvas)}>
-        Isosceles Triangle
-      </button>
-      <button onClick={() => addParallelogram(canvas)}>Parallelogram</button>
-      <button onClick={() => freeDwawing(canvas)}>Draw</button>
- */}
     </div>
   );
 }

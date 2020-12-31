@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { ReactComponent as Logo } from "./Img/toolbar/open.svg";
 import { ReactComponent as Add } from "./Img/add.svg";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import { ReactComponent as DrawCircle } from "./Img/drawCircle5.svg";
 import AddedBoard from "./components/AddedBoard.js";
-import { signOut } from "./firebase";
+import { signOut } from "./utils/firebaseUtils.js";
 import firebase from "firebase";
 import logo from "./Img/icon13.svg";
 import userImg from "./Img/user.png";
-import firebaseConfig from "./firebaseConfig";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as Cowork } from "./Img/profile/undraw_Online_collaboration.svg";
 import { ReactComponent as Learn } from "./Img/profile/undraw_Online_learning.svg";
-
+import * as firebaseApp from "./utils/firebaseUtils.js";
 import "./profile.scss";
 import Proverb from "./components/Proverb.js";
 
@@ -40,10 +38,11 @@ export default function ProfilePage() {
           // .get()
           // .then((data) => {
           .onSnapshot((data) => {
-            if (data.data()) {
-              setCanvasOwn(data.data().canvasOwn.reverse());
-              setCanvasRead(data.data().canvasUse.reverse());
-              setCanvasObserve(data.data().canvasObserve.reverse());
+            const boardData = data.data();
+            if (boardData) {
+              setCanvasOwn(boardData.canvasOwn.reverse());
+              setCanvasRead(boardData.canvasUse.reverse());
+              setCanvasObserve(boardData.canvasObserve.reverse());
               setUserEmailfromF(user.email);
               // setUserName(user.userName);
               if (user.providerData[0].providerId === "facebook.com") {
@@ -54,13 +53,14 @@ export default function ProfilePage() {
                 setUserName(user.displayName);
               } else {
                 setPhoto(userImg);
-                setUserName(data.data().userName);
+                setUserName(boardData.userName);
               }
             }
           });
       }
     });
   }, []);
+
   const history = useHistory();
 
   const signingOut = () => {
@@ -106,7 +106,7 @@ export default function ProfilePage() {
     if (nameInput.length === 0) {
       document.querySelector("#newNameCheckUp").style.display = "block";
     } else {
-      var userEmail = firebase.auth().currentUser.email;
+      var userEmail = firebase.auth().currentUser?.email;
       var db = firebase.firestore();
       db.collection("canvases")
         .add({
@@ -269,46 +269,38 @@ export default function ProfilePage() {
 
   const renameBoard = () => {
     const canvasId = boardChosen;
-    db.collection("canvases").doc(canvasId).update({
+    firebaseApp.canvasesUpdate(canvasId, {
       name: newName,
     });
   };
+
   const deleteBoard = () => {
     const canvasId = boardChosen;
-    db.collection("canvases")
-      .doc(canvasId)
-      .get()
-      .then((data) => {
-        if (data.data().user.length !== 0) {
-          data.data().user.forEach((email) => {
-            db.collection("users")
-              .doc(email)
-              .update({
-                canvasUse: firebase.firestore.FieldValue.arrayRemove(canvasId),
-              });
+    firebaseApp
+      .canvasesGet(canvasId, (data) => {
+        const userData = data.data();
+        if (userData.user.length !== 0) {
+          userData.user.forEach((email) => {
+            firebaseApp.userUpdate(email, {
+              canvasUse: firebaseApp.arrayRemove(canvasId),
+            });
           });
         }
-        if (data.data().observer.length !== 0) {
-          data.data().observer.forEach((email) => {
-            db.collection("users")
-              .doc(email)
-              .update({
-                canvasObserve: firebase.firestore.FieldValue.arrayRemove(
-                  canvasId
-                ),
-              });
+        if (userData.observer.length !== 0) {
+          userData.user.forEach((email) => {
+            firebaseApp.userUpdate(email, {
+              canvasObserve: firebaseApp.arrayRemove(canvasId),
+            });
           });
         }
-        db.collection("users")
-          .doc(data.data().owner)
-          .update({
-            canvasOwn: firebase.firestore.FieldValue.arrayRemove(canvasId),
-          });
+        firebaseApp.userUpdate(userData.owner, {
+          canvasOwn: firebaseApp.arrayRemove(canvasId),
+        });
       })
       .then(() => {
-        db.collection("canvases").doc(canvasId).delete();
-        db.collection("chatRooms").doc(canvasId).delete();
-        db.collection("selectedObj").doc(canvasId).delete();
+        firebaseApp.docDelete("canvases", canvasId);
+        firebaseApp.docDelete("chatRooms", canvasId);
+        firebaseApp.docDelete("selectedObj", canvasId);
       });
   };
 

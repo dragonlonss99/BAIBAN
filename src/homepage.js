@@ -11,7 +11,7 @@ import penDraw from "./Img/back/fountain-pen.svg";
 import chat from "./Img/back/chat-02.svg";
 import audi from "./Img/back/audience.svg";
 import Try_It from "./components/Try_It.js";
-import { signInWithGoogle, signInWithFB, signOut } from "./firebase";
+import { signInWithGoogle, signInWithFB } from "./utils/firebaseUtils.js";
 import SignInLocal from "./components/SignIn";
 import SignUpLocal from "./components/SignUp";
 import firebase from "firebase";
@@ -19,74 +19,62 @@ import { useHistory } from "react-router-dom";
 import "./homepage.scss";
 
 export default function HomePage() {
+  const [loginPage, setLoginPage] = useState(false);
+  const [loginSignUp, setLoginSignUp] = useState(true);
+  const [scalein, setScalein] = useState(false);
+  const [topNavscroll, setTopNavscroll] = useState(false);
+  const [limit, setLimit] = useState(30);
   const history = useHistory();
-  const showLoginStatus = () => {
-    document.querySelector("#logcontent").style.display = "block";
-    document.querySelector("#signUpBox").style.display = "none";
-  };
-  const showSignUpStatus = () => {
-    document.querySelector("#logcontent").style.display = "none";
-    document.querySelector("#signUpBox").style.display = "block";
-  };
-
-  // const app = firebase.apps.length
-  //   ? firebase.app()
-  //   : firebase.initializeApp(firebaseConfig);
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       history.push("/profile");
     }
   });
-
+  useEffect(() => {
+    if (window.innerWidth > 425) {
+      setLimit(30);
+    } else {
+      setLimit(10);
+    }
+  }, []);
   const loginBoxNon = () => {
-    document.querySelector("#darkBack").className = "scaleOut";
+    setScalein(false);
     setTimeout(() => {
-      document.querySelector("#darkBack").style.display = "none";
-      document.querySelector("#dark").style.display = "none";
+      setLoginPage(false);
     }, 300);
   };
 
   const showLoginBox = () => {
-    document.querySelector("#darkBack").className = "scaleIn";
-    document.querySelector("#darkBack").style.display = "flex";
-    document.querySelector("#dark").style.display = "block";
-    showLoginStatus();
+    setScalein(true);
+    setLoginPage(true);
+    setLoginSignUp(true);
   };
-
-  const onScroll = (e) => {
-    const obj = document.querySelector(".topNavBox");
-    if (window.innerWidth > 425) {
-      if (e.target.scrollTop > 30) {
-        obj.style.position = "fixed";
-        obj.style.marginTop = "0px";
-        obj.className = "topNavBox floatingNav";
-      } else {
-        obj.style.position = "absolute";
-        obj.style.marginTop = "30px";
-        obj.className = "topNavBox";
-      }
-    } else {
-      if (e.target.scrollTop > 10) {
-        obj.style.position = "fixed";
-        obj.style.marginTop = "0px";
-        obj.className = "topNavBox floatingNav";
-      } else {
-        obj.style.position = "absolute";
-        obj.style.marginTop = "10px";
-        obj.className = "topNavBox";
-      }
-    }
-  };
-
   const showSignBox = () => {
-    showLoginBox();
-    showSignUpStatus();
+    setScalein(true);
+    setLoginPage(true);
+    setLoginSignUp(false);
   };
+
   return (
-    <div id="homePage" onScroll={onScroll}>
+    <div
+      id="homePage"
+      onScroll={(e) => {
+        if (e.target.scrollTop > limit) {
+          setTopNavscroll(true);
+        } else {
+          setTopNavscroll(false);
+        }
+      }}
+    >
       <div id="ahome">
         <div>
-          <div className="topNavBox">
+          <div
+            className={topNavscroll ? "topNavBox floatingNav" : "topNavBox"}
+            style={{
+              position: topNavscroll ? "fixed" : "absolute",
+              marginTop: topNavscroll ? "0px" : `${limit}px`,
+            }}
+          >
             <div className="topNav">
               <div className="mainLogo">
                 <img src={logo} className="logo" />
@@ -111,7 +99,6 @@ export default function HomePage() {
           <div id="homePageLeft">
             <div id="BigAtt">BAIBEN</div>
             <div id="middleAtt">Sharing ideas from NOW!</div>
-
             <div id="startBtnBox">
               <div id="startBtn" onClick={showLoginBox} className="bigger">
                 start now for free
@@ -122,17 +109,8 @@ export default function HomePage() {
             <img src={man} />
           </div>
         </div>
-        {/* <img src={bottom} id="bottomBar" /> */}
-        {/* <div id="HcanvasBox">
-          something cool~
-          <canvas id="Hcanvas"></canvas>
-        </div> */}
-        {/* <img src={triangle} className="homePageImage triangle" /> */}
-        {/* <img src={compass} className="homePageImage compass" /> */}
         <img src={eraser} className="homePageImage eraser" />
-        {/* <img src={sigma} className="homePageImage sigma" /> */}
       </div>
-      {/* <img src={bottom} id="bottomBar" /> */}
       <div id="introduction">
         <div id="howeWhy">What can we do with BAIBEN?</div>
         <div id="circleBox">
@@ -163,8 +141,12 @@ export default function HomePage() {
       <div className="footer">
         <div>&copy; 2020 BAIBEN All rights reserved.</div>
       </div>
-      <div id="dark" />
-      <div id="darkBack" className="scaleIn">
+      <div id="dark" style={{ display: loginPage ? "block" : "none" }} />
+      <div
+        id="darkBack"
+        className={scalein ? "scaleIn" : "scaleOut"}
+        style={{ display: loginPage ? "flex" : "none" }}
+      >
         <div id="loginBoxOuter">
           <div id="logInBox">
             <Cancel id="cancelOut" onClick={loginBoxNon} className="bigger" />
@@ -172,7 +154,10 @@ export default function HomePage() {
               <img src={logo} className="logo" />
             </div>
             <div id="title">Welcome to BAIBEN!</div>
-            <div id="logcontent">
+            <div
+              id="logcontent"
+              style={{ display: loginSignUp ? "block" : "none" }}
+            >
               <SignInLocal />
               <div id="or">Or</div>
               <div
@@ -189,19 +174,31 @@ export default function HomePage() {
                 Log In with FaceBook
               </div>
               <label>First Time visiting?</label>
-              <div id="signUpbut" onClick={showSignUpStatus} className="bigger">
+              <div
+                id="signUpbut"
+                onClick={() => {
+                  setLoginSignUp(false);
+                }}
+                className="bigger"
+              >
                 create an free account
               </div>
             </div>
-            <div id="signUpBox" className="hiddenStatus">
+            <div
+              id="signUpBox"
+              className="hiddenStatus"
+              style={{ display: loginSignUp ? "none" : "block" }}
+            >
               <SignUpLocal id="signUpLocal" />
               <div id="tryAn">Or try another way to log in?</div>
-              <div id="anotherLogin" onClick={showLoginStatus}>
+              <div
+                id="anotherLogin"
+                onClick={() => {
+                  setLoginSignUp(true);
+                }}
+              >
                 Login with other ways
               </div>
-            </div>
-            <div id="policy">
-              {/* 繼續使用即代表你同意 BIBen 的 《隱私權政策》。 */}
             </div>
           </div>
         </div>

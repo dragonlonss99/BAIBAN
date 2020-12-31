@@ -17,7 +17,7 @@ export const updateToCloud = (canvas) => {
 const App = () => {
   const [canvas, setCanvas] = useState("");
   const [name, setName] = useState("");
-  const [author, setAuthor] = useState("");
+  // const [author, setAuthor] = useState("");
   const [chatEditing, setChatEditing] = useState(false);
   const canvasId = window.location.pathname.split("/")[2];
 
@@ -53,11 +53,12 @@ const App = () => {
 
     firebaseApp.canvasesGet(canvasId, (data) => {
       setName(data.data().name);
+      canvasToSet.clearHistory();
     });
     firebaseApp.onAuthState(function (user) {
       if (user) {
         const email = user.email;
-        setAuthor(email);
+        // setAuthor(email);
         canvasToSet.on("object:modified", () => {
           if (canvasToSet.getActiveObject().type !== "textbox") {
             if (beenStoped) {
@@ -245,9 +246,9 @@ const App = () => {
     canvasToSet.on("mouse:down", () => {
       updateAble = false;
     });
-    firebaseApp.canvasesGet(canvasId, () => {
-      canvasToSet.clearHistory();
-    });
+    // firebaseApp.canvasesGet(canvasId, () => {
+    //   canvasToSet.clearHistory();
+    // });
     const updateSelectToCloud = (email) => {
       const ObjSelected = JSON.stringify(canvasToSet.getActiveObject());
       firebaseApp.selectSet(canvasId, email, {
@@ -365,11 +366,16 @@ const App = () => {
         <LeftBar canvas={canvas} name={name} />
         <div id="rightside">
           <div id="top_bar">
-            <ToolBar canvas={canvas} name={name} chatEditing={chatEditing} />
+            <ToolBar
+              canvas={canvas}
+              name={name}
+              setName={setName}
+              chatEditing={chatEditing}
+            />
           </div>
           <div id="canvas_area">
             <canvas id="canvas" />
-            <ChatRoom author={author} setChatEditing={setChatEditing} />
+            <ChatRoom setChatEditing={setChatEditing} />
           </div>
         </div>
       </div>

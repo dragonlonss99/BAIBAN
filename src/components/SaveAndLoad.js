@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import firebase from "firebase";
-import firebaseConfig from "../firebaseConfig";
+// import firebaseConfig from "../firebaseConfig";
 
 export default function SaveAndLoad(props) {
   const canvas = props.canvas;
@@ -28,25 +28,25 @@ export default function SaveAndLoad(props) {
     canvasToUpload = JSON.stringify(canvas.toJSON());
   };
   //saveToCloud
-  const saveToCloud = () => {
-    canvasToUpload = JSON.stringify(canvas.toJSON());
-    const app = firebase.apps.length
-      ? firebase.app()
-      : firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
-    db.collection("canvases")
-      .doc("Test")
-      .set({
-        data: canvasToUpload,
-        name: name,
-        owner: "bbb@gmail.com",
-        user: ["bbb@gmail.com"],
-      })
-      .then(function (docRef) {})
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
-  };
+  // const saveToCloud = () => {
+  //   canvasToUpload = JSON.stringify(canvas.toJSON());
+  //   const app = firebase.apps.length
+  //     ? firebase.app()
+  //     : firebase.initializeApp(firebaseConfig);
+  //   var db = firebase.firestore();
+  //   db.collection("canvases")
+  //     .doc("Test")
+  //     .set({
+  //       data: canvasToUpload,
+  //       name: name,
+  //       owner: "bbb@gmail.com",
+  //       user: ["bbb@gmail.com"],
+  //     })
+  //     .then(function (docRef) {})
+  //     .catch(function (error) {
+  //       console.error("Error adding document: ", error);
+  //     });
+  // };
   //LoadFromJSON
   const LoadFromJSON = () => {
     canvas.loadFromJSON(canvasToUpload);

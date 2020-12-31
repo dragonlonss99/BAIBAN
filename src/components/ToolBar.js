@@ -9,10 +9,6 @@ import { ReactComponent as Paste } from "../Img/toolbar/paste.svg";
 import { ReactComponent as Cut } from "../Img/toolbar/scissors.svg";
 import { ReactComponent as Undo } from "../Img/toolbar/undo-button.svg";
 import { ReactComponent as Redo } from "../Img/toolbar/redo-button.svg";
-import { ReactComponent as SelectAll } from "../Img/toolbar/select-all.svg";
-import { ReactComponent as DeleteAll } from "../Img/toolbar/trash.svg";
-import { ReactComponent as Group } from "../Img/toolbar/close.svg";
-import { ReactComponent as Ungroup } from "../Img/toolbar/open.svg";
 import { ReactComponent as LayerUp } from "../Img/toolbar/gotop.svg";
 import { ReactComponent as LayerDown } from "../Img/toolbar/goBottom.svg";
 import "./Toolbar.scss";
@@ -20,25 +16,13 @@ import { updateToCloud } from "../App.js";
 import * as firebaseApp from "../utils/firebaseUtils";
 
 export default function ToolBar(props) {
-  const db = firebase.firestore();
   const name = props.name;
+  const setName = props.setName;
   const canvas = props.canvas;
   const chatEditing = props.chatEditing;
+  const [nameEditing, setNameEditing] = useState(false);
   const [canvasColor, setCanvasColor] = useState("#ffffff");
-  const [newName, setNewName] = useState("");
-  useEffect(() => {
-    db.collection("canvases")
-      .doc(window.location.pathname.split("/")[2])
-      .get()
-      .then((data) => {
-        setNewName(data.data().name);
-      });
-  }, []);
 
-  // function tosetName() {
-  //   setNewName(props.name);
-  // }
-  // tosetName();
   var ctrlDown = false,
     ctrlKey = 17,
     cmdKeyL = 91,
@@ -64,7 +48,8 @@ export default function ToolBar(props) {
     if (
       canvas.getActiveObject() &&
       !canvas.getActiveObject().isEditing &&
-      !chatEditing
+      !chatEditing &&
+      !nameEditing
     ) {
       if (e.keyCode === delKey) {
         deleteChosen(canvas);
@@ -89,82 +74,28 @@ export default function ToolBar(props) {
       ctrlDown = false;
     }
   };
-  //group
-  const group = () => {
-    canvas.offHistory();
-    if (!canvas.getActiveObject()) {
-      return;
-    }
-    if (canvas.getActiveObject().type !== "activeSelection") {
-      return;
-    }
-    canvas.getActiveObject().toGroup();
-
-    canvas.fire("object:modified");
-    canvas.renderAll();
-    // updateToCloud(canvas);
-
-    // canvas.onHistory();
-  };
-  //ungroup
-  const ungroup = (canvi) => {
-    canvas.offHistory();
-    if (!canvas.getActiveObject()) {
-      return;
-    }
-    if (canvas.getActiveObject().type !== "group") {
-      return;
-    }
-    canvi.getActiveObject().toActiveSelection();
-    canvi.renderAll();
-    // updateToCloud(canvas);
-    canvas.fire("object:modified");
-    // canvas.onHistory();
-  };
   //deleteChosen
-  const deleteChosen = (canvi) => {
-    //If single object, then delete it
-    var activeObject = canvi.getActiveObject();
-    //How to delete multiple objects?
-    //if(activeObject !== null && activeObject.type === 'rectangle') {
+  const deleteChosen = () => {
+    var activeObject = canvas.getActiveObject();
     if (activeObject !== null) {
-      canvi.remove(activeObject);
+      canvas.remove(activeObject);
     }
-    // } //
-    canvi.discardActiveObject();
-    canvi.renderAll();
+    canvas.discardActiveObject();
+    canvas.renderAll();
     updateToCloud(canvas);
-    // canvas.fire("object:modified");
-  };
-  //deleteAll
-  const deleteAll = (canvi) => {
-    canvi.remove(...canvi.getObjects());
-    canvi.discardActiveObject();
-    canvi.renderAll();
   };
 
-  //selectAll
-  const selectAll = (canvas) => {
-    canvas.discardActiveObject();
-    var sel = new fabric.ActiveSelection(canvas.getObjects(), {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(sel);
-    canvas.requestRenderAll();
-  };
   var clipboard = null;
   //cut
-  const cut = (canvas) => {
+  const cut = () => {
     if (canvas.getActiveObject() === null) {
       return;
     }
     canvas.getActiveObject().clone(function (cloned) {
       clipboard = cloned;
-      //remove after cloned to clipboard
       canvas.remove(canvas.getActiveObject());
       updateToCloud(canvas);
       canvas.renderAll();
-      // canvas.fire("object:modified");
     });
   };
   //copy
@@ -177,8 +108,7 @@ export default function ToolBar(props) {
     });
   };
   //paste
-  const paste = (canvas) => {
-    // canvas.offHistory();
+  const paste = () => {
     if (!clipboard) {
       return;
     }
@@ -190,12 +120,10 @@ export default function ToolBar(props) {
         evented: true,
       });
       if (clonedObj.type === "activeSelection") {
-        // active selection needs a reference to the canvas.
         clonedObj.canvas = canvas;
         clonedObj.forEachObject(function (obj) {
           canvas.add(obj);
         });
-        // this should solve the unselectability
         clonedObj.setCoords();
       } else {
         canvas.add(clonedObj);
@@ -205,40 +133,32 @@ export default function ToolBar(props) {
       canvas.setActiveObject(clonedObj);
       canvas.requestRenderAll();
       updateToCloud(canvas);
-      // canvas.fire("object:modified");
     });
   };
   //undo
   function doUndo() {
-    // canvas.undo();
     canvas.undo();
     updateToCloud(canvas);
   }
   //redo
   function doRedo() {
-    // canvas.redo();
     canvas.redo();
     updateToCloud(canvas);
-    // canvas.fire("object:modified");
   }
-  const bringForward = (canvas) => {
-    // canvas.offHistory();
+  const bringForward = () => {
     if (!canvas.getActiveObject()) {
       return;
     } else {
       canvas.getActiveObject().bringForward();
-      // updateToCloud(canvas);
       canvas.fire("object:modified");
     }
   };
 
-  const sendBackwards = (canvas) => {
-    // canvas.offHistory();
+  const sendBackwards = () => {
     if (!canvas.getActiveObject()) {
       return;
     } else {
       canvas.getActiveObject().sendBackwards();
-      // updateToCloud(canvas);
       canvas.fire("object:modified");
     }
   };
@@ -257,98 +177,58 @@ export default function ToolBar(props) {
     document.querySelector("#dark").style.display = "block";
   };
   const renameBoard = () => {
+    setNameEditing(false);
     const canvasId = window.location.pathname.split("/")[2];
-    db.collection("canvases").doc(canvasId).update({
-      name: newName,
+    firebaseApp.canvasesUpdate(canvasId, {
+      name: name,
     });
   };
-  // const showShareBox = () => {
-  //   document.querySelector("#darkBack").style.display = "flex";
-  //   document.querySelector("#dark").style.display = "block";
-  // };
   return (
     <>
       <div id="toolBarBox">
         <div id="toolBarName">
-          <div
-          // style={{ display: "block" }}
-          >
-            {name}
-          </div>
           <input
-            value={newName}
+            value={name}
             onChange={(e) => {
-              setNewName(e.target.value);
+              setName(e.target.value);
             }}
             onBlur={renameBoard}
+            onFocus={() => setNameEditing(true)}
           />
         </div>
         <div>
           <div className="toolBarIconBox blue">
-            <Undo onClick={() => doUndo()} className="toolBarIcon" />
+            <Undo onClick={doUndo} className="toolBarIcon" />
           </div>
           <div className="toolBarIconBox blue">
-            <Redo onClick={() => doRedo()} className="toolBarIcon" />
+            <Redo onClick={doRedo} className="toolBarIcon" />
           </div>
         </div>
         <div>
           <div className="toolBarIconBox orange">
-            <Cut onClick={() => cut(canvas)} className="toolBarIcon" />
+            <Cut onClick={cut} className="toolBarIcon" />
           </div>
           <div className="toolBarIconBox orange">
             <Copy onClick={copy} className="toolBarIcon" />
           </div>
           <div className="toolBarIconBox orange">
-            <Paste onClick={() => paste(canvas)} className="toolBarIcon" />
+            <Paste onClick={paste} className="toolBarIcon" />
           </div>
         </div>
         <div className="toolBarIconBox red">
-          <Eraser
-            onClick={() => deleteChosen(canvas)}
-            className="toolBarIcon"
-          />
+          <Eraser onClick={deleteChosen} className="toolBarIcon" />
         </div>
         <div>
           <div className="toolBarIconBox green">
-            <LayerUp
-              onClick={() => bringForward(canvas)}
-              className="toolBarIcon"
-            />
+            <LayerUp onClick={bringForward} className="toolBarIcon" />
           </div>
           <div className="toolBarIconBox green">
-            <LayerDown
-              onClick={() => sendBackwards(canvas)}
-              className="toolBarIcon"
-            />
+            <LayerDown onClick={sendBackwards} className="toolBarIcon" />
           </div>
-          {/* <div className="toolBarIconBox green">
-            <Group onClick={group} className="toolBarIcon" />
-          </div>
-          <div className="toolBarIconBox green">
-            <Ungroup onClick={() => ungroup(canvas)} className="toolBarIcon" />
-          </div> */}
         </div>
-        {/* <div className="toolBarIconBox ">
-          <SelectAll
-            onClick={() => selectAll(canvas)}
-            className="toolBarIcon selectAll"
-          />
-        </div> */}
-
         <div id="shareBox" onClick={sharePagePop}>
           share
         </div>
-        {/* <div id="shareInputBox" style={{ display: "none" }}> */}
-        {/* <input
-            value={shareInput}
-            onChange={(e) => {
-              setShareInput(e.target.value);
-            }}
-          />
-          <button onClick={handleShare}>share</button> */}
-        {/* </div> */}
-
-        {/* <DeleteAll onClick={() => deleteAll(canvas)}/> */}
       </div>
       <div id="boardColor">
         <label>board&#39;s color：</label>

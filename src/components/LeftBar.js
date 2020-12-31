@@ -2,11 +2,8 @@
 import React, { useState } from "react";
 import { fabric } from "fabric";
 import firebase from "firebase";
-import firebaseConfig from "../firebaseConfig";
 import AddShapes from "./AddShapes";
 import TextAdjust from "./TextAdjust";
-// import RectAdjust from "./components/RectAdjust";
-// import ToolBar from "./components/ToolBar";
 import PaintingTool from "./PaintingTool";
 import SaveAndLoad from "./SaveAndLoad";
 import textBox from "../Img/addshapes/LogoMakr-26YKdq.png";
@@ -19,7 +16,6 @@ import { ReactComponent as ChatRoom } from "../Img/chat-bubbles.svg";
 import home from "../Img/addshapes/LogoMakr-6u56yP.png";
 import "./AddShapes.scss";
 import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
-import logo from "../Img/icon13.svg";
 export default function LeftBar(props) {
   const canvas = props.canvas;
   const name = props.name;
@@ -33,7 +29,6 @@ export default function LeftBar(props) {
 
   const showAddShapes = () => {
     canvas.isDrawingMode = false;
-
     if (
       boxType === 1 &&
       document.querySelector("#toolcontent").style.marginLeft === "0px"
@@ -42,18 +37,11 @@ export default function LeftBar(props) {
     } else {
       document.querySelector("#toolcontent").style.marginLeft = "0px";
     }
-
     setShow(<AddShapes canvas={canvas} />);
     setBoxType(1);
-    // canvas.getObjects().forEach((obj) => {
-    //   if (obj.type === "circle") {
-    //     canvas.setActiveObject(obj);
-
-    //     canvas.renderAll();
-    //   }
-    // });
     canvas.clearHistory();
   };
+
   const showDraw = () => {
     if (
       boxType === 2 &&
@@ -68,6 +56,7 @@ export default function LeftBar(props) {
     setShow(<PaintingTool canvas={canvas} closeContent={closeContent} />);
     setBoxType(2);
   };
+
   const showTextbox = () => {
     canvas.isDrawingMode = false;
 
@@ -83,6 +72,7 @@ export default function LeftBar(props) {
     setShow(<TextAdjust canvas={canvas} />);
     setBoxType(3);
   };
+
   const showSave = () => {
     canvas.isDrawingMode = false;
 
@@ -114,6 +104,7 @@ export default function LeftBar(props) {
       document.querySelector(".chatRoom").style.marginRight = "0px";
     }
   };
+
   return (
     <div id="leftside">
       <div id="shapeBar" style={{ backgroundColor: "#555555" }}>

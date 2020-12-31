@@ -8,7 +8,6 @@ export default function SharePage(props) {
   const canvasId = props.canvasId;
   const [shareInputUse, setShareInputUse] = useState("");
   const [shareInputObserve, setShareInputObserve] = useState("");
-  // const canvasId = window.location.pathname.split("/")[2];
   const shareCanvasUse = (userEmail) => {
     firebase.canvasesUpdate(canvasId, {
       user: firebase.arrayUnion(userEmail),

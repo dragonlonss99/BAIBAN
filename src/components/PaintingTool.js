@@ -9,7 +9,6 @@ export default function ToolBar(props) {
   const [lineWidthInput, setLineWidthInput] = useState("1");
   const [lineColor, setLineColor] = useState("#000000");
 
-  //   const lineColorInput = $("lineColorInput");
   const canvas = props.canvas;
   function changeLineWidth(e) {
     const newWidth = parseInt(e.target.value, 10) || 1;
@@ -22,14 +21,6 @@ export default function ToolBar(props) {
     setLineColor(e.target.value);
   }
 
-  // spray
-  const Spray = () => {
-    canvas.freeDrawingBrush = new fabric.SprayBrush(canvas, {
-      opacity: 0.6,
-      // color: "#ff0000",
-    });
-    canvas.freeDrawingBrush.color = lineColor;
-  };
   //Pencil
   const Pencil = () => {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
@@ -46,13 +37,6 @@ export default function ToolBar(props) {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
     canvas.freeDrawingBrush.color = lineColor;
     canvas.freeDrawingBrush.width = 30;
-  };
-  //stopDrawing
-  const stopDwawing = (canvas) => {
-    canvas.isDrawingMode = false;
-    props.closeContent();
-    if (canvas.getActiveObject()) {
-    }
   };
   return (
     <div>
