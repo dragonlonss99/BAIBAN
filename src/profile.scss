@@ -114,7 +114,7 @@
 
   #boardsRead,
   #boardsObserved {
-    display: none;
+    display: flex;
     flex-wrap: wrap;
     font-size: 5em;
     // grid-auto-columns: 252px;

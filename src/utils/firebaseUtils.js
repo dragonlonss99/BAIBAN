@@ -164,6 +164,10 @@ const docDelete = (collection, doc) => {
   db.collection(collection).doc(doc).delete();
 };
 
+function userSnapShot(user, callback) {
+  db.collection("users").doc(user.email).onSnapshot(callback);
+}
+
 const firebaseConfig = {
   apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
   authDomain: "biben-1193b.firebaseapp.com",
@@ -183,6 +187,7 @@ export {
   arrayRemove,
   canvasesUpdate,
   updateCanvasToCloud,
+  userSnapShot,
   canvasesGet,
   selectUpdate,
   selectGet,
