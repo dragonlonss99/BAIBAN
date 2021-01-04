@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { fabric } from "fabric";
-import firebase from "firebase";
-// import firebaseConfig from "../firebaseConfig";
 
 export default function SaveAndLoad(props) {
   const canvas = props.canvas;

@@ -4,17 +4,17 @@ import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import { ReactComponent as DrawCircle } from "./Img/drawCircle5.svg";
 import AddedBoard from "./components/AddedBoard.js";
 import { signOut } from "./utils/firebaseUtils.js";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import logo from "./Img/icon13.svg";
 import userImg from "./Img/user.png";
 import { useHistory } from "react-router-dom";
-
 import * as firebaseApp from "./utils/firebaseUtils.js";
 import "./profile.scss";
 import SharePage from "./components/SharePage.js";
-import Proverb from "./components/Proverb.js";
+import Loading from "./components/Loading.js";
 
 export default function ProfilePage() {
+  const [loadingFinish, setLoadingFinish] = useState(false);
   const [canvasOwn, setCanvasOwn] = useState([]);
   const [canvasObserve, setCanvasObserve] = useState([]);
   const [canvasRead, setCanvasRead] = useState([]);
@@ -23,15 +23,14 @@ export default function ProfilePage() {
   const [userName, setUserName] = useState("");
   const [boardChosen, setBoardChosen] = useState("");
   const [newName, setNewName] = useState("");
-  const [boardsType, setBoardsType] = useState("");
-  const db = firebase.firestore();
+  const [boardsType, setBoardsType] = useState(1);
+  // const db = firebase.firestore();
 
   useEffect(() => {
     function setUserData(boardData, user) {
       setCanvasOwn(boardData.canvasOwn.reverse());
       setCanvasRead(boardData.canvasUse.reverse());
       setCanvasObserve(boardData.canvasObserve.reverse());
-
       if (user.providerData[0].providerId === "facebook.com") {
         setPhoto(user.photoURL + "?type=large");
         setUserName(user.displayName);
@@ -42,7 +41,7 @@ export default function ProfilePage() {
         setPhoto(userImg);
         setUserName(boardData.userName);
       }
-      // setBoardsType(showCanvasOwn());
+      setLoadingFinish(true);
     }
     firebaseApp.onAuthState(function (user) {
       user &&
@@ -58,7 +57,6 @@ export default function ProfilePage() {
     signOut();
     history.push("/");
   };
-
   const changeReadStatus = (e) => {
     const selectedType = document.getElementsByClassName("profileTag");
     for (var i = 0; i < selectedType.length; i++) {
@@ -72,18 +70,13 @@ export default function ProfilePage() {
     if (window.innerWidth > 425) {
       e.target.previousSibling.classList = "drawCompo drawn";
     }
-    if (e.target.innerHTML === "Boards you own") {
-      document.querySelector("#boardsObserved").style.display = "none";
-      document.querySelector("#boardsRead").style.display = "none";
-      document.querySelector("#boardsContain").style.display = "flex";
-    } else if (e.target.innerHTML === "Shared with you") {
-      document.querySelector("#boardsRead").style.display = "flex";
-      document.querySelector("#boardsContain").style.display = "none";
-      document.querySelector("#boardsObserved").style.display = "none";
-    } else if (e.target.innerHTML === "Read-only boards") {
-      document.querySelector("#boardsObserved").style.display = "flex";
-      document.querySelector("#boardsContain").style.display = "none";
-      document.querySelector("#boardsRead").style.display = "none";
+    const tag = document.querySelector(".selected");
+    if (tag?.innerHTML === "Boards you own") {
+      setBoardsType(1);
+    } else if (tag?.innerHTML === "Shared with you") {
+      setBoardsType(2);
+    } else if (tag?.innerHTML === "Read-only boards") {
+      setBoardsType(3);
     }
   };
 
@@ -98,8 +91,8 @@ export default function ProfilePage() {
       document.querySelector("#newNameCheckUp").style.display = "block";
     } else {
       var userEmail = firebase.auth().currentUser?.email;
-      db.collection("canvases")
-        .add({
+      firebaseApp.canvasesAdd(
+        {
           data: "",
           name: nameInput,
           owner: userEmail,
@@ -107,15 +100,14 @@ export default function ProfilePage() {
           observer: [],
           createdTime: firebase.firestore.FieldValue.serverTimestamp(),
           photoURL: "",
-        })
-        .then((docRef) => {
-          db.collection("users")
-            .doc(userEmail)
-            .update({
-              canvasOwn: firebase.firestore.FieldValue.arrayUnion(docRef.id),
-            });
+        },
+        (docRef) => {
+          firebaseApp.userUpdate(userEmail, {
+            canvasOwn: firebaseApp.arrayUnion(docRef.id),
+          });
           history.push("/board/" + docRef.id);
-        });
+        }
+      );
     }
   };
 
@@ -153,106 +145,6 @@ export default function ProfilePage() {
     document.querySelector("#NewNameConfirm").className = "scaleIn";
     document.querySelector("#NewNameConfirm").style.display = "flex";
     document.querySelector("#dark").style.display = "block";
-  };
-
-  const showCanvasOwn = () => {
-    return (
-      <div id="boardsContain">
-        <div className="boardCreate">
-          <div className="addIconBox" onClick={showNameInput}>
-            <Add className="addIcon" />
-            <div id="beforeAdd">Create a new board</div>
-          </div>
-          <div className="InputNameBox">
-            <div className="inputTop">
-              <Cancel
-                className="cancelIcon bigger"
-                onClick={showInputDefault}
-              />
-              <div className="inputName">Name your board?</div>
-              <input
-                value={nameInput}
-                onChange={handleNameInput}
-                onClick={() => {
-                  document.querySelector("#newNameCheckUp").style.display =
-                    "none";
-                }}
-              />
-              <div className="newNameCheck" id="newNameCheckUp">
-                <small>Name could not be empty!</small>
-              </div>
-            </div>
-            <div className="inputBottom " onClick={addCanvas}>
-              <div className="bigger">add a new board</div>
-            </div>
-          </div>
-        </div>
-        {canvasOwn.map((obj) => (
-          <AddedBoard
-            id={obj}
-            key={obj}
-            sharePagePop={sharePagePop}
-            deletePagePop={deletePagePop}
-            reNamePagePop={reNamePagePop}
-          />
-        ))}
-        <div className="profileFa" />
-        <div className="profileFa" />
-        <div className="profileFa" />
-        <div className="profileFa" />
-        <div className="profileFa" />
-        <div className="profileFa" />
-      </div>
-    );
-  };
-  const showCanvasRead = () => {
-    //   canvasRead.length === 0? <div id="boardsRead">Nothing here yet!</div>:<div id="boardsRead">
-    //   {canvasRead.map((obj) => (
-    //     <AddedBoard id={obj} key={obj} sharePagePop={sharePagePop} />
-    //   ))}
-    //   <div className="profileFa" />
-    //   <div className="profileFa" />
-    //   <div className="profileFa" />
-    //   <div className="profileFa" />
-    //   <div className="profileFa" />
-    //   <div className="profileFa" />
-    // </div>
-    if (canvasRead.length === 0) {
-      return <div id="boardsRead">Nothing here yet!</div>;
-    } else {
-      return (
-        <div id="boardsRead">
-          {canvasRead.map((obj) => (
-            <AddedBoard id={obj} key={obj} sharePagePop={sharePagePop} />
-          ))}
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-        </div>
-      );
-    }
-  };
-  const showCanvasObserve = () => {
-    if (canvasObserve.length === 0) {
-      return <div id="boardsObserved">Nothing here yet!</div>;
-    } else {
-      return (
-        <div id="boardsObserved">
-          {canvasObserve.map((obj) => (
-            <AddedBoard id={obj} key={obj} sharePagePop={sharePagePop} />
-          ))}
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-          <div className="profileFa" />
-        </div>
-      );
-    }
   };
 
   const handleDeleteUse = () => {
@@ -326,6 +218,7 @@ export default function ProfilePage() {
 
   return (
     <>
+      {loadingFinish || <Loading />}
       <div id="profilePage">
         <div className="topNavBox">
           <div className="topNav">
@@ -364,38 +257,19 @@ export default function ProfilePage() {
             <div id="tagBox">
               <div className="drawBox ">
                 <DrawCircle className="drawCompo drawn" />
-                <div
-                  className="profileTag selected"
-                  onClick={changeReadStatus}
-                  // onClick={(e) => {
-                  //   setBoardsType(showCanvasOwn());
-                  //   changeReadStatus;
-                  // }}
-                >
+                <div className="profileTag selected" onClick={changeReadStatus}>
                   Boards you own
                 </div>
               </div>
               <div className="drawBox">
                 <DrawCircle className="drawCompo" />
-                <div
-                  className="profileTag "
-                  onClick={changeReadStatus}
-                  // onClick={() => {
-                  //   setBoardsType(showCanvasRead());
-                  // }}
-                >
+                <div className="profileTag " onClick={changeReadStatus}>
                   Shared with you
                 </div>
               </div>
               <div className="drawBox ">
                 <DrawCircle className="drawCompo " />
-                <div
-                  className="profileTag "
-                  onClick={changeReadStatus}
-                  // onClick={() => {
-                  //   setBoardsType(showCanvasObserve());
-                  // }}
-                >
+                <div className="profileTag " onClick={changeReadStatus}>
                   Read-only boards
                 </div>
               </div>
@@ -405,10 +279,96 @@ export default function ProfilePage() {
         <div id="profileRight">
           <div id="profileBoards">
             <div id="boards">
-              {/* {boardsType} */}
-              {showCanvasOwn()}
-              {showCanvasRead()}
-              {showCanvasObserve()}
+              {boardsType === 1 && (
+                <div id="boardsContain">
+                  <div className="boardCreate">
+                    <div className="addIconBox" onClick={showNameInput}>
+                      <Add className="addIcon" />
+                      <div id="beforeAdd">Create a new board</div>
+                    </div>
+                    <div className="InputNameBox">
+                      <div className="inputTop">
+                        <Cancel
+                          className="cancelIcon bigger"
+                          onClick={showInputDefault}
+                        />
+                        <div className="inputName">Name your board?</div>
+                        <input
+                          value={nameInput}
+                          onChange={handleNameInput}
+                          onClick={() => {
+                            document.querySelector(
+                              "#newNameCheckUp"
+                            ).style.display = "none";
+                          }}
+                        />
+                        <div className="newNameCheck" id="newNameCheckUp">
+                          <small>Name could not be empty!</small>
+                        </div>
+                      </div>
+                      <div className="inputBottom " onClick={addCanvas}>
+                        <div className="bigger">add a new board</div>
+                      </div>
+                    </div>
+                  </div>
+                  {canvasOwn.map((obj) => (
+                    <AddedBoard
+                      id={obj}
+                      key={obj}
+                      sharePagePop={sharePagePop}
+                      deletePagePop={deletePagePop}
+                      reNamePagePop={reNamePagePop}
+                    />
+                  ))}
+                  <div className="profileFa" />
+                  <div className="profileFa" />
+                  <div className="profileFa" />
+                  <div className="profileFa" />
+                  <div className="profileFa" />
+                  <div className="profileFa" />
+                </div>
+              )}
+
+              {boardsType === 2 &&
+                (canvasRead.length === 0 ? (
+                  <div id="boardsRead">Nothing here yet!</div>
+                ) : (
+                  <div id="boardsRead">
+                    {canvasRead.map((obj) => (
+                      <AddedBoard
+                        id={obj}
+                        key={obj}
+                        sharePagePop={sharePagePop}
+                      />
+                    ))}
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                  </div>
+                ))}
+              {boardsType === 3 &&
+                (canvasObserve.length === 0 ? (
+                  <div id="boardsObserved">Nothing here yet!</div>
+                ) : (
+                  <div id="boardsObserved">
+                    {canvasObserve.map((obj) => (
+                      <AddedBoard
+                        id={obj}
+                        key={obj}
+                        sharePagePop={sharePagePop}
+                      />
+                    ))}
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                    <div className="profileFa" />
+                  </div>
+                ))}
             </div>
           </div>
         </div>

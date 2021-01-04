@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { fabric } from "fabric";
-import firebase from "firebase";
 import AddShapes from "./AddShapes";
 import TextAdjust from "./TextAdjust";
 import PaintingTool from "./PaintingTool";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export default function SignUpLocal() {
   const [userName, setUserName] = useState("");
@@ -32,7 +32,6 @@ export default function SignUpLocal() {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(function (user) {
-          //註冊完後，可執行的動作
           var db = firebase.firestore();
           db.collection("users")
             .doc(email)
@@ -48,9 +47,7 @@ export default function SignUpLocal() {
             });
         })
         .catch(function (error) {
-          //註冊未成功的錯誤訊息
           var errorCode = error.code;
-
           if (errorCode === "auth/email-already-in-use") {
             document.querySelector("#emailUpCheck").style.display = "block";
             setEmailCheck("This email has been used!");

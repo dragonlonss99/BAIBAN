@@ -2,7 +2,7 @@
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import ellipse from "../Img/addshapes/LogoMakr-9rD1kw.png";
 import circle from "../Img/addshapes/LogoMakr-00Rh5a.png";
 import triangle from "../Img/addshapes/LogoMakr-4keFSv.png";
@@ -24,19 +24,6 @@ export default function AddShapes(props) {
   const [fillColor, setFillColor] = useState("#ffffff");
   const [strokeWidthInput, setStrokeWidthInput] = useState("2");
   const [opacityInput, setOpacityInput] = useState("100");
-  const [author, setAuthor] = useState("");
-  // const [count, setCount] = useState(0);
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        // User is signed in.
-        setAuthor(user.email);
-        // console.log(user.email);
-      }
-    });
-  }, []);
-
-  // console.log(props);
 
   const addRect = (canvas) => {
     const rect = new fabric.Rect({

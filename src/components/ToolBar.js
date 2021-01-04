@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
-import { fabric } from "fabric";
+import React, { useState } from "react";
 import "fabric-history";
-import firebase from "firebase";
 import { ReactComponent as Eraser } from "../Img/toolbar/eraser.svg";
 import { ReactComponent as Copy } from "../Img/toolbar/file.svg";
 import { ReactComponent as Paste } from "../Img/toolbar/paste.svg";

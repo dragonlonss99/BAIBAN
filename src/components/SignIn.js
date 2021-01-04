@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export default function SignInLocal() {
   const [email, setEmail] = useState("test@gmail.com");
@@ -21,14 +21,9 @@ export default function SignInLocal() {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(function (user) {
-        //登入成功
-      })
+      .then(function (user) {})
       .catch(function (error) {
-        //登入錯誤訊息
-        // var errorMessage = error.message;
         var errorCode = error.code;
-
         if (errorCode === "auth/user-not-found") {
           document.querySelector("#emailCheck").style.display = "block";
           setEmailCheck("Email address hasn't been sign up!");

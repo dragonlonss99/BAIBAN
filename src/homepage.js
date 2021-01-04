@@ -11,12 +11,16 @@ import penDraw from "./Img/back/fountain-pen.svg";
 import chat from "./Img/back/chat-02.svg";
 import audi from "./Img/back/audience.svg";
 import Try_It from "./components/Try_It.js";
-import { signInWithGoogle, signInWithFB } from "./utils/firebaseUtils.js";
+import {
+  signInWithGoogle,
+  signInWithFB,
+  onAuthState,
+} from "./utils/firebaseUtils.js";
 import SignInLocal from "./components/SignIn";
 import SignUpLocal from "./components/SignUp";
-import firebase from "firebase";
 import { useHistory } from "react-router-dom";
 import "./homepage.scss";
+import Loading from "./components/Loading.js";
 
 export default function HomePage() {
   const [loginPage, setLoginPage] = useState(false);
@@ -25,7 +29,8 @@ export default function HomePage() {
   const [topNavscroll, setTopNavscroll] = useState(false);
   const [limit, setLimit] = useState(30);
   const history = useHistory();
-  firebase.auth().onAuthStateChanged(function (user) {
+  const [loadingFinish, setLoadingFinish] = useState(false);
+  onAuthState(function (user) {
     if (user) {
       history.push("/profile");
     }
@@ -36,6 +41,7 @@ export default function HomePage() {
     } else {
       setLimit(10);
     }
+    setLoadingFinish(true);
   }, []);
   const loginBoxNon = () => {
     setScalein(false);
@@ -141,6 +147,7 @@ export default function HomePage() {
       <div className="footer">
         <div>&copy; 2020 BAIBEN All rights reserved.</div>
       </div>
+      {loadingFinish || <Loading />}
       <div id="dark" style={{ display: loginPage ? "block" : "none" }} />
       <div
         id="darkBack"

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import pagePic from "../Img/boardPic.png";
 import { useHistory } from "react-router-dom";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import * as firebaseApp from "../utils/firebaseUtils";
 
 export default function AddedBoard(props) {

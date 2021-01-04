@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "./App.scss";
-// import firebase from "firebase/app";
 import ToolBar from "./components/ToolBar";
 import LeftBar from "./components/LeftBar";
 import ChatRoom from "./components/ChatRoom";
@@ -58,7 +57,6 @@ const App = () => {
     firebaseApp.onAuthState(function (user) {
       if (user) {
         const email = user.email;
-        // setAuthor(email);
         canvasToSet.on("object:modified", () => {
           if (canvasToSet.getActiveObject().type !== "textbox") {
             if (beenStoped) {
@@ -136,7 +134,7 @@ const App = () => {
                         obj.left === json.left &&
                         obj.top === json.top &&
                         obj.width === json.width &&
-                        obj.height === json.height &&
+                        // obj.height === json.height &&
                         obj.fill === json.fill &&
                         obj.stroke === json.stroke &&
                         obj.strokeWidth === json.strokeWidth &&
@@ -169,7 +167,7 @@ const App = () => {
                         obj.left === json.left &&
                         obj.top === json.top &&
                         obj.width === json.width &&
-                        obj.height === json.height &&
+                        // obj.height === json.height &&
                         obj.fill === json.fill &&
                         obj.stroke === json.stroke &&
                         obj.strokeWidth === json.strokeWidth &&
@@ -240,15 +238,13 @@ const App = () => {
     canvasToSet.on("mouse:up", () => {
       if (canvasToSet.isDrawingMode) {
         firebaseApp.updateCanvasToCloud(canvasToSet, canvasId);
+        canvasToSet.renderAll();
       }
       updateAble = true;
     });
     canvasToSet.on("mouse:down", () => {
       updateAble = false;
     });
-    // firebaseApp.canvasesGet(canvasId, () => {
-    //   canvasToSet.clearHistory();
-    // });
     const updateSelectToCloud = (email) => {
       const ObjSelected = JSON.stringify(canvasToSet.getActiveObject());
       firebaseApp.selectSet(canvasId, email, {
@@ -276,7 +272,7 @@ const App = () => {
                   canvasCloud[i].left !== canvasNow[i].left ||
                   canvasCloud[i].top !== canvasNow[i].top ||
                   canvasCloud[i].width !== canvasNow[i].width ||
-                  canvasCloud[i].height !== canvasNow[i].height ||
+                  // canvasCloud[i].height !== canvasNow[i].height ||
                   canvasCloud[i].fill !== canvasNow[i].fill ||
                   canvasCloud[i].stroke !== canvasNow[i].stroke ||
                   canvasCloud[i].strokeWidth !== canvasNow[i].strokeWidth ||
@@ -315,7 +311,7 @@ const App = () => {
                   obj.left === json.left &&
                   obj.top === json.top &&
                   obj.width === json.width &&
-                  obj.height === json.height &&
+                  // obj.height === json.height &&
                   obj.fill === json.fill &&
                   obj.stroke === json.stroke &&
                   obj.strokeWidth === json.strokeWidth &&
@@ -338,7 +334,7 @@ const App = () => {
                   obj.left === json.left &&
                   obj.top === json.top &&
                   obj.width === json.width &&
-                  obj.height === json.height &&
+                  // obj.height === json.height &&
                   obj.fill === json.fill &&
                   obj.stroke === json.stroke &&
                   obj.strokeWidth === json.strokeWidth &&

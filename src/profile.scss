@@ -13,7 +13,7 @@
   padding-top: 110px;
   padding-right: 1.5%;
   padding-left: 3%;
-  justify-content: space-between;
+  // justify-content: space-between;
   overflow: hidden;
   @media (max-width: 425px) {
     border-width: 10px;
@@ -99,7 +99,9 @@
 //   background: white;
 //   margin-bottom: -0.08em;
 // }
+
 #boards {
+  // overflow-y: hidden;
   /* border-width: 2px;
   border-style: solid; */
   height: max-content;
@@ -559,6 +561,9 @@
 #profileRight {
   overflow-y: scroll;
   padding-left: 3%;
+}
+#profileRight::-webkit-scrollbar {
+  display: none;
 }
 #profileLeft {
   height: 100%;

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "./ChatRoom.scss";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";

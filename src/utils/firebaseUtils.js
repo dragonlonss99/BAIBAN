@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
-firebase.initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
   authDomain: "biben-1193b.firebaseapp.com",
   databaseURL: "https://biben-1193b.firebaseio.com",
@@ -9,10 +11,23 @@ firebase.initializeApp({
   messagingSenderId: "532211232221",
   appId: "1:532211232221:web:672f0108ab14f418499a34",
   measurementId: "G-X35JWETTVG",
-});
+  // apiKey: "AIzaSyCCXAPBmhBmGe3QqDWAGi_SHuik5btWeg8",
+  // authDomain: "bai-ben.firebaseapp.com",
+  // projectId: "bai-ben",
+  // storageBucket: "bai-ben.appspot.com",
+  // messagingSenderId: "856996977063",
+  // appId: "1:856996977063:web:b9d86b830cde4fd965fe82",
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 const user = firebase.auth().currentUser;
+const email = firebase.auth().currentUser?.email;
+function timeStamp() {
+  return firebase.firestore.FieldValue.serverTimestamp();
+}
+
 function arrayUnion(data) {
   return firebase.firestore.FieldValue.arrayUnion(data);
 }
@@ -82,6 +97,10 @@ function selectSnapShot(canvasId, callback) {
     .doc(canvasId)
     .collection("userSelect")
     .onSnapshot(callback);
+}
+
+function canvasesAdd(dataToAdd, callback) {
+  db.collection("canvases").add(dataToAdd).then(callback);
 }
 
 function onAuthState(callback) {
@@ -168,24 +187,14 @@ function userSnapShot(user, callback) {
   db.collection("users").doc(user.email).onSnapshot(callback);
 }
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
-  authDomain: "biben-1193b.firebaseapp.com",
-  databaseURL: "https://biben-1193b.firebaseio.com",
-  projectId: "biben-1193b",
-  storageBucket: "biben-1193b.appspot.com",
-  messagingSenderId: "532211232221",
-  appId: "1:532211232221:web:672f0108ab14f418499a34",
-  measurementId: "G-X35JWETTVG",
-};
-
 export {
   db,
   user,
-  // email,
+  email,
   arrayUnion,
   arrayRemove,
   canvasesUpdate,
+  canvasesAdd,
   updateCanvasToCloud,
   userSnapShot,
   canvasesGet,
@@ -201,4 +210,5 @@ export {
   signInWithFB,
   signOut,
   docDelete,
+  timeStamp,
 };
