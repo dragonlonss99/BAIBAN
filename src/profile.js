@@ -224,7 +224,7 @@ export default function ProfilePage() {
           <div className="topNav">
             <div className="mainLogo">
               <img src={logo} className="logo" />
-              <div>BAIBEN</div>
+              <div>BAIBAN</div>
             </div>
             <div className="logInWay" id="flexEnd">
               <div

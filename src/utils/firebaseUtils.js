@@ -11,12 +11,13 @@ const firebaseConfig = {
   messagingSenderId: "532211232221",
   appId: "1:532211232221:web:672f0108ab14f418499a34",
   measurementId: "G-X35JWETTVG",
-  // apiKey: "AIzaSyCCXAPBmhBmGe3QqDWAGi_SHuik5btWeg8",
-  // authDomain: "bai-ben.firebaseapp.com",
-  // projectId: "bai-ben",
-  // storageBucket: "bai-ben.appspot.com",
-  // messagingSenderId: "856996977063",
-  // appId: "1:856996977063:web:b9d86b830cde4fd965fe82",
+  // apiKey: "AIzaSyDPMAghULJRIglBMhNBDM2CLf2kv-hmoiE",
+  // authDomain: "bai-ban.firebaseapp.com",
+  // projectId: "bai-ban",
+  // storageBucket: "bai-ban.appspot.com",
+  // messagingSenderId: "62985985743",
+  // appId: "1:62985985743:web:514b0d516ae71a9152e1ba",
+  // measurementId: "G-EDKV2B501S",
 };
 
 firebase.initializeApp(firebaseConfig);

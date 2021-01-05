@@ -84,7 +84,7 @@ export default function HomePage() {
             <div className="topNav">
               <div className="mainLogo">
                 <img src={logo} className="logo" />
-                <div>BAIBEN</div>
+                <div>BAIBAN</div>
               </div>
               <div className="logInWay">
                 <div className="bigger" onClick={showLoginBox}>
@@ -103,7 +103,7 @@ export default function HomePage() {
         </div>
         <div id="mainContain">
           <div id="homePageLeft">
-            <div id="BigAtt">BAIBEN</div>
+            <div id="BigAtt">BAIBAN</div>
             <div id="middleAtt">Sharing ideas from NOW!</div>
             <div id="startBtnBox">
               <div id="startBtn" onClick={showLoginBox} className="bigger">
@@ -118,7 +118,7 @@ export default function HomePage() {
         <img src={eraser} className="homePageImage eraser" />
       </div>
       <div id="introduction">
-        <div id="howeWhy">What can we do with BAIBEN?</div>
+        <div id="howeWhy">What can we do with BAIBAN?</div>
         <div id="circleBox">
           <div>
             <div className="homePageCircle">
@@ -145,7 +145,7 @@ export default function HomePage() {
         <Try_It />
       </div>
       <div className="footer">
-        <div>&copy; 2020 BAIBEN All rights reserved.</div>
+        <div>&copy; 2020 BAIBAN All rights reserved.</div>
       </div>
       {loadingFinish || <Loading />}
       <div id="dark" style={{ display: loginPage ? "block" : "none" }} />
@@ -160,7 +160,7 @@ export default function HomePage() {
             <div id="logoBox">
               <img src={logo} className="logo" />
             </div>
-            <div id="title">Welcome to BAIBEN!</div>
+            <div id="title">Welcome to BAIBAN!</div>
             <div
               id="logcontent"
               style={{ display: loginSignUp ? "block" : "none" }}

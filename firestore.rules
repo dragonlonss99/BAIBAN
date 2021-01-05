@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /canvases/{document=**} {
+    allow read;
+      allow read : if request.auth.token.email == resource.data.owner || request.auth.token.email in resource.data.user || request.auth.token.email in resource.data.observer;
+      allow update: if request.auth.token.email in resource.data.user || request.auth.token.email == resource.data.owner;
+      allow delete: if request.auth.token.email == resource.data.owner ;
+      allow create: if request.auth.uid != null;
+    }
+    match /users/{document=**} {
+    allow create, read, update;
+    allow read, update, delete : if  request.auth.uid != null;
+    }
+    match /chatRooms/{document=**} {
+    allow read, update, delete, create;
+    }
+    match /selectedObj/{document=**} {
+    allow read, update, delete, create: if  request.auth.uid != null;
+    }
+    match /undoRedo/{document=**} {
+    allow read, update, delete, create: if  request.auth.uid != null;
+    }
+  }
+}
