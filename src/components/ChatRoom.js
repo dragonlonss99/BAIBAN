@@ -42,11 +42,11 @@ function ChatRoom(props) {
   const setChatEditing = props.setChatEditing;
   const sendMessage = async (e) => {
     e.preventDefault();
+    // eslint-disable-next-line prefer-const
+    let { uid, photoURL } = auth.currentUser;
 
-    const { uid, photoURL } = auth.currentUser;
-    if (photoURL === null) {
-      photoURL = userImage;
-    }
+    photoURL = photoURL || userImage;
+
     // const { uid, photoURL } = auth.currentUser;
 
     await messagesRef.add({
