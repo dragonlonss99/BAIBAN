@@ -1,6 +1,6 @@
 #  <img src="src/Img/icon13.png" width=23/> BAIBAN
 
-An online interactive classroom for teachers can teach students with some free patterns and free drawing. Besides, all of the participants can use the board and chat with each other simultaneously. 
+Responding to the booming remote education needs in the post-epidemic era, BAIBAN provides an interactive classroom in which users can demonstrate, cooperate, and discuss with each other simultaneously.
 <img src= "readimg/homepage.png" width=100%/>
 
 ## Website Link
@@ -18,7 +18,7 @@ You can also create your own native account or use default test account below.\
     + SCSS
     + RWD
 * Frameworks
-    + React (hook)
+    + React (Hook)
     + React Router
 * JavsScript Library
     + Fabric.js
@@ -31,22 +31,25 @@ You can also create your own native account or use default test account below.\
     + Version Control : Git / GitHub
     + Lint : ESLint
 
-## Core Components Strcture ( 2021.01 )
+## User Flow
 
-Not yet
+![user flow](readimg/userflow.png)
 
 ## Website Demo
+Home page and log in
 ![homePage gif](readimg/homePage.gif)
+Profile page and boards type separation
 ![profile gif](readimg/profile.gif)
+Board page and functions
 ![board gif](readimg/board.gif)
 
 ## Plan for Next Version
 
 * RWD design of the board page. 
-* Add duplication for boards, and allow users to edit the authority of shared boards.
+* Allow users to clone the board and edit the authority of shared boards.
 * Improve UI of the board page.
-* Reafactor of the code.
+* Refactor of the code.
 
 ## Contact
-If you got any problem when using BAIBAN, or had any suggestion about it. Please feel free to contact me with email.\
+If you got any problem when using BAIBAN, or had any suggestion about it. Please feel free to contact with me via email.\
 E-mail: <dragonlonss@gmail.com>
