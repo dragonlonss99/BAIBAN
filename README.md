@@ -34,7 +34,7 @@ You can also create your own native account or use default test account below.\
 ## User Flow
 
 
-![user flow](readimg/baibanFlow2.png)
+![user flow](readimg/baibanFlow3.png)
 
 ## Website Demo
 Home page and log in
