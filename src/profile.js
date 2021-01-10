@@ -188,32 +188,29 @@ export default function ProfilePage() {
 
   const deleteBoard = () => {
     const canvasId = boardChosen;
-    firebaseApp
-      .canvasesGet(canvasId, (data) => {
-        const userData = data.data();
-        if (userData.user.length !== 0) {
-          userData.user.forEach((email) => {
-            firebaseApp.userUpdate(email, {
-              canvasUse: firebaseApp.arrayRemove(canvasId),
-            });
+    firebaseApp.canvasesGet(canvasId, (data) => {
+      const userData = data.data();
+      if (userData.user.length !== 0) {
+        userData.user.forEach((email) => {
+          firebaseApp.userUpdate(email, {
+            canvasUse: firebaseApp.arrayRemove(canvasId),
           });
-        }
-        if (userData.observer.length !== 0) {
-          userData.user.forEach((email) => {
-            firebaseApp.userUpdate(email, {
-              canvasObserve: firebaseApp.arrayRemove(canvasId),
-            });
-          });
-        }
-        firebaseApp.userUpdate(userData.owner, {
-          canvasOwn: firebaseApp.arrayRemove(canvasId),
         });
-      })
-      .then(() => {
-        firebaseApp.docDelete("canvases", canvasId);
-        firebaseApp.docDelete("chatRooms", canvasId);
-        firebaseApp.docDelete("selectedObj", canvasId);
+      }
+      if (userData.observer.length !== 0) {
+        userData.user.forEach((email) => {
+          firebaseApp.userUpdate(email, {
+            canvasObserve: firebaseApp.arrayRemove(canvasId),
+          });
+        });
+      }
+      firebaseApp.userUpdate(userData.owner, {
+        canvasOwn: firebaseApp.arrayRemove(canvasId),
       });
+      firebaseApp.docDelete("canvases", canvasId);
+      firebaseApp.docDelete("chatRooms", canvasId);
+      firebaseApp.docDelete("selectedObj", canvasId);
+    });
   };
 
   return (
