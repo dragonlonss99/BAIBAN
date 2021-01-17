@@ -116,8 +116,6 @@ export default function LeftBar(props) {
         <img src={shapes} className="toolIcon" onClick={showAddShapes} />
         <img src={draw} className="toolIcon" onClick={showDraw} />
         <img src={textBox} className="toolIcon" onClick={showTextbox} />
-        {/* <img src={note} className="toolIcon" /> */}
-        {/* <img src={saveALoad} className="toolIcon" onClick={showSave} /> */}
         <ChatRoom
           style={{ fill: "white" }}
           className="toolIcon"

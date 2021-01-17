@@ -1,24 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
-  authDomain: "biben-1193b.firebaseapp.com",
-  databaseURL: "https://biben-1193b.firebaseio.com",
-  projectId: "biben-1193b",
-  storageBucket: "biben-1193b.appspot.com",
-  messagingSenderId: "532211232221",
-  appId: "1:532211232221:web:672f0108ab14f418499a34",
-  measurementId: "G-X35JWETTVG",
-  // apiKey: "AIzaSyDPMAghULJRIglBMhNBDM2CLf2kv-hmoiE",
-  // authDomain: "bai-ban.firebaseapp.com",
-  // projectId: "bai-ban",
-  // storageBucket: "bai-ban.appspot.com",
-  // messagingSenderId: "62985985743",
-  // appId: "1:62985985743:web:514b0d516ae71a9152e1ba",
-  // measurementId: "G-EDKV2B501S",
-};
+import * as config from "../config.js";
+const firebaseConfig = config.REACT_APP_FIREBASE_CONFIG;
 
 firebase.initializeApp(firebaseConfig);
 
@@ -150,34 +134,11 @@ const signInWith = (provider) => {
             });
           }
         });
-    })
-    .catch(function (error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      console.log(error);
-      var errorMessage = error.message;
-      console.log(errorMessage);
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
     });
 };
 
 const signOut = () => {
-  firebase
-    .auth()
-    .signOut()
-    .then(function () {
-      //登出成功
-      console.log("logout");
-    })
-    .catch(function (error) {
-      //錯誤事件
-      var errorMessage = error.message;
-      console.log("logout error", errorMessage);
-    });
+  firebase.auth().signOut();
 };
 
 const docDelete = (collection, doc) => {

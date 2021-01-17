@@ -8,26 +8,8 @@ import userImage from "../Img/user.png";
 import { ReactComponent as Send } from "../Img/send.svg";
 import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyDh6uamYJP8Wp2UG3qJihL0uOOnLZYf8dc",
-//   authDomain: "biben-1193b.firebaseapp.com",
-//   databaseURL: "https://biben-1193b.firebaseio.com",
-//   projectId: "biben-1193b",
-//   storageBucket: "biben-1193b.appspot.com",
-//   messagingSenderId: "532211232221",
-//   appId: "1:532211232221:web:672f0108ab14f418499a34",
-//   measurementId: "G-X35JWETTVG",
-// });
-
 const auth = firebase.auth();
 function ChatRoom(props) {
-  // useEffect(() => {
-  //   document.querySelector("#mainChat").scrollTop = document.querySelector(
-  //     "#mainChat"
-  //   ).scrollHeight;
-  //   console.log(document.querySelector("#mainChat").scrollHeight);
-  // }, []);
-
   const firestore = firebase.firestore();
   const dummy = useRef();
   const messagesRef = firestore
@@ -46,8 +28,6 @@ function ChatRoom(props) {
     let { uid, photoURL } = auth.currentUser;
 
     photoURL = photoURL || userImage;
-
-    // const { uid, photoURL } = auth.currentUser;
 
     await messagesRef.add({
       text: formValue,

@@ -24,7 +24,6 @@ export default function ProfilePage() {
   const [boardChosen, setBoardChosen] = useState("");
   const [newName, setNewName] = useState("");
   const [boardsType, setBoardsType] = useState(1);
-  // const db = firebase.firestore();
 
   useEffect(() => {
     function setUserData(boardData, user) {
@@ -425,7 +424,6 @@ export default function ProfilePage() {
             <div className="newNameCheck" id="newNameCheckDown">
               <small>New name could not be empty!</small>
             </div>
-            {/* <div>Are you sure to rename the board?</div> */}
             <div className="deleteChosen">
               <div className="bigger" onClick={handleReNameUse}>
                 Confirm

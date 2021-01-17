@@ -42,12 +42,10 @@ export default function RectAdjust(props) {
 
   //changeStrokeWidth
   const changeStrokeWidth = (e) => {
-    // let strokeWidthValue = document.querySelector("#strokeWidthValue");
     const newWidthOfS = parseInt(e.target.value, 10);
     if (canvas.getActiveObject()) {
       canvas.getActiveObject().set("strokeWidth", newWidthOfS);
     }
-    // strokeWidthValue.innerHTML = newWidthOfS;
     setStrokeWidthInput(e.target.value);
     canvas.renderAll();
   };

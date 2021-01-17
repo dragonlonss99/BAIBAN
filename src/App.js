@@ -16,7 +16,6 @@ export const updateToCloud = (canvas) => {
 const App = () => {
   const [canvas, setCanvas] = useState("");
   const [name, setName] = useState("");
-  // const [author, setAuthor] = useState("");
   const [chatEditing, setChatEditing] = useState(false);
   const canvasId = window.location.pathname.split("/")[2];
 
@@ -121,7 +120,6 @@ const App = () => {
             beenStoped = true;
             return;
           } else {
-            // firebaseApp.onAuthState(function (user) {
             querySnapshot.docChanges().forEach((change) => {
               if (change.type === "added") {
                 querySnapshot.forEach((doc) => {
@@ -134,7 +132,6 @@ const App = () => {
                         obj.left === json.left &&
                         obj.top === json.top &&
                         obj.width === json.width &&
-                        // obj.height === json.height &&
                         obj.fill === json.fill &&
                         obj.stroke === json.stroke &&
                         obj.strokeWidth === json.strokeWidth &&
@@ -167,7 +164,6 @@ const App = () => {
                         obj.left === json.left &&
                         obj.top === json.top &&
                         obj.width === json.width &&
-                        // obj.height === json.height &&
                         obj.fill === json.fill &&
                         obj.stroke === json.stroke &&
                         obj.strokeWidth === json.strokeWidth &&
@@ -187,7 +183,6 @@ const App = () => {
                 });
               }
             });
-            // });
           }
         });
       }
@@ -272,7 +267,6 @@ const App = () => {
                   canvasCloud[i].left !== canvasNow[i].left ||
                   canvasCloud[i].top !== canvasNow[i].top ||
                   canvasCloud[i].width !== canvasNow[i].width ||
-                  // canvasCloud[i].height !== canvasNow[i].height ||
                   canvasCloud[i].fill !== canvasNow[i].fill ||
                   canvasCloud[i].stroke !== canvasNow[i].stroke ||
                   canvasCloud[i].strokeWidth !== canvasNow[i].strokeWidth ||
@@ -300,7 +294,6 @@ const App = () => {
           } else {
             callback();
           }
-          // console.time("123");
           querySnapshot.forEach((doc) => {
             if (doc.id !== user) {
               const json = JSON.parse(doc.data().ObjSelected);
@@ -311,7 +304,6 @@ const App = () => {
                   obj.left === json.left &&
                   obj.top === json.top &&
                   obj.width === json.width &&
-                  // obj.height === json.height &&
                   obj.fill === json.fill &&
                   obj.stroke === json.stroke &&
                   obj.strokeWidth === json.strokeWidth &&
@@ -351,7 +343,7 @@ const App = () => {
               });
             }
           });
-        }); // console.timeEnd("123");
+        });
       });
     };
     setCanvas(canvasToSet);
