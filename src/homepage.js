@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import reportWebVitals from "./reportWebVitals";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import logo from "./Img/icon13.svg";

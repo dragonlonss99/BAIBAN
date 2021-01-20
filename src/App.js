@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "./App.scss";
 import ToolBar from "./components/ToolBar";
@@ -18,6 +18,8 @@ const App = () => {
   const [name, setName] = useState("");
   const [chatEditing, setChatEditing] = useState(false);
   const canvasId = window.location.pathname.split("/")[2];
+  const [chatRoomShow, setChatRoomShow] = useState(false);
+  const [sharePage, setSharePage] = useState(false);
 
   useEffect(() => {
     const canvasToSet = new fabric.Canvas("canvas", {
@@ -57,7 +59,7 @@ const App = () => {
       if (user) {
         const email = user.email;
         canvasToSet.on("object:modified", () => {
-          if (canvasToSet.getActiveObject().type !== "textbox") {
+          if (canvasToSet.getActiveObject()?.type !== "textbox") {
             if (beenStoped) {
               updateModifiedData(email, () => {
                 updateSelectToCloud(email);
@@ -277,7 +279,7 @@ const App = () => {
                 }
               } else {
                 if (
-                  canvasCloud[i].type !== canvasNow[i].type ||
+                  canvasCloud[i].type !== canvasNow[i]?.type ||
                   canvasCloud[i].left !== canvasNow[i].left ||
                   canvasCloud[i].top !== canvasNow[i].top ||
                   canvasCloud[i].width !== canvasNow[i].width ||
@@ -348,10 +350,15 @@ const App = () => {
     };
     setCanvas(canvasToSet);
   }, []);
+  const showChatRoom = () => {
+    const chatMain = document.querySelector("#mainChat");
+    chatRoomShow && chatMain.scrollTop === chatMain.scrollHeight;
+    setChatRoomShow(!chatRoomShow);
+  };
   return (
     <div>
       <div id="container">
-        <LeftBar canvas={canvas} name={name} />
+        <LeftBar canvas={canvas} name={name} showChatRoom={showChatRoom} />
         <div id="rightside">
           <div id="top_bar">
             <ToolBar
@@ -359,15 +366,24 @@ const App = () => {
               name={name}
               setName={setName}
               chatEditing={chatEditing}
+              setSharePage={setSharePage}
             />
           </div>
           <div id="canvas_area">
             <canvas id="canvas" />
-            <ChatRoom setChatEditing={setChatEditing} />
+            <ChatRoom
+              setChatEditing={setChatEditing}
+              showChatRoom={showChatRoom}
+              chatRoomShow={chatRoomShow}
+            />
           </div>
         </div>
       </div>
-      <SharePage canvasId={canvasId} />
+      <SharePage
+        canvasId={canvasId}
+        sharePage={sharePage}
+        setSharePage={setSharePage}
+      />
     </div>
   );
 };

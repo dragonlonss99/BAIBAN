@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import "fabric-history";
 import { ReactComponent as Eraser } from "../Img/toolbar/eraser.svg";
 import { ReactComponent as Copy } from "../Img/toolbar/file.svg";
@@ -18,6 +18,7 @@ export default function ToolBar(props) {
   const setName = props.setName;
   const canvas = props.canvas;
   const chatEditing = props.chatEditing;
+  const setSharePage = props.setSharePage;
   const [nameEditing, setNameEditing] = useState(false);
   const [canvasColor, setCanvasColor] = useState("#ffffff");
 
@@ -169,11 +170,6 @@ export default function ToolBar(props) {
     canvas.fire("object:modified");
   };
 
-  const sharePagePop = () => {
-    document.querySelector("#darkBack").className = "scaleIn";
-    document.querySelector("#darkBack").style.display = "flex";
-    document.querySelector("#dark").style.display = "block";
-  };
   const renameBoard = () => {
     setNameEditing(false);
     const canvasId = window.location.pathname.split("/")[2];
@@ -224,7 +220,12 @@ export default function ToolBar(props) {
             <LayerDown onClick={sendBackwards} className="toolBarIcon" />
           </div>
         </div>
-        <div id="shareBox" onClick={sharePagePop}>
+        <div
+          id="shareBox"
+          onClick={() => {
+            setSharePage(true);
+          }}
+        >
           share
         </div>
       </div>

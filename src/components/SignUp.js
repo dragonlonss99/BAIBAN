@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import firebase from "firebase/app";
 
 export default function SignUpLocal() {
@@ -7,25 +7,26 @@ export default function SignUpLocal() {
   const [password, setPassword] = useState("");
   const [emailCheck, setEmailCheck] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [userNameCheck, setUserNameCheck] = useState(false);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    document.querySelector("#emailUpCheck").style.display = "none";
+    setEmailCheck("");
   };
 
   const handleuserName = (e) => {
     setUserName(e.target.value);
-    document.querySelector("#userNameCheck").style.display = "none";
+    setUserNameCheck(false);
   };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    document.querySelector("#pwdUpCheck").style.display = "none";
+    setPasswordCheck("");
   };
 
   const signUp = () => {
     if (!userName) {
-      document.querySelector("#userNameCheck").style.display = "block";
+      setUserNameCheck(true);
       return;
     } else {
       firebase
@@ -33,29 +34,21 @@ export default function SignUpLocal() {
         .createUserWithEmailAndPassword(email, password)
         .then(function (user) {
           var db = firebase.firestore();
-          db.collection("users")
-            .doc(email)
-            .set({
-              userName: userName,
-              email: email,
-              canvasOwn: [],
-              canvasUse: [],
-              canvasObserve: [],
-            })
-            .catch(function (error) {
-              console.error("Error adding document: ", error);
-            });
+          db.collection("users").doc(email).set({
+            userName: userName,
+            email: email,
+            canvasOwn: [],
+            canvasUse: [],
+            canvasObserve: [],
+          });
         })
         .catch(function (error) {
           var errorCode = error.code;
           if (errorCode === "auth/email-already-in-use") {
-            document.querySelector("#emailUpCheck").style.display = "block";
             setEmailCheck("This email has been used!");
           } else if (errorCode === "auth/invalid-email") {
-            document.querySelector("#emailUpCheck").style.display = "block";
             setEmailCheck("Invalid email address, please check!");
           } else if (errorCode === "auth/weak-password") {
-            document.querySelector("#pwdUpCheck").style.display = "block";
             setPasswordCheck("Password should > 6 characters!");
           }
         });
@@ -70,11 +63,14 @@ export default function SignUpLocal() {
         onChange={handleuserName}
         className="signinInput"
         placeholder="user name"
-        onClick={(e) => {
-          document.querySelector("#userNameCheck").style.display = "none";
+        onClick={() => {
+          setUserNameCheck(false);
         }}
       />
-      <div id="userNameCheck">
+      <div
+        id="userNameCheck"
+        style={{ display: userNameCheck ? "block" : "none" }}
+      >
         <small>User name should not be empty!</small>
       </div>
       <input
@@ -83,11 +79,11 @@ export default function SignUpLocal() {
         onChange={handleEmail}
         className="signinInput"
         placeholder="email"
-        onClick={(e) => {
-          document.querySelector("#emailUpCheck").style.display = "none";
+        onClick={() => {
+          setEmailCheck("");
         }}
       />
-      <div id="emailUpCheck">
+      <div id="emailUpCheck" style={{ display: emailCheck ? "block" : "none" }}>
         <small>{emailCheck}</small>
       </div>
 
@@ -98,11 +94,14 @@ export default function SignUpLocal() {
         onChange={handlePassword}
         className="signinInput"
         placeholder="set password"
-        onClick={(e) => {
-          document.querySelector("#pwdUpCheck").style.display = "none";
+        onClick={() => {
+          setPasswordCheck("");
         }}
       />
-      <div id="pwdUpCheck">
+      <div
+        id="pwdUpCheck"
+        style={{ display: passwordCheck ? "block" : "none" }}
+      >
         <small>{passwordCheck}</small>
       </div>
       <div id="submitSignUp" onClick={signUp} className="bigger">

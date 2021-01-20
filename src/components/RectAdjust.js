@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import React from "react";
 import width from "../Img/addshapes/adjust/width.svg";
 
 // import { fabric } from "fabric";

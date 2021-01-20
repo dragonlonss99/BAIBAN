@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ReactComponent as Add } from "./Img/add.svg";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import { ReactComponent as DrawCircle } from "./Img/drawCircle5.svg";
@@ -24,6 +24,15 @@ export default function ProfilePage() {
   const [boardChosen, setBoardChosen] = useState("");
   const [newName, setNewName] = useState("");
   const [boardsType, setBoardsType] = useState(1);
+  const [sharePage, setSharePage] = useState(false);
+  const [addNameCheck, setAddNameCheck] = useState(false);
+  const [addBox, setAddBox] = useState(true);
+  const [deleteShow, setDeleteShow] = useState(false);
+  const [deleteScale, setDeleteScale] = useState(true);
+  const [newNameScale, setNewNameScale] = useState(true);
+  const [newNameShow, setNewNameShow] = useState(false);
+  const [backShow, setBackShow] = useState(false);
+  const [newNameCheck, setNewNameCheck] = useState(false);
 
   useEffect(() => {
     function setUserData(boardData, user) {
@@ -79,15 +88,16 @@ export default function ProfilePage() {
     }
   };
 
-  document.onclick = function () {
+  onclick = hideLists;
+  function hideLists() {
     const list = document.getElementsByClassName("AddBoardList");
     for (var i = 0; i < list.length; i++) {
       list[i].classList = "AddBoardList hide";
     }
-  };
+  }
   const addCanvas = () => {
     if (nameInput.length === 0) {
-      document.querySelector("#newNameCheckUp").style.display = "block";
+      setAddNameCheck(true);
     } else {
       var userEmail = firebase.auth().currentUser?.email;
       firebaseApp.canvasesAdd(
@@ -112,38 +122,34 @@ export default function ProfilePage() {
 
   const handleNameInput = (e) => {
     setNameInput(e.target.value);
-    document.querySelector("#newNameCheckUp").style.display = "none";
+    setAddNameCheck(false);
   };
 
   const showNameInput = () => {
-    document.querySelector(".addIconBox").style.display = "none";
-    document.querySelector(".InputNameBox").style.display = "block";
+    setAddBox(false);
   };
   const showInputDefault = () => {
-    document.querySelector(".addIconBox").style.display = "block";
-    document.querySelector(".InputNameBox").style.display = "none";
-    document.querySelector("#newNameCheckUp").style.display = "none";
+    setAddBox(true);
+    setAddNameCheck(false);
   };
 
   const sharePagePop = (id) => {
     setBoardChosen(id);
-    document.querySelector("#darkBack").className = "scaleIn";
-    document.querySelector("#darkBack").style.display = "flex";
-    document.querySelector("#dark").style.display = "block";
+    setSharePage(true);
   };
 
   const deletePagePop = (id) => {
     setBoardChosen(id);
-    document.querySelector("#deleteConfirm").className = "scaleIn";
-    document.querySelector("#deleteConfirm").style.display = "flex";
-    document.querySelector("#dark").style.display = "block";
+    setDeleteShow(true);
+    setBackShow(true);
+    setDeleteScale(true);
   };
 
   const reNamePagePop = (id) => {
     setBoardChosen(id);
-    document.querySelector("#NewNameConfirm").className = "scaleIn";
-    document.querySelector("#NewNameConfirm").style.display = "flex";
-    document.querySelector("#dark").style.display = "block";
+    setNewNameShow(true);
+    setBackShow(true);
+    setNewNameScale(true);
   };
 
   const handleDeleteUse = () => {
@@ -153,7 +159,7 @@ export default function ProfilePage() {
 
   const handleReNameUse = () => {
     if (newName.length === 0) {
-      document.querySelector("#newNameCheckDown").style.display = "block";
+      setNewNameCheck(true);
     } else {
       renameBoard();
       setNewName("");
@@ -162,19 +168,19 @@ export default function ProfilePage() {
   };
 
   const deleteBoxNon = () => {
-    document.querySelector("#deleteConfirm").className = "scaleOut";
+    setDeleteScale(false);
     setTimeout(() => {
-      document.querySelector("#darkBack").style.display = "none";
-      document.querySelector("#dark").style.display = "none";
+      setDeleteShow(false);
+      setBackShow(false);
     }, 300);
   };
 
   const reNameBoxNon = () => {
-    document.querySelector("#NewNameConfirm").className = "scaleOut";
+    setNewNameScale(false);
     setTimeout(() => {
-      document.querySelector("#newNameCheckDown").style.display = "none";
-      document.querySelector("#darkBack").style.display = "none";
-      document.querySelector("#dark").style.display = "none";
+      setNewNameShow(false);
+      setNewNameCheck(false);
+      setBackShow(false);
     }, 300);
   };
 
@@ -281,34 +287,39 @@ export default function ProfilePage() {
               {boardsType === 1 && (
                 <div id="boardsContain">
                   <div className="boardCreate">
-                    <div className="addIconBox" onClick={showNameInput}>
-                      <Add className="addIcon" />
-                      <div id="beforeAdd">Create a new board</div>
-                    </div>
-                    <div className="InputNameBox">
-                      <div className="inputTop">
-                        <Cancel
-                          className="cancelIcon bigger"
-                          onClick={showInputDefault}
-                        />
-                        <div className="inputName">Name your board?</div>
-                        <input
-                          value={nameInput}
-                          onChange={handleNameInput}
-                          onClick={() => {
-                            document.querySelector(
-                              "#newNameCheckUp"
-                            ).style.display = "none";
-                          }}
-                        />
-                        <div className="newNameCheck" id="newNameCheckUp">
-                          <small>Name could not be empty!</small>
+                    {addBox ? (
+                      <div className="addIconBox" onClick={showNameInput}>
+                        <Add className="addIcon" />
+                        <div id="beforeAdd">Create a new board</div>
+                      </div>
+                    ) : (
+                      <div className="InputNameBox">
+                        <div className="inputTop">
+                          <Cancel
+                            className="cancelIcon bigger"
+                            onClick={showInputDefault}
+                          />
+                          <div className="inputName">Name your board?</div>
+                          <input
+                            value={nameInput}
+                            onChange={handleNameInput}
+                            onClick={() => {
+                              setAddNameCheck(false);
+                            }}
+                          />
+                          <div
+                            className="newNameCheck"
+                            id="newNameCheckUp"
+                            style={{ display: addNameCheck ? "block" : "none" }}
+                          >
+                            <small>Name could not be empty!</small>
+                          </div>
+                        </div>
+                        <div className="inputBottom " onClick={addCanvas}>
+                          <div className="bigger">add a new board</div>
                         </div>
                       </div>
-                      <div className="inputBottom " onClick={addCanvas}>
-                        <div className="bigger">add a new board</div>
-                      </div>
-                    </div>
+                    )}
                   </div>
                   {canvasOwn.map((obj) => (
                     <AddedBoard
@@ -317,6 +328,7 @@ export default function ProfilePage() {
                       sharePagePop={sharePagePop}
                       deletePagePop={deletePagePop}
                       reNamePagePop={reNamePagePop}
+                      hideLists={hideLists}
                     />
                   ))}
                   <div className="profileFa" />
@@ -372,8 +384,12 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <div id="dark" />
-      <div id="deleteConfirm" style={{ display: "none" }} className="scaleIn">
+      <div id="dark" style={{ display: backShow ? "block" : "none" }} />
+      <div
+        id="deleteConfirm"
+        style={{ display: deleteShow ? "flex" : "none" }}
+        className={deleteScale ? "scaleIn" : "scaleOut"}
+      >
         <div id="shareBoxOuter">
           <div id="profileDeleteBox">
             <div id="profileCancelBox">
@@ -397,7 +413,11 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <div id="NewNameConfirm" style={{ display: "none" }} className="scaleIn">
+      <div
+        id="NewNameConfirm"
+        style={{ display: newNameShow ? "flex" : "none" }}
+        className={newNameScale ? "scaleIn" : "scaleOut"}
+      >
         <div id="shareBoxOuter">
           <div id="profileNewnameBox">
             <div id="profileCancelBox">
@@ -413,15 +433,17 @@ export default function ProfilePage() {
               value={newName}
               onChange={(e) => {
                 setNewName(e.target.value);
-                document.querySelector("#newNameCheckDown").style.display =
-                  "none";
+                setNewNameCheck(false);
               }}
               onClick={() => {
-                document.querySelector("#newNameCheckDown").style.display =
-                  "none";
+                setNewNameCheck(false);
               }}
             />
-            <div className="newNameCheck" id="newNameCheckDown">
+            <div
+              className="newNameCheck"
+              id="newNameCheckDown"
+              style={{ display: newNameCheck ? "block" : "none" }}
+            >
               <small>New name could not be empty!</small>
             </div>
             <div className="deleteChosen">
@@ -435,7 +457,11 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <SharePage canvasId={boardChosen} />
+      <SharePage
+        canvasId={boardChosen}
+        sharePage={sharePage}
+        setSharePage={setSharePage}
+      />
     </>
   );
 }

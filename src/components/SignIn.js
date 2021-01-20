@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import firebase from "firebase/app";
 
 export default function SignInLocal() {
@@ -9,12 +9,12 @@ export default function SignInLocal() {
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    document.querySelector("#emailCheck").style.display = "none";
+    setEmailCheck("");
   };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    document.querySelector("#pwdCheck").style.display = "none";
+    setPasswordCheck("");
   };
 
   const signIn = () => {
@@ -25,13 +25,10 @@ export default function SignInLocal() {
       .catch(function (error) {
         var errorCode = error.code;
         if (errorCode === "auth/user-not-found") {
-          document.querySelector("#emailCheck").style.display = "block";
           setEmailCheck("Email address hasn't been sign up!");
         } else if (errorCode === "auth/invalid-email") {
-          document.querySelector("#emailCheck").style.display = "block";
           setEmailCheck("Invalid email address, please check!");
         } else if (errorCode === "auth/wrong-password") {
-          document.querySelector("#pwdCheck").style.display = "block";
           setPasswordCheck("Password is wrong, please check!");
         }
       });
@@ -45,11 +42,11 @@ export default function SignInLocal() {
         onChange={handleEmail}
         placeholder="email"
         className="signinInput"
-        onClick={(e) => {
-          document.querySelector("#emailCheck").style.display = "none";
+        onClick={() => {
+          setEmailCheck("");
         }}
       />
-      <div id="emailCheck">
+      <div id="emailCheck" style={{ display: emailCheck ? "block" : "none" }}>
         <small>{emailCheck}</small>
       </div>
       <input
@@ -59,11 +56,11 @@ export default function SignInLocal() {
         value={password}
         onChange={handlePassword}
         placeholder="password"
-        onClick={(e) => {
-          document.querySelector("#pwdCheck").style.display = "none";
+        onClick={() => {
+          setPasswordCheck("");
         }}
       />
-      <div id="pwdCheck">
+      <div id="pwdCheck" style={{ display: passwordCheck ? "block" : "none" }}>
         <small>{passwordCheck}</small>
       </div>
       <div id="submit" onClick={signIn} className="bigger">

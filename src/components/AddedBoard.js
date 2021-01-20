@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import pagePic from "../Img/boardPic.png";
 import { useHistory } from "react-router-dom";
 import firebase from "firebase/app";
@@ -15,6 +15,7 @@ export default function AddedBoard(props) {
   const sharePagePop = props.sharePagePop;
   const deletePagePop = props.deletePagePop;
   const reNamePagePop = props.reNamePagePop;
+  const hideLists = props.hideLists;
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -34,18 +35,8 @@ export default function AddedBoard(props) {
 
   const history = useHistory();
   const showList = (e) => {
-    const list = document.getElementsByClassName("AddBoardList");
-
-    if (e.target.nextSibling.classList.length === 1) {
-      for (var i = 0; i < list.length; i++) {
-        list[i].classList = "AddBoardList hide";
-      }
-    } else {
-      for (var i = 0; i < list.length; i++) {
-        list[i].classList = "AddBoardList hide";
-      }
-      e.target.nextSibling.classList = "AddBoardList";
-    }
+    hideLists();
+    e.target.nextSibling.classList = "AddBoardList";
     e.stopPropagation();
   };
   const changeName = () => {};

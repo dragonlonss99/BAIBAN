@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prefer-const */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import ellipse from "../Img/addshapes/LogoMakr-9rD1kw.png";
 import circle from "../Img/addshapes/LogoMakr-00Rh5a.png";

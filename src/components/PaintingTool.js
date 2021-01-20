@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import { fabric } from "fabric";
 import width from "../Img/addshapes/adjust/width.svg";
 import pencil from "../Img/addshapes/adjust/pencil.svg";

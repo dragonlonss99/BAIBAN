@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import * as firebase from "../utils/firebaseUtils.js";
 import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
 import { ReactComponent as Cowork } from "../Img/profile/undraw_Online_collaboration.svg";
@@ -8,6 +8,10 @@ export default function SharePage(props) {
   const canvasId = props.canvasId;
   const [shareInputUse, setShareInputUse] = useState("");
   const [shareInputObserve, setShareInputObserve] = useState("");
+  const [display, setDisplay] = useState(false);
+  const [scalein, setScalein] = useState(false);
+  const sharePage = props.sharePage;
+  const setSharePage = props.setSharePage;
   const shareCanvasUse = (userEmail) => {
     firebase.canvasesUpdate(canvasId, {
       user: firebase.arrayUnion(userEmail),
@@ -40,17 +44,25 @@ export default function SharePage(props) {
     shareBoxNon();
   };
   const shareBoxNon = () => {
-    document.querySelector("#darkBack").className = "scaleOut";
+    setSharePage(false);
+    setScalein(false);
     setTimeout(() => {
-      document.querySelector("#darkBack").style.display = "none";
-      document.querySelector("#dark").style.display = "none";
+      setDisplay(false);
     }, 300);
   };
+  useEffect(() => {
+    sharePage && setDisplay(true);
+    sharePage && setScalein(true);
+  }, [sharePage]);
 
   return (
     <>
-      <div id="dark" />
-      <div id="darkBack" style={{ display: "none" }} className="scaleIn">
+      <div id="dark" style={{ display: display ? "block" : "none" }} />
+      <div
+        id="darkBack"
+        style={{ display: display ? "flex" : "none" }}
+        className={scalein ? "scaleIn" : "scaleOut"}
+      >
         <div id="shareBoxOuter">
           <div id="profileShareBox">
             <div id="profileCancelBox">

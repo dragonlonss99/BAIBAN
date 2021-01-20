@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import { ReactComponent as Pencil } from "../Img/back/pencil02.svg";
 import { ReactComponent as Eraser } from "../Img/back/eraser02.svg";

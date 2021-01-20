@@ -19,6 +19,7 @@
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
       }
-    ]
+    ],
+    "react/react-in-jsx-scope": "off"
   }
 }

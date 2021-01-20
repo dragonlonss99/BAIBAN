@@ -5,7 +5,12 @@ import App from "./App";
 import HomePage from "./homepage";
 import ProfilePage from "./profile";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +24,9 @@ ReactDOM.render(
         </Route>
         <Route path="/">
           <HomePage />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
         </Route>
       </Switch>
     </Router>

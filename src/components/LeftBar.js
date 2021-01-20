@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import AddShapes from "./AddShapes";
 import TextAdjust from "./TextAdjust";
 import PaintingTool from "./PaintingTool";
@@ -16,24 +16,24 @@ import "./AddShapes.scss";
 import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
 export default function LeftBar(props) {
   const canvas = props.canvas;
+  const showChatRoom = props.showChatRoom;
   const name = props.name;
   const [show, setShow] = useState("");
   const [boxType, setBoxType] = useState(0);
+  const [toolcontentShow, setToolcontentShow] = useState(false);
   const history = useHistory();
+
   const closeContent = () => {
-    document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    setToolcontentShow(false);
     canvas.isDrawingMode = false;
   };
 
   const showAddShapes = () => {
     canvas.isDrawingMode = false;
-    if (
-      boxType === 1 &&
-      document.querySelector("#toolcontent").style.marginLeft === "0px"
-    ) {
-      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    if (boxType === 1 && toolcontentShow) {
+      setToolcontentShow(false);
     } else {
-      document.querySelector("#toolcontent").style.marginLeft = "0px";
+      setToolcontentShow(true);
     }
     setShow(<AddShapes canvas={canvas} />);
     setBoxType(1);
@@ -41,14 +41,11 @@ export default function LeftBar(props) {
   };
 
   const showDraw = () => {
-    if (
-      boxType === 2 &&
-      document.querySelector("#toolcontent").style.marginLeft === "0px"
-    ) {
+    if (boxType === 2 && toolcontentShow) {
       canvas.isDrawingMode = false;
-      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+      setToolcontentShow(false);
     } else {
-      document.querySelector("#toolcontent").style.marginLeft = "0px";
+      setToolcontentShow(true);
       freeDwawing(canvas);
     }
     setShow(<PaintingTool canvas={canvas} closeContent={closeContent} />);
@@ -58,13 +55,10 @@ export default function LeftBar(props) {
   const showTextbox = () => {
     canvas.isDrawingMode = false;
 
-    if (
-      boxType === 3 &&
-      document.querySelector("#toolcontent").style.marginLeft === "0px"
-    ) {
-      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    if (boxType === 3 && toolcontentShow) {
+      setToolcontentShow(false);
     } else {
-      document.querySelector("#toolcontent").style.marginLeft = "0px";
+      setToolcontentShow(true);
     }
 
     setShow(<TextAdjust canvas={canvas} />);
@@ -74,13 +68,10 @@ export default function LeftBar(props) {
   const showSave = () => {
     canvas.isDrawingMode = false;
 
-    if (
-      boxType === 4 &&
-      document.querySelector("#toolcontent").style.marginLeft === "0px"
-    ) {
-      document.querySelector("#toolcontent").style.marginLeft = "-240px";
+    if (boxType === 4 && toolcontentShow) {
+      setToolcontentShow(false);
     } else {
-      document.querySelector("#toolcontent").style.marginLeft = "0px";
+      setToolcontentShow(true);
     }
     setShow(<SaveAndLoad canvas={canvas} name={name} />);
 
@@ -89,18 +80,6 @@ export default function LeftBar(props) {
   //freeDrawing
   const freeDwawing = (canvas) => {
     canvas.isDrawingMode = true;
-  };
-
-  //showChatRoom
-  const showChatRoom = () => {
-    document.querySelector("#mainChat").scrollTop = document.querySelector(
-      "#mainChat"
-    ).scrollHeight;
-    if (document.querySelector(".chatRoom").style.marginRight === "0px") {
-      document.querySelector(".chatRoom").style.marginRight = "-402px";
-    } else {
-      document.querySelector(".chatRoom").style.marginRight = "0px";
-    }
   };
 
   return (
@@ -122,7 +101,13 @@ export default function LeftBar(props) {
           onClick={showChatRoom}
         />
       </div>
-      <div id="toolcontent" style={{ paddingLeft: -240 }}>
+      <div
+        id="toolcontent"
+        style={{
+          paddingLeft: -240,
+          marginLeft: toolcontentShow ? "0px" : "-240px",
+        }}
+      >
         <div id="cancelBox">
           <Cancel onClick={closeContent} id="cancel" className="bigger" />
         </div>

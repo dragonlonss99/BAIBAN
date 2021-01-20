@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import firebase from "firebase/app";
 import "./ChatRoom.scss";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -21,7 +21,10 @@ function ChatRoom(props) {
   const [messages] = useCollectionData(query, { idField: "id" });
 
   const [formValue, setFormValue] = useState("");
+  // const [chatRoomShow, setChatRoomShow] = useState(false);
   const setChatEditing = props.setChatEditing;
+  const showChatRoom = props.showChatRoom;
+  const chatRoomShow = props.chatRoomShow;
   const sendMessage = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line prefer-const
@@ -39,16 +42,12 @@ function ChatRoom(props) {
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
-  const showChatRoom = () => {
-    if (document.querySelector(".chatRoom").style.marginRight === "0px") {
-      document.querySelector(".chatRoom").style.marginRight = "-402px";
-    } else {
-      document.querySelector(".chatRoom").style.marginRight = "0px";
-    }
-  };
 
   return (
-    <div className="chatRoom">
+    <div
+      className="chatRoom"
+      style={{ marginRight: chatRoomShow ? "0px" : "-402px" }}
+    >
       <div className="chatRoomTop">
         <div>Chat Room</div>
         <Cancel
