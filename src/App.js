@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { fabric } from "fabric";
 import "./App.scss";
-import ToolBar from "./components/ToolBar";
-import LeftBar from "./components/LeftBar";
-import ChatRoom from "./components/ChatRoom";
+import ToolBar from "./components/board/ToolBar";
+import LeftBar from "./components/board/LeftBar";
+import ChatRoom from "./components/board/ChatRoom";
 import "fabric-history";
 import rotate from "./Img/refresh.svg";
 import * as firebaseApp from "./utils/firebaseUtils";

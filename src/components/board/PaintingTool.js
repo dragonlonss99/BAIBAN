@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { fabric } from "fabric";
-import width from "../Img/addshapes/adjust/width.svg";
-import pencil from "../Img/addshapes/adjust/pencil.svg";
-import pen from "../Img/addshapes/adjust/pen.svg";
-import highlighter from "../Img/addshapes/adjust/highlighter.svg";
+import width from "../../Img/addshapes/adjust/width.svg";
+import pencil from "../../Img/addshapes/adjust/pencil.svg";
+import pen from "../../Img/addshapes/adjust/pen.svg";
+import highlighter from "../../Img/addshapes/adjust/highlighter.svg";
 export default function ToolBar(props) {
   const [lineWidthInput, setLineWidthInput] = useState("1");
   const [lineColor, setLineColor] = useState("#000000");

@@ -1,17 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import "fabric-history";
-import { ReactComponent as Eraser } from "../Img/toolbar/eraser.svg";
-import { ReactComponent as Copy } from "../Img/toolbar/file.svg";
-import { ReactComponent as Paste } from "../Img/toolbar/paste.svg";
-import { ReactComponent as Cut } from "../Img/toolbar/scissors.svg";
-import { ReactComponent as Undo } from "../Img/toolbar/undo-button.svg";
-import { ReactComponent as Redo } from "../Img/toolbar/redo-button.svg";
-import { ReactComponent as LayerUp } from "../Img/toolbar/gotop.svg";
-import { ReactComponent as LayerDown } from "../Img/toolbar/goBottom.svg";
+import { ReactComponent as Eraser } from "../../Img/toolbar/eraser.svg";
+import { ReactComponent as Copy } from "../../Img/toolbar/file.svg";
+import { ReactComponent as Paste } from "../../Img/toolbar/paste.svg";
+import { ReactComponent as Cut } from "../../Img/toolbar/scissors.svg";
+import { ReactComponent as Undo } from "../../Img/toolbar/undo-button.svg";
+import { ReactComponent as Redo } from "../../Img/toolbar/redo-button.svg";
+import { ReactComponent as LayerUp } from "../../Img/toolbar/gotop.svg";
+import { ReactComponent as LayerDown } from "../../Img/toolbar/goBottom.svg";
 import "./Toolbar.scss";
-import { updateToCloud } from "../App.js";
-import * as firebaseApp from "../utils/firebaseUtils";
+import { updateToCloud } from "../../App.js";
+import * as firebaseApp from "../../utils/firebaseUtils";
 
 export default function ToolBar(props) {
   const name = props.name;

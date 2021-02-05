@@ -10,14 +10,14 @@ import triangleR from "./Img/back/triangle-ruler.svg";
 import penDraw from "./Img/back/fountain-pen.svg";
 import chat from "./Img/back/chat-02.svg";
 import audi from "./Img/back/audience.svg";
-import Try_It from "./components/Try_It.js";
+import Try_It from "./components/homepage/Try_It.js";
 import {
   signInWithGoogle,
   signInWithFB,
   onAuthState,
 } from "./utils/firebaseUtils.js";
-import SignInLocal from "./components/SignIn";
-import SignUpLocal from "./components/SignUp";
+import SignInLocal from "./components/homepage/SignIn";
+import SignUpLocal from "./components/homepage/SignUp";
 import { useHistory } from "react-router-dom";
 import "./homepage.scss";
 import Loading from "./components/Loading.js";

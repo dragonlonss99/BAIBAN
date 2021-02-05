@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import width from "../Img/addshapes/adjust/width.svg";
+import width from "../../Img/addshapes/adjust/width.svg";
 
 // import { fabric } from "fabric";
 export default function RectAdjust(props) {

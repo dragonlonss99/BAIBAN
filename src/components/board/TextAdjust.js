@@ -1,19 +1,19 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { fabric } from "fabric";
-import width from "../Img/addshapes/adjust/width.svg";
-import boldStyle from "../Img/addshapes/adjust/handmade/bold-02.svg";
-import italicStyle from "../Img/addshapes/adjust/handmade/italic-03.svg";
-import underLineStyle from "../Img/addshapes/adjust/handmade/underLine-04.svg";
-import deleteLineStyle from "../Img/addshapes/adjust/handmade/deleteLine-05.svg";
-import superStyle from "../Img/addshapes/adjust/handmade/super-06.svg";
-import subStyle from "../Img/addshapes/adjust/handmade/sub-07.svg";
-import normalStyle from "../Img/addshapes/adjust/handmade/normal-08.svg";
-import alignLeftStyle from "../Img/addshapes/adjust/align-left.svg";
-import alignCenterStyle from "../Img/addshapes/adjust/align-center.svg";
-import alignRightStyle from "../Img/addshapes/adjust/align-right.svg";
-import { updateToCloud } from "../App.js";
-import * as firebaseApp from "../utils/firebaseUtils";
+import width from "../../Img/addshapes/adjust/width.svg";
+import boldStyle from "../../Img/addshapes/adjust/handmade/bold-02.svg";
+import italicStyle from "../../Img/addshapes/adjust/handmade/italic-03.svg";
+import underLineStyle from "../../Img/addshapes/adjust/handmade/underLine-04.svg";
+import deleteLineStyle from "../../Img/addshapes/adjust/handmade/deleteLine-05.svg";
+import superStyle from "../../Img/addshapes/adjust/handmade/super-06.svg";
+import subStyle from "../../Img/addshapes/adjust/handmade/sub-07.svg";
+import normalStyle from "../../Img/addshapes/adjust/handmade/normal-08.svg";
+import alignLeftStyle from "../../Img/addshapes/adjust/align-left.svg";
+import alignCenterStyle from "../../Img/addshapes/adjust/align-center.svg";
+import alignRightStyle from "../../Img/addshapes/adjust/align-right.svg";
+import { updateToCloud } from "../../App.js";
+import * as firebaseApp from "../../utils/firebaseUtils";
 
 export default function TextAdjust(props) {
   const canvas = props.canvas;

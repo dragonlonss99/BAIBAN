@@ -2,17 +2,17 @@
 /* eslint-disable prefer-const */
 import { useState, useEffect } from "react";
 import { fabric } from "fabric";
-import ellipse from "../Img/addshapes/LogoMakr-9rD1kw.png";
-import circle from "../Img/addshapes/LogoMakr-00Rh5a.png";
-import triangle from "../Img/addshapes/LogoMakr-4keFSv.png";
-import isotri from "../Img/addshapes/LogoMakr-101qmV.png";
-import parra from "../Img/addshapes/LogoMakr-0mlYb5.png";
-import line from "../Img/addshapes/LogoMakr-7xibzp.png";
-import righttriangle from "../Img/addshapes/LogoMakr-6YA1tz.png";
-import square from "../Img/addshapes/LogoMakr-60BBJ5.png";
+import ellipse from "../../Img/addshapes/LogoMakr-9rD1kw.png";
+import circle from "../../Img/addshapes/LogoMakr-00Rh5a.png";
+import triangle from "../../Img/addshapes/LogoMakr-4keFSv.png";
+import isotri from "../../Img/addshapes/LogoMakr-101qmV.png";
+import parra from "../../Img/addshapes/LogoMakr-0mlYb5.png";
+import line from "../../Img/addshapes/LogoMakr-7xibzp.png";
+import righttriangle from "../../Img/addshapes/LogoMakr-6YA1tz.png";
+import square from "../../Img/addshapes/LogoMakr-60BBJ5.png";
 import RectAdjust from "./RectAdjust";
-import { updateToCloud } from "../App.js";
-import * as firebaseApp from "../utils/firebaseUtils";
+import { updateToCloud } from "../../App.js";
+import * as firebaseApp from "../../utils/firebaseUtils";
 
 export default function AddShapes(props) {
   let canvas = props.canvas;

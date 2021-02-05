@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ReactComponent as Add } from "./Img/add.svg";
 import { ReactComponent as Cancel } from "./Img/back/cancel.svg";
 import { ReactComponent as DrawCircle } from "./Img/drawCircle5.svg";
-import AddedBoard from "./components/AddedBoard.js";
+import AddedBoard from "./components/profile/AddedBoard.js";
 import { signOut } from "./utils/firebaseUtils.js";
 import firebase from "firebase/app";
 import logo from "./Img/icon13.svg";

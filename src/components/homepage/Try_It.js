@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { fabric } from "fabric";
-import { ReactComponent as Pencil } from "../Img/back/pencil02.svg";
-import { ReactComponent as Eraser } from "../Img/back/eraser02.svg";
-import { ReactComponent as Artist } from "../Img/back/undraw_artist.svg";
+import { ReactComponent as Pencil } from "../../Img/back/pencil02.svg";
+import { ReactComponent as Eraser } from "../../Img/back/eraser02.svg";
+import { ReactComponent as Artist } from "../../Img/back/undraw_artist.svg";
 import { SketchPicker } from "react-color";
 
 export default function Try_It() {

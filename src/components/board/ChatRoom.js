@@ -4,9 +4,9 @@ import firebase from "firebase/app";
 import "./ChatRoom.scss";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import userImage from "../Img/user.png";
-import { ReactComponent as Send } from "../Img/send.svg";
-import { ReactComponent as Cancel } from "../Img/back/cancel.svg";
+import userImage from "../../Img/user.png";
+import { ReactComponent as Send } from "../../Img/send.svg";
+import { ReactComponent as Cancel } from "../../Img/back/cancel.svg";
 
 const auth = firebase.auth();
 function ChatRoom(props) {
