@@ -1,4 +1,4 @@
-#container {
+.container {
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -66,14 +66,14 @@
 //   }
 // }
 
-#rightside {
+.rightside {
   display: flex;
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
 }
-#top_bar {
+.top_bar {
   width: 100%;
   height: 60px;
   display: flex;
@@ -81,7 +81,7 @@
   justify-content: space-between;
   // margin-right: 20px;
 }
-#canvas_area {
+.canvas_area {
   overflow: hidden;
   height: 100%;
 }
@@ -113,7 +113,7 @@
   }
 }
 
-#shareInput {
+.shareInput {
   width: 300px;
   height: 50px;
   border-radius: 25px 0px 0px 25px;
@@ -125,7 +125,7 @@
   font-family: "Noto Sans TC", "Nerko One", cursive, sans-serif;
 }
 
-#shareBtn {
+.shareBtn {
   width: 20%;
   height: 50px;
   font-size: 1.1em;
@@ -137,7 +137,7 @@
   box-sizing: border-box;
   border-radius: 0px 25px 25px 0px;
 }
-#shareInputBox {
+.shareInputBox {
   width: 80%;
   margin: 150px auto;
   display: flex;

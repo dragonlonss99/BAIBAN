@@ -168,8 +168,8 @@ export default function AddShapes(props) {
   };
 
   return (
-    <div id="addShapes">
-      <div id="imgBox">
+    <div className="addShapes">
+      <div className="imgBox">
         <img
           src={square}
           onClick={() => addRect(canvas)}

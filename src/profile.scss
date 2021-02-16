@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap");
-#profilePage {
+.profilePage {
   //  z-index: 10;
   border: 30px solid transparent;
   border-image: url(/Img/back2.svg) 10 stretch;
@@ -26,7 +26,7 @@
   background-color: #5c5c5c;
   opacity: 0.8;
 }
-#profileP {
+.profileP {
   width: 320px;
   height: 180px;
   box-sizing: border-box;
@@ -37,22 +37,22 @@
   padding: 10px;
   margin-top: 30px;
 }
-#profilePic {
+.profilePic {
   // background-image: url(./Img/user.png);
   width: 70px;
   height: 70px;
   margin: 10px;
   border-radius: 50px;
 }
-#profileEmail {
+.profileEmail {
   margin-bottom: 10px;
   font-size: 2rem;
 }
-#profileMessage {
+.profileMessage {
   font-size: 2rem;
   padding-left: 10px;
 }
-#profileBoards {
+.profileBoards {
   // width: 80%;
   margin: auto;
 }
@@ -78,7 +78,7 @@
 //   bottom: 0;
 //   left: 0;
 //   z-index: -1;
-//   background: #ccc;
+//   background: .ccc;
 //   background-image: linear-gradient(
 //     hsla(0, 0%, 100%, 0.6),
 //     hsla(0, 0%, 100%, 0)
@@ -100,7 +100,7 @@
 //   margin-bottom: -0.08em;
 // }
 
-#boards {
+.boards {
   // overflow-y: hidden;
   /* border-width: 2px;
   border-style: solid; */
@@ -114,8 +114,8 @@
   border-radius: 2px;
   margin-bottom: 2em;
 
-  #boardsRead,
-  #boardsObserved {
+  .boardsRead,
+  .boardsObserved {
     display: flex;
     flex-wrap: wrap;
     font-size: 5em;
@@ -133,7 +133,7 @@
       font-size: 2.5em;
     }
   }
-  #boardsContain {
+  .boardsContain {
     display: flex;
     flex-wrap: wrap;
     // grid-auto-columns: 252px;
@@ -151,9 +151,6 @@
     }
   }
 }
-#flexEnd {
-  justify-content: flex-end;
-}
 .boardCreate {
   border: #000000 1px dashed;
 
@@ -163,7 +160,7 @@
   border-radius: 20px;
   margin: 12px;
   &:hover .addIcon,
-  &:hover #beforeAdd {
+  &:hover .beforeAdd {
     cursor: pointer;
     fill: red;
     color: red;
@@ -375,7 +372,7 @@
       // height: 80px;
       // display: none;
       // width: 120px;
-      // border: #000000 1px solid;
+      // border: .000000 1px solid;
       position: relative;
       box-sizing: border-box;
       margin-top: 8px;
@@ -439,7 +436,7 @@
     }
   }
 }
-#ProfileBtnBox {
+.ProfileBtnBox {
   // width: 80%;
   margin: 0px auto 0px auto;
   display: flex;
@@ -450,8 +447,8 @@
     margin-bottom: 80%;
   }
 
-  #tagBox,
-  #profileFuncBox {
+  .tagBox,
+  .profileFuncBox {
     display: flex;
     flex-direction: column;
     // width: 90%;
@@ -479,13 +476,13 @@
       // justify-content: center;
       // // font-weight: bolder;
       // margin: 5px;
-      // box-shadow: 3px 3px #888888;
+      // box-shadow: 3px 3px .888888;
     }
     .profileTag {
       padding: 0px;
     }
   }
-  #profileFuncBox {
+  .profileFuncBox {
     width: 400px;
   }
 }
@@ -530,7 +527,7 @@
 
 // .profileTag::after {
 //   content: ""; /*讓after顯示出來*/
-//   border-bottom: 2px solid #1c36d0;
+//   border-bottom: 2px solid .1c36d0;
 //   margin: auto; /*使線段從中間展開*/
 //   position: relative /*調整位置*/;
 //   width: 0%;
@@ -558,14 +555,14 @@
   cursor: pointer;
 }
 
-#profileRight {
+.profileRight {
   overflow-y: scroll;
   padding-left: 3%;
 }
-#profileRight::-webkit-scrollbar {
+.profileRight::-webkit-scrollbar {
   display: none;
 }
-#profileLeft {
+.profileLeft {
   height: 100%;
   width: 320px;
   display: flex;
@@ -576,7 +573,7 @@
     display: none;
   }
 }
-#proverb {
+.proverb {
   // margin: auto;
   font-size: 2rem;
   // text-align: center;
@@ -622,10 +619,10 @@
     opacity: 1;
   }
 }
-#profileCancelBox {
+.profileCancelBox {
   z-index: 10;
   background-color: white;
-  #cancelOutShare {
+  .cancelOutShare {
     width: 40px;
     height: 40px;
     fill: black;
@@ -636,7 +633,7 @@
     // margin-right: -10px;
   }
 }
-#shareBoxOuter {
+.shareBoxOuter {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -644,7 +641,7 @@
   height: 100vh;
   overflow: hidden;
 }
-#profileShareBox {
+.profileShareBox {
   width: 100%;
   /* height: 607px; */
   /* border-color: black;
@@ -667,7 +664,7 @@
   @media (max-width: 920px) {
     width: 100%;
   }
-  #shareInputBox {
+  .shareInputBox {
     margin: 50px 30px 30px 0px;
     display: flex;
     width: 100%;
@@ -774,13 +771,13 @@
   }
 }
 
-#profilePage {
+.profilePage {
   .topNavBox {
     height: 100px;
   }
 }
 
-#deleteConfirm {
+.deleteConfirm {
   width: 100vw;
   height: 100vh;
   display: none;
@@ -791,7 +788,7 @@
   left: 0px;
   z-index: 7;
   font-family: "Nerko One", "Noto Sans TC", cursive, sans-serif;
-  #profileDeleteBox {
+  .profileDeleteBox {
     box-sizing: content-box;
     margin: auto;
     padding-left: 10px;
@@ -809,7 +806,7 @@
       width: 100%;
     }
   }
-  #cancelOutShare {
+  .cancelOutShare {
     width: 30px;
     height: 30px;
   }
@@ -843,7 +840,7 @@
   }
 }
 
-#NewNameConfirm {
+.NewNameConfirm {
   width: 100vw;
   height: 100vh;
   display: none;
@@ -854,7 +851,7 @@
   left: 0px;
   z-index: 7;
   font-family: "Nerko One", "Noto Sans TC", cursive, sans-serif;
-  #profileNewnameBox {
+  .profileNewnameBox {
     box-sizing: content-box;
     margin: auto;
     padding-left: 10px;
@@ -872,7 +869,7 @@
       width: 100%;
     }
   }
-  #cancelOutShare {
+  .cancelOutShare {
     width: 30px;
     height: 30px;
   }
@@ -944,6 +941,6 @@
     // background-color: violet;
   }
 }
-#newNameCheckUp {
+.newNameCheckUp {
   width: 85%;
 }

@@ -59,7 +59,7 @@ export default function ToolBar(props) {
           type="range"
           min="1"
           max="50"
-          id="lineWidthInput"
+          className="lineWidthInput"
           value={lineWidthInput}
         />
       </div>
@@ -68,7 +68,7 @@ export default function ToolBar(props) {
         <input
           onChange={changeLineColor}
           type="color"
-          id="lineColorInput"
+          className="lineColorInput"
           value={lineColor}
         />
       </div>

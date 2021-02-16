@@ -83,8 +83,8 @@ export default function LeftBar(props) {
   };
 
   return (
-    <div id="leftside">
-      <div id="shapeBar" style={{ backgroundColor: "#555555" }}>
+    <div className="leftside">
+      <div className="shapeBar" style={{ backgroundColor: "#555555" }}>
         <img
           src={home}
           className="toolIcon"
@@ -102,14 +102,14 @@ export default function LeftBar(props) {
         />
       </div>
       <div
-        id="toolcontent"
+        className="toolcontent"
         style={{
           paddingLeft: -240,
           marginLeft: toolcontentShow ? "0px" : "-240px",
         }}
       >
-        <div id="cancelBox">
-          <Cancel onClick={closeContent} id="cancel" className="bigger" />
+        <div className="cancelBox">
+          <Cancel onClick={closeContent} className="bigger cancel" />
         </div>
         {show}
       </div>

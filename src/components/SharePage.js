@@ -57,22 +57,17 @@ export default function SharePage(props) {
 
   return (
     <>
-      <div id="dark" style={{ display: display ? "block" : "none" }} />
+      <div className="dark" style={{ display: display ? "block" : "none" }} />
       <div
-        id="darkBack"
         style={{ display: display ? "flex" : "none" }}
-        className={scalein ? "scaleIn" : "scaleOut"}
+        className={scalein ? "scaleIn darkBack" : "scaleOut darkBack"}
       >
-        <div id="shareBoxOuter">
-          <div id="profileShareBox">
-            <div id="profileCancelBox">
-              <Cancel
-                id="cancelOutShare"
-                onClick={shareBoxNon}
-                className="bigger"
-              />
+        <div className="shareBoxOuter">
+          <div className="profileShareBox">
+            <div className="profileCancelBox">
+              <Cancel onClick={shareBoxNon} className="bigger cancelOutShare" />
             </div>
-            <div id="shareInputBox">
+            <div className="shareInputBox">
               <div className="shareWayBox">
                 <div className="h1">Share to co-worker</div>
                 <div>invite others to co-work </div>

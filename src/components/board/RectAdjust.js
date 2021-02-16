@@ -56,7 +56,7 @@ export default function RectAdjust(props) {
         <input
           onChange={changeFillColor}
           type="color"
-          id="lineColorInput"
+          className="lineColorInput"
           value={fillColor}
         />
       </div>
@@ -65,7 +65,7 @@ export default function RectAdjust(props) {
         <input
           onChange={changeStrokeColor}
           type="color"
-          id="lineColorInput"
+          className="lineColorInput"
           value={strokeColor}
         />
       </div>
@@ -77,7 +77,7 @@ export default function RectAdjust(props) {
           type="range"
           min="0"
           max="20"
-          id="lineWidthInput"
+          className="lineWidthInput"
           value={strokeWidthInput}
         />
       </div>

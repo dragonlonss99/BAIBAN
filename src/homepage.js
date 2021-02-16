@@ -63,7 +63,7 @@ export default function HomePage() {
 
   return (
     <div
-      id="homePage"
+      className="homePage"
       onScroll={(e) => {
         if (e.target.scrollTop > limit) {
           setTopNavscroll(true);
@@ -72,7 +72,7 @@ export default function HomePage() {
         }
       }}
     >
-      <div id="ahome">
+      <div className="ahome">
         <div>
           <div
             className={topNavscroll ? "topNavBox floatingNav" : "topNavBox"}
@@ -90,36 +90,32 @@ export default function HomePage() {
                 <div className="bigger" onClick={showLoginBox}>
                   log In
                 </div>
-                <div
-                  id="homeSignUpBtn"
-                  className="bigger"
-                  onClick={showSignBox}
-                >
+                <div className="bigger homeSignUpBtn" onClick={showSignBox}>
                   Sign Up
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="mainContain">
-          <div id="homePageLeft">
-            <div id="BigAtt">BAIBAN</div>
-            <div id="middleAtt">Sharing ideas from NOW!</div>
-            <div id="startBtnBox">
-              <div id="startBtn" onClick={showLoginBox} className="bigger">
+        <div className="mainContain">
+          <div className="homePageLeft">
+            <div className="BigAtt">BAIBAN</div>
+            <div className="middleAtt">Sharing ideas from NOW!</div>
+            <div className="startBtnBox">
+              <div onClick={showLoginBox} className="bigger startBtn">
                 start now for free
               </div>
             </div>
           </div>
-          <div id="homePageRight">
+          <div className="homePageRight">
             <img src={man} />
           </div>
         </div>
         <img src={eraser} className="homePageImage eraser" />
       </div>
-      <div id="introduction">
-        <div id="howeWhy">What can we do with BAIBAN?</div>
-        <div id="circleBox">
+      <div className="introduction">
+        <div className="howeWhy">What can we do with BAIBAN?</div>
+        <div className="circleBox">
           <div>
             <div className="homePageCircle">
               <img src={triangleR} />
@@ -141,65 +137,58 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div id="howeWhy">Try it now! </div>
+        <div className="howeWhy">Try it now! </div>
         <Try_It />
       </div>
       <div className="footer">
         <div>&copy; 2020 BAIBAN All rights reserved.</div>
       </div>
       {loadingFinish || <Loading />}
-      <div id="dark" style={{ display: loginPage ? "block" : "none" }} />
+      <div className="dark" style={{ display: loginPage ? "block" : "none" }} />
       <div
-        id="darkBack"
-        className={scalein ? "scaleIn" : "scaleOut"}
+        className={scalein ? "scaleIn darkBack" : "scaleOut darkBack"}
         style={{ display: loginPage ? "flex" : "none" }}
       >
-        <div id="loginBoxOuter">
-          <div id="logInBox">
-            <Cancel id="cancelOut" onClick={loginBoxNon} className="bigger" />
-            <div id="logoBox">
+        <div className="loginBoxOuter">
+          <div className="logInBox">
+            <Cancel onClick={loginBoxNon} className="bigger cancelOut" />
+            <div className="logoBox">
               <img src={logo} className="logo" />
             </div>
-            <div id="title">Welcome to BAIBAN!</div>
+            <div className="title">Welcome to BAIBAN!</div>
             <div
-              id="logcontent"
+              className="logcontent"
               style={{ display: loginSignUp ? "block" : "none" }}
             >
               <SignInLocal />
-              <div id="or">Or</div>
-              <div
-                id="googleLogin"
-                onClick={signInWithGoogle}
-                className="bigger"
-              >
+              <div className="or">Or</div>
+              <div onClick={signInWithGoogle} className="bigger googleLogin">
                 <GoogleLogo style={{ width: 20, height: 20 }} />
                 Log In with Google
               </div>
 
-              <div id="FBcenter" onClick={signInWithFB} className="bigger">
+              <div onClick={signInWithFB} className="bigger FBcenter">
                 <img src={fbLogo} style={{ width: 20, height: 20 }} />
                 Log In with FaceBook
               </div>
               <label>First Time visiting?</label>
               <div
-                id="signUpbut"
                 onClick={() => {
                   setLoginSignUp(false);
                 }}
-                className="bigger"
+                className="bigger signUpbut"
               >
                 create an free account
               </div>
             </div>
             <div
-              id="signUpBox"
-              className="hiddenStatus"
+              className="hiddenStatus signUpBox"
               style={{ display: loginSignUp ? "none" : "block" }}
             >
-              <SignUpLocal id="signUpLocal" />
-              <div id="tryAn">Or try another way to log in?</div>
+              <SignUpLocal className="signUpLocal" />
+              <div className="tryAn">Or try another way to log in?</div>
               <div
-                id="anotherLogin"
+                className="anotherLogin bigger"
                 onClick={() => {
                   setLoginSignUp(true);
                 }}

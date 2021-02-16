@@ -357,10 +357,10 @@ const App = () => {
   };
   return (
     <div>
-      <div id="container">
+      <div className="container">
         <LeftBar canvas={canvas} name={name} showChatRoom={showChatRoom} />
-        <div id="rightside">
-          <div id="top_bar">
+        <div className="rightside">
+          <div className="top_bar">
             <ToolBar
               canvas={canvas}
               name={name}
@@ -369,7 +369,7 @@ const App = () => {
               setSharePage={setSharePage}
             />
           </div>
-          <div id="canvas_area">
+          <div className="canvas_area">
             <canvas id="canvas" />
             <ChatRoom
               setChatEditing={setChatEditing}

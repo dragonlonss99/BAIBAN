@@ -96,40 +96,40 @@ export default function Try_It() {
   };
 
   return (
-    <div id="tryBox">
-      <div id="tool">
-        <div id="color">
+    <div className="tryBox">
+      <div className="tool">
+        <div className="color">
           color
           <input
             type="color"
             value={fillColor}
             onChange={changeFillColor}
-            id="tryColorInput"
-            className="bigger"
+            className="bigger tryColorInput"
           />
         </div>
         <div
           onClick={freeDwawing}
           className={
-            drawingMode ? "tryIcon bigger drawClicked" : "tryIcon bigger"
+            drawingMode
+              ? "tryIcon bigger drawClicked tryItPencil"
+              : "tryIcon bigger tryItPencil"
           }
-          id="tryItPencil"
         >
           <Pencil fill={fillColor} />
         </div>
         <div onClick={addRect} className="tryIcon center bigger">
-          <div id="rect" style={{ backgroundColor: fillColor }} />
+          <div className="rect" style={{ backgroundColor: fillColor }} />
         </div>
         <div onClick={addCircle} className="tryIcon center bigger">
-          <div id="circle" style={{ backgroundColor: fillColor }} />
+          <div className="circle" style={{ backgroundColor: fillColor }} />
         </div>
         <div onClick={deleteChosen} className="tryIcon bigger">
           <Eraser fill={fillColor} />
         </div>
       </div>
       <canvas id="can" />
-      <div id="artistBox">
-        <Artist id="artist" />
+      <div className="artistBox">
+        <Artist className="artist" />
       </div>
     </div>
   );

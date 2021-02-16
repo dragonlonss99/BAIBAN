@@ -37,21 +37,22 @@ export default function SignInLocal() {
   return (
     <div className="nativeBox">
       <input
-        id="emailSignIn"
         value={email}
         onChange={handleEmail}
         placeholder="email"
-        className="signinInput"
+        className="signinInput emailSignIn"
         onClick={() => {
           setEmailCheck("");
         }}
       />
-      <div id="emailCheck" style={{ display: emailCheck ? "block" : "none" }}>
+      <div
+        className="emailCheck"
+        style={{ display: emailCheck ? "block" : "none" }}
+      >
         <small>{emailCheck}</small>
       </div>
       <input
-        className="signinInput"
-        id="pwdSignIn"
+        className="signinInput pwdSignIn"
         type="password"
         value={password}
         onChange={handlePassword}
@@ -60,10 +61,13 @@ export default function SignInLocal() {
           setPasswordCheck("");
         }}
       />
-      <div id="pwdCheck" style={{ display: passwordCheck ? "block" : "none" }}>
+      <div
+        className="pwdCheck"
+        style={{ display: passwordCheck ? "block" : "none" }}
+      >
         <small>{passwordCheck}</small>
       </div>
-      <div id="submit" onClick={signIn} className="bigger">
+      <div onClick={signIn} className="bigger submit">
         Log In
       </div>
     </div>

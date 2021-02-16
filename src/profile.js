@@ -224,14 +224,14 @@ export default function ProfilePage() {
   return (
     <>
       {loadingFinish || <Loading />}
-      <div id="profilePage">
+      <div className="profilePage">
         <div className="topNavBox">
           <div className="topNav">
             <div className="mainLogo">
               <img src={logo} className="logo" />
               <div>BAIBAN</div>
             </div>
-            <div className="logInWay" id="flexEnd">
+            <div className="flexEnd logInWay">
               <div
                 onClick={signingOut}
                 style={{ backgroundColor: "red" }}
@@ -253,13 +253,13 @@ export default function ProfilePage() {
             </span>
           </div>
         </div>
-        <div id="profileLeft">
-          <div id="profileP">
-            <img id="profilePic" src={photo} />
-            <div id="profileEmail">Hello, {userName}</div>
+        <div className="profileLeft">
+          <div className="profileP">
+            <img className="profilePic" src={photo} />
+            <div className="profileEmail">Hello, {userName}</div>
           </div>
-          <div id="ProfileBtnBox">
-            <div id="tagBox">
+          <div className="ProfileBtnBox">
+            <div className="tagBox">
               <div className="drawBox ">
                 <DrawCircle className="drawCompo drawn" />
                 <div className="profileTag selected" onClick={changeReadStatus}>
@@ -281,16 +281,16 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        <div id="profileRight">
-          <div id="profileBoards">
-            <div id="boards">
+        <div className="profileRight">
+          <div className="profileBoards">
+            <div className="boards">
               {boardsType === 1 && (
-                <div id="boardsContain">
+                <div className="boardsContain">
                   <div className="boardCreate">
                     {addBox ? (
                       <div className="addIconBox" onClick={showNameInput}>
                         <Add className="addIcon" />
-                        <div id="beforeAdd">Create a new board</div>
+                        <div className="beforeAdd">Create a new board</div>
                       </div>
                     ) : (
                       <div className="InputNameBox">
@@ -308,8 +308,7 @@ export default function ProfilePage() {
                             }}
                           />
                           <div
-                            className="newNameCheck"
-                            id="newNameCheckUp"
+                            className="newNameCheck newNameCheckUp"
                             style={{ display: addNameCheck ? "block" : "none" }}
                           >
                             <small>Name could not be empty!</small>
@@ -342,9 +341,9 @@ export default function ProfilePage() {
 
               {boardsType === 2 &&
                 (canvasRead.length === 0 ? (
-                  <div id="boardsRead">Nothing here yet!</div>
+                  <div className="boardsRead">Nothing here yet!</div>
                 ) : (
-                  <div id="boardsRead">
+                  <div className="boardsRead">
                     {canvasRead.map((obj) => (
                       <AddedBoard
                         id={obj}
@@ -362,9 +361,9 @@ export default function ProfilePage() {
                 ))}
               {boardsType === 3 &&
                 (canvasObserve.length === 0 ? (
-                  <div id="boardsObserved">Nothing here yet!</div>
+                  <div className="boardsObserved">Nothing here yet!</div>
                 ) : (
-                  <div id="boardsObserved">
+                  <div className="boardsObserved">
                     {canvasObserve.map((obj) => (
                       <AddedBoard
                         id={obj}
@@ -384,19 +383,19 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <div id="dark" style={{ display: backShow ? "block" : "none" }} />
+      <div className="dark" style={{ display: backShow ? "block" : "none" }} />
       <div
-        id="deleteConfirm"
         style={{ display: deleteShow ? "flex" : "none" }}
-        className={deleteScale ? "scaleIn" : "scaleOut"}
+        className={
+          deleteScale ? "scaleIn deleteConfirm" : "scaleOut deleteConfirm"
+        }
       >
-        <div id="shareBoxOuter">
-          <div id="profileDeleteBox">
-            <div id="profileCancelBox">
+        <div className="shareBoxOuter">
+          <div className="profileDeleteBox">
+            <div className="profileCancelBox">
               <Cancel
-                id="cancelOutShare"
                 onClick={deleteBoxNon}
-                className="bigger"
+                className="bigger cancelOutShare"
               />
             </div>
             <div className="deleteH1">
@@ -414,17 +413,17 @@ export default function ProfilePage() {
         </div>
       </div>
       <div
-        id="NewNameConfirm"
         style={{ display: newNameShow ? "flex" : "none" }}
-        className={newNameScale ? "scaleIn" : "scaleOut"}
+        className={
+          newNameScale ? "scaleIn NewNameConfirm" : "scaleOut NewNameConfirm"
+        }
       >
-        <div id="shareBoxOuter">
-          <div id="profileNewnameBox">
-            <div id="profileCancelBox">
+        <div className="shareBoxOuter">
+          <div className="profileNewnameBox">
+            <div className="profileCancelBox">
               <Cancel
-                id="cancelOutShare"
                 onClick={reNameBoxNon}
-                className="bigger"
+                className="bigger cancelOutShare"
               />
             </div>
             <div className="deleteH1">Give the board a new name!</div>
@@ -440,8 +439,7 @@ export default function ProfilePage() {
               }}
             />
             <div
-              className="newNameCheck"
-              id="newNameCheckDown"
+              className="newNameCheck newNameCheckDown"
               style={{ display: newNameCheck ? "block" : "none" }}
             >
               <small>New name could not be empty!</small>

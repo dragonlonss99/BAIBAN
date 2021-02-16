@@ -223,7 +223,7 @@ export default function TextAdjust(props) {
   };
 
   return (
-    <div id="textAdjustBox">
+    <div className="textAdjustBox">
       <div onClick={addTextbox} className="addTextbox">
         <span> addTextbox</span>
       </div>
@@ -235,7 +235,7 @@ export default function TextAdjust(props) {
           type="range"
           min="1"
           max="150"
-          id="fontSizeInput"
+          className="fontSizeInput"
           value={fontSizeInput}
         />
       </div>
@@ -244,7 +244,7 @@ export default function TextAdjust(props) {
         <input
           onChange={changeTextColor}
           type="color"
-          id="TextColorInput"
+          className="TextColorInput"
           value={textColor}
         />
       </div>
@@ -253,7 +253,7 @@ export default function TextAdjust(props) {
         <input
           onChange={changeTextBackColor}
           type="color"
-          id="TextBackColorInput"
+          className="TextBackColorInput"
           value={textBackColor}
         />
       </div>
@@ -265,7 +265,7 @@ export default function TextAdjust(props) {
           type="range"
           min="10"
           max="50"
-          id="rowHeightInput"
+          className="rowHeightInput"
           value={rowHeightInput}
         />
       </div>
@@ -277,17 +277,17 @@ export default function TextAdjust(props) {
           type="range"
           min="1"
           max="50"
-          id="letterSpacingInput"
+          className="letterSpacingInput"
           value={letterSpacingInput}
         />
       </div>
       <div className="btnBox">
         <div className="no">style:</div>
         <div>
-          <img src={boldStyle} onClick={setBold} id="bold" />
+          <img src={boldStyle} onClick={setBold} className="bold" />
         </div>
         <div>
-          <img src={italicStyle} onClick={italic} id="italic" />
+          <img src={italicStyle} onClick={italic} className="italic" />
         </div>
         <div>
           <img src={underLineStyle} onClick={underLine} />

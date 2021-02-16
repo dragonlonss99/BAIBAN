@@ -179,8 +179,8 @@ export default function ToolBar(props) {
   };
   return (
     <>
-      <div id="toolBarBox">
-        <div id="toolBarName">
+      <div className="toolBarBox">
+        <div className="toolBarName">
           <input
             value={name}
             onChange={(e) => {
@@ -221,7 +221,7 @@ export default function ToolBar(props) {
           </div>
         </div>
         <div
-          id="shareBox"
+          className="shareBox"
           onClick={() => {
             setSharePage(true);
           }}
@@ -229,12 +229,12 @@ export default function ToolBar(props) {
           share
         </div>
       </div>
-      <div id="boardColor">
+      <div className="boardColor">
         <label>board&#39;s color：</label>
         <input
           onChange={changeCanvasColor}
           type="color"
-          id="lineColorInput"
+          className="lineColorInput"
           value={canvasColor}
         />
       </div>

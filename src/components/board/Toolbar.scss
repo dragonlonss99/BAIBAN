@@ -6,13 +6,13 @@
   /* fill: white; */
 }
 
-#toolBarBox {
+.toolBarBox {
   display: flex;
   align-items: center;
   height: 70px;
   width: 80%;
 
-  #toolBarName {
+  .toolBarName {
     font-size: 1.2em;
     background-color: rgb(236, 219, 64);
     border-radius: 25px;
@@ -86,7 +86,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  #shareBox {
+  .shareBox {
     font-size: 1.4rem;
     background-color: #bf1363;
     border-radius: 25px;
@@ -105,6 +105,6 @@
   }
 }
 
-#boardColor {
+.boardColor {
   margin-right: 50px;
 }

@@ -58,53 +58,53 @@ export default function SignUpLocal() {
     <div className="nativeBox">
       <h2>Create a new account</h2>
       <input
-        id="userName"
         value={userName}
         onChange={handleuserName}
-        className="signinInput"
+        className="signinInput userName"
         placeholder="user name"
         onClick={() => {
           setUserNameCheck(false);
         }}
       />
       <div
-        id="userNameCheck"
+        className="userNameCheck"
         style={{ display: userNameCheck ? "block" : "none" }}
       >
         <small>User name should not be empty!</small>
       </div>
       <input
-        id="email"
         value={email}
         onChange={handleEmail}
-        className="signinInput"
+        className="signinInput email"
         placeholder="email"
         onClick={() => {
           setEmailCheck("");
         }}
       />
-      <div id="emailUpCheck" style={{ display: emailCheck ? "block" : "none" }}>
+      <div
+        className="emailUpCheck"
+        style={{ display: emailCheck ? "block" : "none" }}
+      >
         <small>{emailCheck}</small>
       </div>
 
       <input
-        id="pwd"
         type="password"
         value={password}
         onChange={handlePassword}
-        className="signinInput"
+        className="signinInput pwd"
         placeholder="set password"
         onClick={() => {
           setPasswordCheck("");
         }}
       />
       <div
-        id="pwdUpCheck"
+        className="pwdUpCheck"
         style={{ display: passwordCheck ? "block" : "none" }}
       >
         <small>{passwordCheck}</small>
       </div>
-      <div id="submitSignUp" onClick={signUp} className="bigger">
+      <div onClick={signUp} className="bigger submitSignUp">
         Register
       </div>
     </div>
